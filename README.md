@@ -7,7 +7,7 @@ A collaboration tool for literary magazines
 
 ### General tools
 
-First, install `node.js` via your normal package manager. On Windows, I'd doing everything under WSL Ubuntu 20.04.
+First, install `node.js` via your normal package manager. On Windows, I'd recommend doing everything under WSL Ubuntu 20.04.
 
 Then, install `yarn` with 
 ```
