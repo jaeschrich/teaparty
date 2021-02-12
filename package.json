@@ -1,0 +1,16 @@
+{
+  "name": "teaparty",
+  "version": "0.0.1",
+  "description": "A web application for literary magazines",
+  "main": "index.js",
+  "repository": "git@github.com:bvirus/teaparty.git",
+  "author": "James Eschrich <jaeschrich@gmail.com>",
+  "license": "N/A",
+  "private": true,
+  "devDependencies": {},
+  "workspaces": [
+      "backend",
+      "frontend",
+      "shared"
+    ]
+}
