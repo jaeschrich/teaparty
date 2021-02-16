@@ -12,4 +12,4 @@ jobs:
           steps:
             - run: npm install yarn
             - run: npx yarn install
-      - run: yarn test
+      - run: npx yarn test
