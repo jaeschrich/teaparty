@@ -13,6 +13,17 @@ jobs:
             - run: npm install yarn
             - run: npx yarn install
       - run: npx yarn test
+  run:
+    executor:
+      name: node/default
+      tag: '14.15'
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
+            - run: npm install yarn
+            - run: npx yarn install
+      - run: npx yarn test 
 workflows:
   run:
     jobs:
