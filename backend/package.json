@@ -1,0 +1,12 @@
+{
+  "name": "teaparty-backend",
+  "version": "0.0.1",
+  "description": "Backend for teaparty",
+  "main": "server.js",
+  "author": "Team CREG",
+  "license": "N/A",
+  "private": true,
+  "devDependencies": {
+    "@types/jest": "^26.0.20"
+  }
+}
