@@ -18,8 +18,12 @@ Then, run `yarn install` in the root directory. This will install all of the pac
 
 ### Run App
 
-``` $ yarn start ```
+``` 
+$ yarn start
+```
 
 ### Run Tests
 
-```$ yarn test
+```
+$ yarn test
+```
