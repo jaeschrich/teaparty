@@ -16,10 +16,10 @@ $ sudo npm install -g yarn
 
 Then, run `yarn install` in the root directory. This will install all of the packages.
 
-### Run App
+### Run App in Development Mode
 
 ``` 
-$ yarn start
+$ yarn run dev
 ```
 
 ### Run Tests
