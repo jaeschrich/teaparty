@@ -16,10 +16,10 @@ $ sudo npm install -g yarn
 
 Then, run `yarn install` in the root directory. This will install all of the packages.
 
-### VSCode Setup
+### Run App
 
-Assuming you have the default typescript package installed, make sure to open the project from the root `teaparty/` folder, **NOT** the `frontend/`, `backend/`, or `/shared` folders. Otherwise it should just work!
+``` $ yarn start ```
 
-### Running the frontend
+### Run Tests
 
-`cd` into the `frontend/` directory and run `yarn start`.
+```$ yarn test
