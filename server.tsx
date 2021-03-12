@@ -6,14 +6,17 @@ import { readFileSync } from 'fs';
 import { StaticRouter } from 'react-router-dom';
 import { App } from './frontend/app';
 import { join } from 'path';
+import { Redirect } from 'dist/client';
 
 const app = express();
 const template = readFileSync('./template.html').toString().split('$body');
 // const generateHtml = (reactDom : string) => template.join(reactDom);
 
 app.use('/dist', express.static(join(__dirname, "/dist")));
-
-app.get("/app/*", (req, res) => {
+app.get('/', (req, res) => {
+    res.redirect("/app");
+})
+app.get("/app/?*", (req, res) => {
     // const ctx = {};
     // const path = req.url.split("/app")[1];
     // const jsx = (
