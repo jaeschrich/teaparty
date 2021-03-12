@@ -6,7 +6,6 @@ import { readFileSync } from 'fs';
 import { StaticRouter } from 'react-router-dom';
 import { App } from './frontend/app';
 import { join } from 'path';
-import { Redirect } from 'dist/client';
 
 const app = express();
 const template = readFileSync('./template.html').toString().split('$body');
