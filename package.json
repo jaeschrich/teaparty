@@ -1,21 +1,42 @@
 {
-    "name": "teaparty",
-    "version": "0.0.1",
-    "description": "A web application for literary magazines",
-    "main": "index.js",
-    "repository": "git@github.com:bvirus/teaparty.git",
-    "author": "James Eschrich <jaeschrich@gmail.com>",
-    "license": "N/A",
-    "private": true,
-    "devDependencies": {
-        "jest": "^26.6.3"
-    },
-    "workspaces": [
-        "backend",
-        "frontend",
-        "shared"
-    ],
-    "scripts": {
-        "test": "jest"
-    }
+  "name": "teaparty",
+  "version": "0.0.1",
+  "description": "Tea Party Application",
+  "main": "server.ts",
+  "author": "James Eschrich",
+  "license": "N/A",
+  "private": true,
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/preset-env": "^7.12.16",
+    "@babel/preset-react": "^7.12.13",
+    "@babel/preset-typescript": "^7.12.16",
+    "@testing-library/react": "^11.2.5",
+    "@types/jest": "^26.0.20",
+    "@types/parcel-bundler": "^1.12.3",
+    "babel-jest": "^26.6.3",
+    "jest": "^26.6.3",
+    "parcel-bundler": "^1.12.4",
+    "ts-jest": "^26.5.3",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3"
+  },
+  "dependencies": {
+    "@types/express": "^4.17.11",
+    "@types/react": "^17.0.1",
+    "@types/react-dom": "^17.0.0",
+    "@types/react-router": "^5.1.12",
+    "@types/react-router-dom": "^5.1.7",
+    "dist": "^0.1.2",
+    "express": "^4.17.1",
+    "passport": "^0.4.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0"
+  },
+  "scripts": {
+    "start": "npx ts-node prod-server.ts",
+    "dev": "npx ts-node dev-server.ts",
+    "test": "npx jest"
+  }
 }
