@@ -10,7 +10,6 @@ jobs:
       - checkout
       - node/with-cache:
           steps:
-            - run: npm install yarn
             - run: npx yarn install
       - run: npx yarn test
   run:
@@ -21,7 +20,6 @@ jobs:
       - checkout
       - node/with-cache:
           steps:
-            - run: npm install yarn
             - run: npx yarn install
       - run: npx yarn test 
 workflows:
