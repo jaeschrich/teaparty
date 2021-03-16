@@ -47,8 +47,8 @@
     "react-router-dom": "^5.2.0"
   },
   "scripts": {
-    "dev": "npx concurrently \"parcel watch ./frontend/client.tsx\" \"nodemon --exec 'ts-node ./server.tsx'\"",
-    "start": "npx concurrently \"parcel build frontend/client.tsx\" \"ts-node ./server.tsx\"",
+    "dev": "npx concurrently \"npx parcel watch ./frontend/client.tsx\" \"npx nodemon --exec 'npx ts-node ./server.tsx'\"",
+    "start": "npx concurrently \"npx parcel build frontend/client.tsx\" \"npx ts-node ./server.tsx\"",
     "test": "npx jest"
   }
 }
