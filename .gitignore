@@ -8,3 +8,5 @@ shared/node_modules/
 **/.cache/
 **/dist/
 google-auth.json
+.DS_Store
+**/.DS_Store
