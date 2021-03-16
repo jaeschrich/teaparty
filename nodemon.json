@@ -3,5 +3,8 @@
         "MONGO_USER": "teaparty_jose",
         "MONGO_PASSWORD": "DnGTkqGcxQtpr7TA",
         "MONGO_DB": "Tea-Party"
-    }
+    },
+    "watch": ["backend", "./server.tsx"],
+    "ext": "ts,json",
+    "ignore": ["backend/**/*.test.js"]
 }

@@ -1,4 +1,3 @@
-
 import userRoutes from "./routes"
 import express, { Express } from "express"
 import mongoose from "mongoose"
@@ -9,7 +8,7 @@ import bodyParser from "body-parser";
 
 //const dotenv = require("dotenv");
 
-const app: Express = express()
+export const app: Express = express()
 
 //dotenv.config();
 
@@ -41,9 +40,4 @@ app.use(function(err:any, req:any, res:any, next:any) {
     if (err.name === 'UnauthorizedError') {
         res.status(401).json({ error: 'Unauthorized!' });
     }
-});
-  
-const port = process.env.PORT || 8080;
-  app.listen(port, () => {
-    console.log(`A Node Js API is listening on port: ${port}`);
 });
