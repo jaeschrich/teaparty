@@ -2,11 +2,9 @@
 .submission {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1rem;
     padding: 0.5rem;
-    border: 0.1rem solid #CCC;
+    border-bottom: 0.1rem solid #CCC;
     align-items: center;
-    border-radius: 0.2rem;
     width: 100%;
 }
 

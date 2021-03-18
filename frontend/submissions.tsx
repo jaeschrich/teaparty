@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useCallback } from 'react';
+import React, { MouseEventHandler, useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 
 import './submissions.css';
 import ThumbsUp from '../assets/twemoji/2611.svg';
@@ -6,29 +6,34 @@ import ThumbsDown from '../assets/twemoji/274e.svg';2
 import ZipFace from '../assets/twemoji/1f910.svg';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveScroll } from './hooks/saveScroll';
 
 export type Submission = { title: string, author: string }
 
-export function SubmissionsView(props : { submissions: Submission[] }) {
+export function SubmissionsView(props : any) {
+    const ref = saveScroll(props.scrollState);
     let nodes = props.submissions.map(sub => <SubmissionView key={sub.title+sub.author} value={sub} />)
-    return (<div role="region" aria-label="Submissions">{nodes}</div>);
+    return (
+    <div role="main" aria-label="Submission" ref={ref}>
+        {nodes}
+    </div>);
 }
 
 export function SubmissionView(props: { value: Submission }) {
     const dispatch = useDispatch();
-    const voteYes = useCallback((ev) => {
+    const voteYes = (ev: any) => {
         ev.stopPropagation();
         dispatch({ type: 'vote/yes', payload: props.value });
-    }, [props.value]);
-    const voteNo = useCallback((ev) => {
+    }
+    const voteNo = (ev: any) => {
         ev.stopPropagation();
         dispatch({ type: 'vote/no', payload: props.value });
-    }, [props.value]);
-    const voteAbstain = useCallback((ev) => {
+    };
+    const voteAbstain = (ev: any) => {
         ev.stopPropagation();
         dispatch({ type: 'vote/abstain', payload: props.value });
-    }, [props.value]);
+    };
  
     return (<div className="submission">
         <span><Link to={`/view-submission/${props.value.title}`}>&ldquo;{props.value.title}&rdquo;</Link> by {props.value.author}</span>
