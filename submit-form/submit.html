@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="./font.css" />
 <link rel="stylesheet" href="./submit.css">
 <template id="portfolio-item">
-    <fieldset class="form-part">
+    <fieldset class="form-part" name="portfolio-items">
         <div role="group"><label for="title">Title</label><input type="text" name="title" placeholder="Title of Piece" /></div>
         <div role="group">
             <label for="category">Submission Category</label>
@@ -27,14 +27,11 @@
                 <option value="photography">Photography</option>
             </select>
         </div>
-        <div role="group"><label for="file">File</label><input type="file" name="file" /></div>
+        <div role="group"><label for="file">File</label><input type="file" name="portfolio-files" /></div>
 
         <textarea name="comments" aria-label="Optional Artistic comments on piece" 
             placeholder="Optional Artistic comments on piece (medium, location, context, etc.)"></textarea>
-        <button>Remove Item</button>
+        <button bind="button">Remove Item</button>
     </fieldset>
-</template>
-<template id="protip-template">
-    <p id="protip"><strong>Protip 💡: Right click on "SUBMIT TO TEA", right there ⬆, to get more randomly generated names.</strong></p>
 </template>
 <script src="./submit.js"></script>

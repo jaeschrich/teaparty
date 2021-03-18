@@ -1,15 +1,15 @@
 
 import { generateName } from '../shared/generateNames';
-
+import { $, $bindEvent, Template, TemplateRoot, cancelEvent } from './layer0';
 /* CONSTANTS */
-const nameInput = document.querySelector("[name=name]");
-const emailInput = document.querySelector("[name=email]");
-const statement = document.querySelector("[name=artist-statement]");
-const title = document.querySelector('[role="doc-title"]');
-const addButton = document.querySelector("[name=portfolio]");
-const portfolio = document.querySelector("#file-input-area");
-const template = document.querySelector("#portfolio-item");
-const protip = document.querySelector("#protip-template");
+
+const nameInput = $("[name=name]");
+const emailInput = $("[name=email]");
+const statement = $("[name=artist-statement]");
+const title = $('[role="doc-title"]');
+const addButton = $("[name=portfolio]");
+const portfolio = $("#file-input-area");
+const template = new Template($("#portfolio-item"));
 
 /* GLOBALS */
 
@@ -23,8 +23,6 @@ let timeout = null;
 let nameText = generateName();
 function advanceText() {
     if (timeout) clearTimeout(timeout);
-
-    posNext = (pos + 1) % 97;
     
     let nextName = generateName();
     while (nameText === nextName) nextName = generateName();
@@ -44,23 +42,19 @@ function advanceText() {
 
 title.addEventListener('contextmenu', (ev) => {
     if (ev.target === title) {
-        ev.preventDefault();
-        ev.stopPropagation();
+        cancelEvent(ev);
         advanceText();
     }
 });
 
 addButton.addEventListener('click', (ev) => {
-    ev.preventDefault()
-    const item = template.content.cloneNode(true);
-    let ref = null;
-    item.querySelector("button").addEventListener('click', (ev) => {
-        ev.preventDefault();
-        portfolio.removeChild(ref);
+    cancelEvent(ev);
+    const ref = template.append(portfolio, {
+        'button': $bindEvent('click', (ev) => {
+            portfolio.removeChild(ref);
+        }),
+        [TemplateRoot]: (el) => el.name = `item-${itemCount++}`
     });
-    item.name = `item-${itemCount++}`;
-    portfolio.appendChild(item);
-    ref = portfolio.lastElementChild;
-})
+});
 
 advanceText();

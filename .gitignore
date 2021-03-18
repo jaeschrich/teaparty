@@ -10,4 +10,5 @@ shared/node_modules/
 google-auth.json
 .DS_Store
 **/.DS_Store
-.parcel-cache
+.parcel-cache/
+data/
