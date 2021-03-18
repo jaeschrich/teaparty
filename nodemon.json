@@ -4,7 +4,7 @@
         "MONGO_PASSWORD": "DnGTkqGcxQtpr7TA",
         "MONGO_DB": "Tea-Party"
     },
-    "watch": ["backend", "./server.tsx"],
+    "watch": ["backend", "./server.tsx", "./template.html"],
     "ext": "ts,json",
     "ignore": ["backend/**/*.test.js"]
 }

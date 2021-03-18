@@ -1,0 +1,30 @@
+[role="doc-toc"] {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+@media(max-width: 600px) {
+    [role="doc-toc"] {
+        flex-direction: row;
+    }
+}
+
+[role="doc-toc"] > a {
+    display: block;
+    color: var(--link-color);
+}
+[role="doc-toc"] > a:visited {
+    display: block;
+    color: var(--link-color-visited);
+}
+
+[role="main"] {
+    overflow: scroll;
+    border-radius: 0.2rem;
+    border: 0.3rem solid #CCC;
+    
+    scrollbar-color: #AAA white;
+    scrollbar-width: thin;
+}

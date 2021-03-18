@@ -27,3 +27,8 @@ $ yarn run dev
 ```
 $ yarn test
 ```
+
+
+## Attributions
+
+Emoji SVGs from [https://twemoji.twitter.com/](twimoji).
