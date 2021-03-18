@@ -1,0 +1,255 @@
+var helpers = require("../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+helpers.prelude(module);
+try {
+  var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+  _parcelHelpers.defineInteropFlag(exports);
+  _parcelHelpers.export(exports, "SubmissionsView", function () {
+    return SubmissionsView;
+  });
+  _parcelHelpers.export(exports, "SubmissionView", function () {
+    return SubmissionView;
+  });
+  var _react = require('react');
+  var _reactDefault = _parcelHelpers.interopDefault(_react);
+  require('url:./submissions.css');
+  var _urlAssetsTwemoji1f910Svg = require('url:../assets/twemoji/1f910.svg');
+  var _urlAssetsTwemoji1f910SvgDefault = _parcelHelpers.interopDefault(_urlAssetsTwemoji1f910Svg);
+  var _reactRouterDom = require('react-router-dom');
+  var _reactRedux = require('react-redux');
+  var _hooksSaveScroll = require('./hooks/saveScroll');
+  var _jsxFileName = "/home/james/teaparty/frontend/submissions.tsx", _s = $RefreshSig$();
+  function SubmissionsView(props) {
+    const ref = _hooksSaveScroll.saveScroll(props.scrollState);
+    let nodes = props.submissions.map(sub => /*#__PURE__*/_reactDefault.default.createElement(SubmissionView, {
+      key: sub.title + sub.author,
+      value: sub,
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 14,
+        columnNumber: 46
+      }
+    }));
+    return (
+      /*#__PURE__*/_reactDefault.default.createElement("div", {
+        role: "main",
+        "aria-label": "Submission",
+        ref: ref,
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 16,
+          columnNumber: 5
+        }
+      }, nodes)
+    );
+  }
+  _c = SubmissionsView;
+  function SubmissionView(props) {
+    _s();
+    const dispatch = _reactRedux.useDispatch();
+    const voteYes = ev => {
+      ev.stopPropagation();
+      dispatch({
+        type: 'vote/yes',
+        payload: props.value
+      });
+    };
+    const voteNo = ev => {
+      ev.stopPropagation();
+      dispatch({
+        type: 'vote/no',
+        payload: props.value
+      });
+    };
+    const voteAbstain = ev => {
+      ev.stopPropagation();
+      dispatch({
+        type: 'vote/abstain',
+        payload: props.value
+      });
+    };
+    return (
+      /*#__PURE__*/_reactDefault.default.createElement("div", {
+        className: "submission",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 36,
+          columnNumber: 13
+        }
+      }, /*#__PURE__*/_reactDefault.default.createElement("span", {
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 37,
+          columnNumber: 9
+        }
+      }, /*#__PURE__*/_reactDefault.default.createElement(_reactRouterDom.Link, {
+        to: `/view-submission/${props.value.title}`,
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 37,
+          columnNumber: 15
+        }
+      }, "“", props.value.title, "”"), " by ", props.value.author), /*#__PURE__*/_reactDefault.default.createElement("div", {
+        role: "group",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 38,
+          columnNumber: 9
+        }
+      }, /*#__PURE__*/_reactDefault.default.createElement(VoteYesButton, {
+        onClick: voteYes,
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 39,
+          columnNumber: 13
+        }
+      }), /*#__PURE__*/_reactDefault.default.createElement(VoteNoButton, {
+        onClick: voteNo,
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 40,
+          columnNumber: 13
+        }
+      }), /*#__PURE__*/_reactDefault.default.createElement(VoteAbstainButton, {
+        onClick: voteAbstain,
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 41,
+          columnNumber: 13
+        }
+      })))
+    );
+  }
+  _s(SubmissionView, "rgTLoBID190wEKCp9+G8W6F7A5M=", false, function () {
+    return [_reactRedux.useDispatch];
+  });
+  _c2 = SubmissionView;
+  // adapted from twemoji 2611
+  function VoteYesButton({onClick}) {
+    return (
+      /*#__PURE__*/_reactDefault.default.createElement("button", {
+        onClick: onClick,
+        title: "Vote Yes",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 48,
+          columnNumber: 13
+        }
+      }, /*#__PURE__*/_reactDefault.default.createElement("svg", {
+        xmlns: "http://www.w3.org/2000/svg",
+        viewBox: "0 0 36 36",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 49,
+          columnNumber: 9
+        }
+      }, /*#__PURE__*/_reactDefault.default.createElement("path", {
+        fill: "green",
+        d: "M36 32c0 2.209-1.791 4-4 4H4c-2.209 0-4-1.791-4-4V4c0-2.209 1.791-4 4-4h28c2.209 0 4 1.791 4 4v28z",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 50,
+          columnNumber: 13
+        }
+      }), /*#__PURE__*/_reactDefault.default.createElement("path", {
+        fill: "#BBDDF5",
+        d: "M29.28 6.362c-1.156-.751-2.704-.422-3.458.736L14.936 23.877l-5.029-4.65c-1.014-.938-2.596-.875-3.533.138-.937 1.014-.875 2.596.139 3.533l7.209 6.666c.48.445 1.09.665 1.696.665.673 0 1.534-.282 2.099-1.139.332-.506 12.5-19.27 12.5-19.27.751-1.159.421-2.707-.737-3.458z",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 51,
+          columnNumber: 13
+        }
+      })))
+    );
+  }
+  _c3 = VoteYesButton;
+  // adapted from twemoji 274e
+  function VoteNoButton({onClick}) {
+    return (
+      /*#__PURE__*/_reactDefault.default.createElement("button", {
+        onClick: onClick,
+        title: "Vote No",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 59,
+          columnNumber: 9
+        }
+      }, /*#__PURE__*/_reactDefault.default.createElement("svg", {
+        xmlns: "http://www.w3.org/2000/svg",
+        viewBox: "0 0 36 36",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 60,
+          columnNumber: 13
+        }
+      }, /*#__PURE__*/_reactDefault.default.createElement("path", {
+        fill: "red",
+        d: "M36 32c0 2.209-1.791 4-4 4H4c-2.209 0-4-1.791-4-4V4c0-2.209 1.791-4 4-4h28c2.209 0 4 1.791 4 4v28z",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 61,
+          columnNumber: 17
+        }
+      }), /*#__PURE__*/_reactDefault.default.createElement("path", {
+        fill: "#FFF",
+        d: "M21.529 18.006l8.238-8.238c.977-.976.977-2.559 0-3.535-.977-.977-2.559-.977-3.535 0l-8.238 8.238-8.238-8.238c-.976-.977-2.56-.977-3.535 0-.977.976-.977 2.559 0 3.535l8.238 8.238-8.258 8.258c-.977.977-.977 2.559 0 3.535.488.488 1.128.732 1.768.732s1.28-.244 1.768-.732l8.258-8.259 8.238 8.238c.488.488 1.128.732 1.768.732s1.279-.244 1.768-.732c.977-.977.977-2.559 0-3.535l-8.24-8.237z",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 62,
+          columnNumber: 17
+        }
+      })))
+    );
+  }
+  _c4 = VoteNoButton;
+  function VoteAbstainButton({onClick}) {
+    return (
+      /*#__PURE__*/_reactDefault.default.createElement("button", {
+        onClick: onClick,
+        title: "Abstain from Voting",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 69,
+          columnNumber: 9
+        }
+      }, /*#__PURE__*/_reactDefault.default.createElement(_urlAssetsTwemoji1f910SvgDefault.default, {
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 69,
+          columnNumber: 63
+        }
+      }))
+    );
+  }
+  _c5 = VoteAbstainButton;
+  var _c, _c2, _c3, _c4, _c5;
+  $RefreshReg$(_c, "SubmissionsView");
+  $RefreshReg$(_c2, "SubmissionView");
+  $RefreshReg$(_c3, "VoteYesButton");
+  $RefreshReg$(_c4, "VoteNoButton");
+  $RefreshReg$(_c5, "VoteAbstainButton");
+  helpers.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}

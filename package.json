@@ -2,7 +2,6 @@
   "name": "teaparty",
   "version": "0.0.1",
   "description": "Tea Party Application",
-  "main": "server.ts",
   "author": "James Eschrich",
   "license": "N/A",
   "private": true,
@@ -27,7 +26,7 @@
     "concurrently": "^6.0.0",
     "jest": "^26.6.3",
     "nodemon": "^2.0.7",
-    "parcel-bundler": "1.12.3",
+    "parcel-plugin-txt": "^1.0.3",
     "ts-jest": "^26.5.3",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.3"
@@ -44,6 +43,7 @@
     "express": "^4.17.1",
     "mongoose": "^5.12.0",
     "morgan": "^1.10.0",
+    "parcel": "^2.0.0-beta.2",
     "passport": "^0.4.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -52,8 +52,15 @@
     "redux": "^4.0.5"
   },
   "scripts": {
-    "dev": "npx concurrently \"npx parcel watch --public-url /dist ./frontend/client.tsx\" \"npx nodemon --exec 'npx ts-node ./server.tsx'\"",
-    "start": "npx concurrently \"npx parcel build --public-url /dist frontend/client.tsx\" \"npx ts-node ./server.tsx\"",
+    "dev": "npx concurrently \"npx parcel watch ./submit-form/submit.html ./frontend/index.html\" \"npx nodemon --exec 'npx ts-node ./server.tsx'\"",
+    "build": "npx parcel build ./submit-form/submit.html ./frontend/client.tsx",
+    "prestart": "npx npm run build",
+    "start": "npx ts-node ./server.tsx",
     "test": "npx jest"
+  },
+  "targets": {
+    "app": {
+      "publicUrl": "/dist"
+    }
   }
 }

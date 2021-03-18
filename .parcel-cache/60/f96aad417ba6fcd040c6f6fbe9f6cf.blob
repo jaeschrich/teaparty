@@ -1,0 +1,1 @@
+module.exports = require('./bundle-url').getBundleURL() + "../1f389.HASH_REF_3ff633ca02b479dcdb73a207cd10e901.svg"

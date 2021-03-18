@@ -1,0 +1,39 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Submit to TEA</title>
+<h1 role="doc-title" title="Right click me to see more names!">Submit to <a href="399a4475ed3878a3216a134129ff2616">TEA</a></h1>
+<form class="form-part" method="POST" action="/submit" enctype="multipart/form-data">
+    <div role="group"><label for="name">Name </label><input type="text" name="name" placeholder=""></div>
+    <div role="group"><label for="UFL Email">Email </label><input type="email" name="email" placeholder="" pattern=".+@ufl.edu" title="Please provide a UFL e-mail address"></div>
+    <div role="group"><label for="portfolio">Portfolio</label><button name="portfolio" aria-roledescription="Add Portfolio Items">Add Portfolio Item</button></div>
+    <div id="file-input-area">
+    </div>
+    <label for="artist-statement">Please provide an Artist's Statement</label>
+    <textarea placeholder="" name="artist-statement"></textarea>
+    <button type="submit">Submit to  <img style="7a4691d73a27dbc2ea89034c592e31e6" src="87650992d13855d5112ab298d16b0241" alt="TEA"></button>
+</form>
+
+<link rel="stylesheet" href="f08b0e06b691d4cc9422bc3adf459e8f">
+<link rel="stylesheet" href="55a32ab807b48c664f426a7afac6d3a4">
+<template id="portfolio-item">
+    <fieldset class="form-part">
+        <div role="group"><label for="title">Title</label><input type="text" name="title" placeholder="Title of Piece"></div>
+        <div role="group">
+            <label for="category">Submission Category</label>
+            <select name="category">
+                <option value="prose">Prose</option>
+                <option value="poetry">Poetry</option>
+                <option value="visual-art">Visual Art</option>
+                <option value="photography">Photography</option>
+            </select>
+        </div>
+        <div role="group"><label for="file">File</label><input type="file" name="file"></div>
+
+        <textarea name="comments" aria-label="Optional Artistic comments on piece" placeholder="Optional Artistic comments on piece (medium, location, context, etc.)"></textarea>
+        <button>Remove Item</button>
+    </fieldset>
+</template>
+<template id="protip-template">
+    <p id="protip"><strong>Protip 💡: Right click on "SUBMIT TO TEA", right there ⬆, to get more randomly generated names.</strong></p>
+</template>
+<script src="c9908c419a99abfa902f2cb3af2a7253"></script>

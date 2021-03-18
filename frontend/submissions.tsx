@@ -1,9 +1,7 @@
 import React, { MouseEventHandler, useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 
-import './submissions.css';
-import ThumbsUp from '../assets/twemoji/2611.svg';
-import ThumbsDown from '../assets/twemoji/274e.svg';2
-import ZipFace from '../assets/twemoji/1f910.svg';
+import 'url:./submissions.css';
+import ZipFace from 'url:../assets/twemoji/1f910.svg';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';

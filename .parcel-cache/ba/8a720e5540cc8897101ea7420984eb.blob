@@ -1,0 +1,76 @@
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "store", function () {
+  return store;
+});
+var _reactDom = require('react-dom');
+var _react = require('react');
+var _reactDefault = _parcelHelpers.interopDefault(_react);
+var _app = require('./app');
+var _reactRouterDom = require('react-router-dom');
+var _reactRedux = require('react-redux');
+var _redux = require('redux');
+var _reducers = require('./reducers');
+var _promiseMiddleware = require('./promise-middleware');
+var _urlAssetsTwemoji1f375Svg = require('url:../assets/twemoji/1f375.svg');
+var _urlAssetsTwemoji1f375SvgDefault = _parcelHelpers.interopDefault(_urlAssetsTwemoji1f375Svg);
+var _urlAssetsTwemoji1f389Svg = require('url:../assets/twemoji/1f389.svg');
+var _urlAssetsTwemoji1f389SvgDefault = _parcelHelpers.interopDefault(_urlAssetsTwemoji1f389Svg);
+require('./client.css');
+var _jsxFileName = "/home/james/teaparty/frontend/client.tsx";
+const middlewareEnhancer = _redux.applyMiddleware(_promiseMiddleware.promiseMiddlware);
+const store = _redux.createStore(_reducers.reducer, middlewareEnhancer);
+const root = document.getElementById("root");
+const jsx = /*#__PURE__*/_reactDefault.default.createElement(_reactDefault.default.Fragment, null, /*#__PURE__*/_reactDefault.default.createElement("span", {
+  role: "doc-title",
+  "aria-label": "Tea Party",
+  "aria-placeholder": "Tea Party",
+  __self: undefined,
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 17,
+    columnNumber: 3
+  }
+}, /*#__PURE__*/_reactDefault.default.createElement(_urlAssetsTwemoji1f375SvgDefault.default, {
+  __self: undefined,
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 17,
+    columnNumber: 78
+  }
+}), /*#__PURE__*/_reactDefault.default.createElement(_urlAssetsTwemoji1f389SvgDefault.default, {
+  __self: undefined,
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 17,
+    columnNumber: 91
+  }
+})), /*#__PURE__*/_reactDefault.default.createElement(_reactRedux.Provider, {
+  store: store,
+  __self: undefined,
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 18,
+    columnNumber: 3
+  }
+}, /*#__PURE__*/_reactDefault.default.createElement(_reactRouterDom.BrowserRouter, {
+  basename: "/app/",
+  __self: undefined,
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 18,
+    columnNumber: 27
+  }
+}, /*#__PURE__*/_reactDefault.default.createElement(_app.App, {
+  __self: undefined,
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 18,
+    columnNumber: 52
+  }
+}))));
+if ("development" !== 'production') {
+  // Or, `process.env.NODE_ENV !== 'production'`
+  // Only runs in development and will be stripped from production build.
+  _reactDom.render(jsx, root);
+} else _reactDom.hydrate(jsx, root);

@@ -1,0 +1,164 @@
+var helpers = require("../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+helpers.prelude(module);
+try {
+  var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+  _parcelHelpers.defineInteropFlag(exports);
+  _parcelHelpers.export(exports, "App", function () {
+    return App;
+  });
+  var _react = require('react');
+  var _reactDefault = _parcelHelpers.interopDefault(_react);
+  var _reactRedux = require('react-redux');
+  var _reactRouterDom = require('react-router-dom');
+  var _actionsGetNames = require('./actions/getNames');
+  var _submissions = require('./submissions');
+  require('./app.css');
+  var _jsxFileName = "/home/james/teaparty/frontend/app.tsx", _s = $RefreshSig$(), _s2 = $RefreshSig$();
+  const subs = [];
+  for (let i = 0; i < 100; i++) {
+    subs.push({
+      title: `Piece ${i}`,
+      author: "Craig Cregbert"
+    });
+  }
+  function App(props) {
+    _s();
+    let names = _reactRedux.useSelector(state => state.submissionView.names);
+    let submissions = names.map((n, i) => ({
+      title: `Piece ${i}`,
+      author: n
+    }));
+    let dispatch = _reactRedux.useDispatch();
+    if (names.length < 100) dispatch(_actionsGetNames.getNames(100));
+    return (
+      /*#__PURE__*/_reactDefault.default.createElement(_reactDefault.default.Fragment, null, /*#__PURE__*/_reactDefault.default.createElement("nav", {
+        role: "doc-toc",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 23,
+          columnNumber: 9
+        }
+      }, /*#__PURE__*/_reactDefault.default.createElement(_reactRouterDom.Link, {
+        to: "/",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 24,
+          columnNumber: 13
+        }
+      }, "Home"), /*#__PURE__*/_reactDefault.default.createElement(_reactRouterDom.Link, {
+        to: "/submissions",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 25,
+          columnNumber: 13
+        }
+      }, "Submissions")), /*#__PURE__*/_reactDefault.default.createElement(_reactRouterDom.Switch, {
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 27,
+          columnNumber: 9
+        }
+      }, /*#__PURE__*/_reactDefault.default.createElement(_reactRouterDom.Route, {
+        path: "/submissions",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 28,
+          columnNumber: 13
+        }
+      }, /*#__PURE__*/_reactDefault.default.createElement(_submissions.SubmissionsView, {
+        scrollState: _react.useState(0),
+        submissions: submissions,
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 29,
+          columnNumber: 21
+        }
+      })), /*#__PURE__*/_reactDefault.default.createElement(_reactRouterDom.Route, {
+        path: "/view-submission/:name",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 31,
+          columnNumber: 13
+        }
+      }, /*#__PURE__*/_reactDefault.default.createElement("div", {
+        role: "main",
+        "aria-label": "App Content",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 32,
+          columnNumber: 17
+        }
+      }, /*#__PURE__*/_reactDefault.default.createElement(ViewSubmissionContent, {
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 33,
+          columnNumber: 21
+        }
+      }))), /*#__PURE__*/_reactDefault.default.createElement(_reactRouterDom.Route, {
+        path: "/",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 36,
+          columnNumber: 13
+        }
+      }, /*#__PURE__*/_reactDefault.default.createElement("div", {
+        role: "main",
+        "aria-label": "App Content",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 37,
+          columnNumber: 17
+        }
+      }, /*#__PURE__*/_reactDefault.default.createElement("p", {
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 38,
+          columnNumber: 21
+        }
+      }, "Tea Party Homepage :)")))))
+    );
+  }
+  _s(App, "QzAI+lRgPLsy1pTmmvTISIeUKj4=", false, function () {
+    return [_reactRedux.useSelector, _reactRedux.useDispatch];
+  });
+  _c = App;
+  function ViewSubmissionContent() {
+    _s2();
+    const {name} = _reactRouterDom.useParams();
+    return (
+      /*#__PURE__*/_reactDefault.default.createElement("p", {
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 47,
+          columnNumber: 12
+        }
+      }, "Viewing ", name, "!")
+    );
+  }
+  _s2(ViewSubmissionContent, "/NYLfKm8HcAtwQX2OcaWj21t07w=", false, function () {
+    return [_reactRouterDom.useParams];
+  });
+  _c2 = ViewSubmissionContent;
+  var _c, _c2;
+  $RefreshReg$(_c, "App");
+  $RefreshReg$(_c2, "ViewSubmissionContent");
+  helpers.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}

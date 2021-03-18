@@ -1,0 +1,43 @@
+
+.submission {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border-bottom: 0.1rem solid #CCC;
+    align-items: center;
+    width: 100%;
+}
+
+.submission button {
+    width: 3rem;
+    height: 3rem;
+    border: none;
+    margin-left: 1rem;
+    padding: 0.7rem;
+    background-color: inherit;
+    transition: linear 50ms background-color;
+}
+
+.submission button:hover {
+    background-color: #AAA;
+}
+
+.submission button:active {
+    background-color: #333;
+    border-style: none;
+    outline: none;
+    border: none;
+}
+
+.submission div[role="group"] {
+    display: flex;
+    justify-content: space-around;
+}
+
+.submission a {
+    color: var(--link-color);
+}
+
+.submission a:visited {
+    color: var(--link-color);
+}

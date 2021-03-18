@@ -8,24 +8,8 @@ import { App } from './frontend/app';
 import { join } from 'path';
 
 import { app } from './backend/server';
-
-const template = readFileSync('./template.html').toString();
-const firstNames = readFileSync('./assets/place-names.txt').toString().split("\n").filter(x => x.trim().length>0);
-const lastNames = readFileSync('./assets/last-names.txt').toString().split("\n").filter(x=>x.trim().length>0);
-
-function generateName() {
-    let ifirstName = Math.floor(Math.random() * firstNames.length);
-    let ilastName = Math.floor(Math.random() * lastNames.length);
-    return firstNames[ifirstName] + " " + lastNames[ilastName];
-}
-
-function generateNames(count : number) {
-    let names = new Set<String>();
-    for (let i = 0; i < count; i++) {
-        names.add(generateName());
-    }
-    return Array.from(names);
-}
+import { readFile } from 'fs/promises';
+import { generateNames } from './shared/generateNames';
 
 // const generateHtml = (reactDom : string) => template.join(reactDom);
 
@@ -39,6 +23,9 @@ app.get('/names', (req, res) => {
     res.writeHead(200, {"Content-type": "text/json"});
     res.end(JSON.stringify(generateNames(count)));
 })
+app.get("/submit", async (req, res) => {
+    res.sendFile(join(__dirname, "dist", "submit.html"));
+})
 app.get("/app/?*", (req, res) => {
     // const ctx = {};
     // const path = req.url.split("/app")[1];
@@ -48,8 +35,7 @@ app.get("/app/?*", (req, res) => {
     //      </StaticRouter>
     // );
     // const html = generateHtml(renderToString(jsx));
-    res.writeHead(200, { "Content-type": "text/html" });
-    res.end(template);
+    res.sendFile(join(__dirname, "dist", "index.html"))
 });
 
 const port = process.env.PORT || '8080';

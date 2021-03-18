@@ -1,0 +1,12 @@
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "getNames", function () {
+  return getNames;
+});
+async function getNames(count = 1) {
+  let names = await (await fetch("/names?count=" + count)).text();
+  return {
+    type: "FETCH_NAMES",
+    payload: JSON.parse(names)
+  };
+}
