@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, Link, useParams, useLocation } from 'react-router-dom';
 import { getNames } from './actions/getNames';
 import { SubmissionsView, Submission } from './submissions';
-import 'url:./app.css';
+import './app.css';
 import { saveScroll } from './hooks/saveScroll';
 
 const subs : Submission[] = []

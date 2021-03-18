@@ -1,1 +1,0 @@
-module.exports = require('./bundle-url').getBundleURL() + "place-names.HASH_REF_0c81ee7cfc92232b51ad1a27d5e0ef05.txt"

@@ -50,9 +50,10 @@ html, body {
     grid-area: title;
     text-align: center;
     padding-top: 0.5rem;
+    height: 5rem;
 }
 
-[role="doc-title"] > svg {
+[role="doc-title"] > img {
     height: 4.5rem;
 }
 

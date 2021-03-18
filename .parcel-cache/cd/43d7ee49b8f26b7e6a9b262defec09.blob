@@ -1,1 +1,0 @@
-module.exports = require('./bundle-url').getBundleURL() + "last-names.HASH_REF_658d07f9ef99c816f8d1378e0b90a456.txt"

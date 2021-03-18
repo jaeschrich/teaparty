@@ -1,8 +1,0 @@
-var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
-_parcelHelpers.defineInteropFlag(exports);
-_parcelHelpers.export(exports, "promiseMiddlware", function () {
-  return promiseMiddlware;
-});
-const promiseMiddlware = storeAPI => next => action => {
-  Promise.resolve(action).then(action => next(action)).catch(action => next(action));
-};

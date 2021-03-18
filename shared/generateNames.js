@@ -1,8 +1,4 @@
-import firstNamesRaw from '../assets/place-names.txt';
-import lastNamesRaw from '../assets/last-names.txt';
-
-const firstNames = firstNamesRaw.toString().split("\n").filter(x => x.trim().length>0);
-const lastNames = lastNamesRaw.toString().split("\n").filter(x=>x.trim().length>0);
+import { firstNames, lastNames } from '../assets/names.json';
 
 export function generateName() {
     let ifirstName = Math.floor(Math.random() * firstNames.length);

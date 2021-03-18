@@ -1,6 +1,4 @@
 {
     "extends": "@parcel/config-default",
-    "transformers": {
-        "*.{svg,txt}": ["@parcel/transformer-raw"]
-    }
+    "publicUrl": "/dist"
 }

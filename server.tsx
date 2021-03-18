@@ -24,7 +24,7 @@ app.get('/names', (req, res) => {
     res.end(JSON.stringify(generateNames(count)));
 })
 app.get("/submit", async (req, res) => {
-    res.sendFile(join(__dirname, "dist", "submit.html"));
+    res.sendFile(join(__dirname, "dist", "submit-form", "submit.html"));
 })
 app.get("/app/?*", (req, res) => {
     // const ctx = {};
@@ -35,7 +35,7 @@ app.get("/app/?*", (req, res) => {
     //      </StaticRouter>
     // );
     // const html = generateHtml(renderToString(jsx));
-    res.sendFile(join(__dirname, "dist", "index.html"))
+    res.sendFile(join(__dirname, "dist", "frontend", "index.html"))
 });
 
 const port = process.env.PORT || '8080';

@@ -6,15 +6,18 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import { reducer } from './reducers';
 import { promiseMiddlware } from './promise-middleware';
-import TeaSymbol from 'url:../assets/twemoji/1f375.svg';
-import PartyPopper from 'url:../assets/twemoji/1f389.svg';
+import TeaSymbol from '../assets/twemoji/1f375.svg';
+import PartyPopper from '../assets/twemoji/1f389.svg';
 import './client.css';
 
 const middlewareEnhancer = applyMiddleware(promiseMiddlware);
 export const store = createStore(reducer, middlewareEnhancer);
 const root = document.getElementById("root");
 const jsx = (<>
-  <span role="doc-title" aria-label="Tea Party" aria-placeholder="Tea Party"><TeaSymbol /><PartyPopper /></span>
+  <span role="doc-title" aria-label="Tea Party" aria-placeholder="Tea Party">
+      <img src={TeaSymbol} alt="🍵" />
+      <img src={PartyPopper} alt="🎉" />
+  </span>
   <Provider store={store}><Router basename="/app/"><App /></Router></Provider>
 </>);
 
