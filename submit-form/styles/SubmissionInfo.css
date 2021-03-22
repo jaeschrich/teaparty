@@ -1,0 +1,20 @@
+
+.submission-info-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.submission-info-header [aria-label="category"] {
+    font: normal 12pt "LEMON MILK";
+}
+
+.submission-info [aria-label="file name"] {
+    font: 8pt 'Courier New', 'monospace';
+    margin-bottom: 1em;
+}
+
+.submission-info .submission-info-comment {
+    border: 0.1rem solid #CCC;
+    padding: 0.1rem;
+}

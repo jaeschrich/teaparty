@@ -180,36 +180,8 @@ button:hover:disabled {
     cursor: pointer;
 }
 
-.submission {
-    font-family: 'Helvetica', 'sans-serif';
-    display: flex;
-    gap: 1rem;
-    flex-direction: column !important;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.submission > div[role="group"] {
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-}
-
 
 @media(max-width: 500px) {
-    .submission {
-        flex-direction: column !important;
-    }
-    .submission > div[role="group"].controls {
-        display: flex;
-        flex-direction: row;
-        gap: 0.5rem;
-        width: 100%;
-        max-width: 100%;
-    }
-    .submission > div[role="group"].controls > * {
-        width: 50%;
-    }
     .form > div {
         flex-direction: column;
         justify-content: center;
@@ -219,20 +191,6 @@ button:hover:disabled {
 }
 
 
-.submission div[role="group"].controls > div {
-    width: 50%;
-}
-
-.submission div[role="group"].controls > div button {
-    width: 100%;
-}
-
-.submission > table {
-    width: 100%;
-    text-align: left;
-    border-collapse: collapse;
-    vertical-align: middle;
-}
 
 #id-form {
     border: 0.2rem solid #CCC;

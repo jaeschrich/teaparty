@@ -9,7 +9,6 @@ export type Submission = {
 }
 
 
-
 export const acceptMap : { [key: string] : string } = ({
     "prose": ".doc,.docx,.pdf,.txt",
     "poetry": ".doc,.docx,.pdf,.txt",

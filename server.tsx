@@ -63,10 +63,13 @@ const storage = multer.diskStorage({
 });
 const adapter = new FileAsync<DatabaseSchema>('data/db.json');
 
-async function main() {
+export async function main() {
     const db = await low(adapter);
     // const generateHtml = (reactDom : string) => template.join(reactDom);
     app.use('/dist', express.static(join(__dirname, "/dist")));
+    app.use('/assets/twemoji/', express.static(join(__dirname, "/assets", "twemoji")));
+    app.use('/assets/svg/', express.static(join(__dirname, "/assets", "svg")));
+
     app.get('/', (req, res) => {
         res.redirect("/app");
     })
@@ -101,11 +104,11 @@ async function main() {
         }
         // db  .get('submissions')
         //     .push({ files: files,  })
-        res.sendFile(join(__dirname, 'dist', 'submit-form', 'submitted.html'));
+        res.sendFile(join(__dirname, 'views', 'submit.html'));
     });
 
     app.get("/submit", async (req, res) => {
-        res.sendFile(join(__dirname, "dist", "submit-form", "submit.html"));
+        res.sendFile(join(__dirname, "views", "submit.html"));
     })
 
     app.get("/app/?*", (req, res) => {
@@ -117,13 +120,8 @@ async function main() {
         //      </StaticRouter>
         // );
         // const html = generateHtml(renderToString(jsx));
-        res.sendFile(join(__dirname, "dist", "frontend", "index.html"))
+        res.sendFile(join(__dirname, "views", "index.html"))
     });
     db.defaults({ submissions: [], users: [] });
     return app;
 }
-main().then(app => {
-    const port = process.env.PORT || '8080';
-    app.listen(port);
-    console.log(`Server listening at port ${port}!!`); 
-});

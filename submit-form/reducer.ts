@@ -1,4 +1,4 @@
-import { Submission } from "./types";
+import { Submission } from "./types/Submission";
 
 export type AppState = {
     name: string;

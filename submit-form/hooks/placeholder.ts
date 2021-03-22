@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { generateName } from "../shared/generateNames";
+import { generateName } from "../../shared/generateNames";
 
 export type Placeholder = {
     name: string;

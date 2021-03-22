@@ -1,6 +1,6 @@
 import React, { useRef, Dispatch } from 'react';
-import { Action } from './reducer';
-import { Submission, acceptMap } from './types';
+import { Action } from '../reducer';
+import { Submission, acceptMap } from '../types/Submission';
 
 export function SubmissionInput({ state, dispatch } : { state: Submission, dispatch: Dispatch<Action> }) {
     const fileRef = useRef<any>(null);
