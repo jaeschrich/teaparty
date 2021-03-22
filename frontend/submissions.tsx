@@ -1,9 +1,9 @@
 import React, { MouseEventHandler, useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 
 import './submissions.css';
-const voteYesSvg = '/assets/svg/vote-yes.svg';
-const voteNoSvg = '/assets/svg/vote-no.svg';
-const zipFaceSvg = '/assets/twemoji/1f910.svg';
+import voteYesSvg from '../assets/svg/vote-yes.svg';
+import voteNoSvg from '../assets/svg/vote-no.svg';
+import zipFaceSvg from '../assets/twemoji/1f910.svg';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';

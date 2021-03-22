@@ -9,6 +9,8 @@ export function build() {
         outdir: 'dist',
         sourcemap: true,
         watch: true,
+        logLevel: 'info',
+        loader: { '.svg': 'dataurl' },
         define: {
             'process.env.NODE_ENV': '"development"'
         }

@@ -6,8 +6,8 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import { reducer } from './reducers';
 import { promiseMiddlware } from './promise-middleware';
-const TeaSymbol = '/assets/twemoji/1f375.svg';
-const PartyPopper = '/assets/twemoji/1f389.svg';
+import TeaSymbol from '../assets/twemoji/1f375.svg';
+import PartyPopper from '../assets/twemoji/1f389.svg';
 import './client.css';
 
 const middlewareEnhancer = applyMiddleware(promiseMiddlware);

@@ -44,5 +44,8 @@ export function App(props : any) {
 
 function ViewSubmissionContent() {
     const { name } = useParams<{ name : string }>();
-    return <p>Viewing {name}!</p>;
+    return( <>
+        <p>Viewing {name}!</p>
+        <iframe style={{width: "100%", height: "100%"}} src="/dist/northanger-abbey.pdf"></iframe>
+    </>);
 }

@@ -1,3 +1,5 @@
+@import "./styles/SubmitButton.css";
+
 * { box-sizing: border-box;}
 html, body { height: 100%; margin: 0; padding: 0; font-family: 'Helvetica', 'sans serif';}
 
@@ -137,40 +139,23 @@ button {
     border: none;
     padding: 0.5rem;
     box-sizing: border-box;
-    transition: linear 30ms background-color;
+    transition: linear 50ms background-color;
 }
 
 #file-input-toolbar button {
     padding: 1rem;
 }
 
-#submit {
-    font: normal 24pt "LEMON MILK";
-    width: max-content;
-    font-weight: bold;
-    color: black;
-}
-
-#submit:enabled {
-    background-color: #77dd77;
-}
-
-#submit img {
-    height: 32pt;
-    margin-left: 0.5ch;
-}
-
  button[type="submit"] {
     margin: 0;
     width: 100%;
 }
-
-button img {
-    height: 2rem;
-    text-align: center;
-}
-
 button:hover:enabled {
+    background-color: #d8d8d8;
+    cursor: pointer;
+
+}
+button:active:enabled {
     background-color: #999;
     cursor: pointer;
 
@@ -224,10 +209,4 @@ button:hover:disabled {
     text-align: left;
 }
 
-.red-button {
-    background-color: #cc3333 !important; 
-}
 
-.red-button:enabled:hover {
-    background-color: #992626 !important;
-}

@@ -11,6 +11,6 @@ export function SubmissionInfo({ value } : { value : Submission }) {
             <span aria-label="category">{value.category}</span>
         </div>
         <p aria-label="file name">{value.file!.name}</p>
-        <div className="submission-info-comment"><span>{comment}</span></div>
+        {(comment.length>0)?(<div className="submission-info-comment"><span>{comment}</span></div>):null}
     </div>)
 }

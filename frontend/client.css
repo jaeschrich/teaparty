@@ -25,7 +25,7 @@ html, body {
     overflow: none;
     display: grid;
     grid-template: 
-        "title title title"
+        "title body body"
         "nav body body";
     grid-template-columns: 1fr 9fr;
     grid-template-rows: 1fr 11fr;
@@ -50,7 +50,7 @@ html, body {
     grid-area: title;
     text-align: center;
     padding-top: 0.5rem;
-    height: 5rem;
+    height: 10rem;
 }
 
 [role="doc-title"] > img {

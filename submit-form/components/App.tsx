@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
-import teaEmoji from '../tea-emoji.svg';
+import teaEmoji from '../../assets/svg/tea-emoji.svg';
 import { useFakeName } from '../hooks/placeholder';
 import { AppState, emptyState, intoFormData, reducer } from '../reducer';
 import { SubmissionList } from './SubmissionList';
@@ -21,6 +21,10 @@ export function App() {
         ev.preventDefault();
         ev.stopPropagation();
 
+        console.log('submit event')
+        ev.target.disabled = true;
+
+        ev.target.textContent = "Submitting..."
         fetch('/submit', {
             method: 'POST',
             body: intoFormData(state)
@@ -36,9 +40,9 @@ export function App() {
         && !editing;
 
     let message = (<>Submit to<img 
-            style={{ verticalAlign: "bottom" }} alt="TEA" src="/assets/svg/tea-emoji.svg" /></>);
+            style={{ verticalAlign: "bottom" }} alt="TEA" src={teaEmoji} /></>);
 
-    let buttonClass = "";
+    let buttonClass = "green-button";
     if (!canSubmit) {
         message = <>Editing...</>;
         buttonClass = "";

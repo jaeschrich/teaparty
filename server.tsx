@@ -57,7 +57,6 @@ const storage = multer.diskStorage({
         })
     },
     filename: function(req, file, cb) {
-        console.log(req.body)
         cb(null, (randomBytes(8).toString('hex')) + extname(file.originalname));
     }
 });
@@ -98,7 +97,7 @@ export async function main() {
                 size: item.size,
                 filename: item.filename,
                 path: item.path,
-                category: req.body.category[i],
+                category: req.body.categories[i],
                 commentary: req.body.comments[i]
             }
         }
@@ -109,6 +108,10 @@ export async function main() {
 
     app.get("/submit", async (req, res) => {
         res.sendFile(join(__dirname, "views", "submit.html"));
+    })
+
+    app.get("/submitted", async (req, res) => {
+        res.sendFile(join(__dirname, "views", "submitted.html"));
     })
 
     app.get("/app/?*", (req, res) => {
