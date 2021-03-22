@@ -57,7 +57,7 @@
     "validator": "^13.5.2"
   },
   "scripts": {
-    "dev": "npx ts-node ./run-dev.ts",
+    "dev": "npx ts-node ./run-dev.ts"
   },
   "targets": {
     "app": {
