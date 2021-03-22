@@ -1,11 +1,66 @@
 * { box-sizing: border-box;}
 html, body { height: 100%; margin: 0; padding: 0; font-family: 'Helvetica', 'sans serif';}
+
+div,form { width: 100%; }
+div#app {
+    max-width: 120ch;
+    margin-right: auto;
+    margin-left: auto;
+    height: 100%;
+    font-family: 'LEMON MILK';
+    font-weight: normal;
+    padding: 1rem;
+}
+
+div#form {
+    display: flex;
+    flex-direction: row;
+    /* flex-wrap: wrap; */
+    max-height: 80vh;
+    height: 100%;
+    gap: 1rem;
+}
+
+div#form > * {
+    border: 0.1rem solid #CCC;
+    padding: 2rem;
+    box-shadow: inset 0px 0px 5px 2px #CCC;
+
+}
+
+
+#submit {
+    grid-area: submit;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#id-form {
+    grid-area: idform;
+    display: flex;
+    flex-direction: column;
+}
+
+#file-input-area {
+    grid-area: portfolio;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+}
+
+#file-input-toolbar {
+    border: none !important;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1rem;
+}
+
 input[type="text"], input[type="email"] { 
     border: none;
     border-bottom: 0.2rem solid blue;
     font-family: 'Helvetica', 'sans serif';
     font-size: 12pt;
-    margin-left: 3rem;
     width: 100%;
 }
 
@@ -22,11 +77,18 @@ input[type="text"]:focus {
 }
 
 #file-input-area {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
-#file-input-area fieldset {
-    margin-bottom: 1rem;
-    border: 0.2rem solid #CCC;
+
+#file-input-area > * {
+    border: 0.1rem solid #CCC;
+    padding: 1rem;
+}
+
+#file-input-area > button {
+    border: none;
 }
 
 textarea {
@@ -38,58 +100,176 @@ textarea {
     max-width: 60ch;
     height: 8ch;
 }
-body {
-    margin-bottom: 1rem;
-    max-width: 100ch;
-    margin-right: auto;
-    margin-left: auto;
-    height: 100%;
 
-}
+
+
 h1 {
     font-family: 'LEMON MILK';
     font-weight: bold;
     text-align: center;
-    font-size: 32pt;
+    font-size: 24pt;
     user-select: none; 
 }
-.form-part {
-    font-family: 'LEMON MILK';
-    font-weight: normal;
+
+.form {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2rem;
 }
 
-.form-part div {
+#idform .form > div {
     display: flex;
-    width: 100%;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
+    gap: 2rem;
+    align-items: center;
 }
 
-.form-part button {
+.form > div {
+    display: flex;
+    flex-direction: column;
+}
+
+button {
     background-color: #CCC;
-    font-family: 'LEMON MILK';
+    font: bold 14pt 'LEMON MILK';
     border: none;
-    padding: 1rem;
+    padding: 0.5rem;
     box-sizing: border-box;
+    transition: linear 30ms background-color;
 }
 
-.form-part button[type="submit"] {
-    padding: 2rem;
+#file-input-toolbar button {
+    padding: 1rem;
+}
+
+#submit {
+    font: normal 24pt "LEMON MILK";
+    width: max-content;
+    font-weight: bold;
+    color: black;
+}
+
+#submit:enabled {
+    background-color: #77dd77;
+}
+
+#submit img {
+    height: 32pt;
+    margin-left: 0.5ch;
+}
+
+ button[type="submit"] {
     margin: 0;
     width: 100%;
-    font-weight: bold;
-    font-size: 18pt;
 }
 
-.form-part button img {
+button img {
     height: 2rem;
     text-align: center;
 }
 
-.form-part button:hover {
-    background-color: #888;
+button:hover:enabled {
+    background-color: #999;
+    cursor: pointer;
+
+}
+
+button:hover:disabled {
+    cursor: pointer;
+}
+
+.submission {
+    font-family: 'Helvetica', 'sans-serif';
+    display: flex;
+    gap: 1rem;
+    flex-direction: column !important;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.submission > div[role="group"] {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+
+@media(max-width: 500px) {
+    .submission {
+        flex-direction: column !important;
+    }
+    .submission > div[role="group"].controls {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        width: 100%;
+        max-width: 100%;
+    }
+    .submission > div[role="group"].controls > * {
+        width: 50%;
+    }
+    .form > div {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+}
+
+
+.submission div[role="group"].controls > div {
+    width: 50%;
+}
+
+.submission div[role="group"].controls > div button {
+    width: 100%;
+}
+
+.submission > table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    vertical-align: middle;
+}
+
+#id-form {
+    border: 0.2rem solid #CCC;
+    padding: 1rem;
+}
+
+.submission table th {
+    border-bottom: 0.2rem solid #CCC;
+    border-collapse: collapse;
+    font: normal 10pt "LEMON MILK"
+}
+
+.submission th, .submission td {
+    padding: 0.5rem;
+}
+
+.error {
+    background-color: #cc3333;
+    padding: 1rem;
+    font: lighter 12pt "Helvetica", "sans-serif";
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.error-badge {
+    font: normal 12pt "LEMON MILK";
+}
+
+.error-body {
+    text-align: left;
+}
+
+.red-button {
+    background-color: #cc3333 !important; 
+}
+
+.red-button:enabled:hover {
+    background-color: #992626 !important;
 }

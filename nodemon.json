@@ -2,7 +2,8 @@
     "env": {
         "MONGO_USER": "teaparty_jose",
         "MONGO_PASSWORD": "DnGTkqGcxQtpr7TA",
-        "MONGO_DB": "Tea-Party"
+        "MONGO_DB": "Tea-Party",
+        "debug": true
     },
     "watch": ["backend", "./server.tsx", "./template.html"],
     "ext": "ts,json",

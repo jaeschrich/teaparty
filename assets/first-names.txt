@@ -3,7 +3,7 @@ Agawam
 Alabama
 Alaska
 Alpine
-American Fork
+American-Fork
 Amesbury
 Amherst
 Arizona
@@ -36,7 +36,6 @@ Delaware
 Dennis
 Draper
 Duxbury
-Eagle Mountain
 Easthampton
 Enoch
 Ephraim
@@ -165,7 +164,7 @@ Santa Clara
 Santaquin
 Saratoga
 Seekonk
-Smith Mills
+Smith-Mills
 Smithfield
 Snyderville
 Somerville
@@ -363,7 +362,7 @@ Titusville
 Treasure Island
 Valparaiso
 Venice
-Vero Beach
+Vero
 Wellington
 Melbourne
 West-Palm

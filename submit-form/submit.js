@@ -1,6 +1,6 @@
 
 import { generateName } from '../shared/generateNames';
-import { $, $bindEvent, Template, TemplateRoot, cancelEvent } from './layer0';
+import { $, $bindEvent, RootNode, cancelEvent, $template } from './layer0';
 /* CONSTANTS */
 
 const nameInput = $("[name=name]");
@@ -9,7 +9,7 @@ const statement = $("[name=artist-statement]");
 const title = $('[role="doc-title"]');
 const addButton = $("[name=portfolio]");
 const portfolio = $("#file-input-area");
-const template = new Template($("#portfolio-item"));
+const portfolioTemplate = $template("#portfolio-item");
 
 /* GLOBALS */
 
@@ -30,7 +30,7 @@ function advanceText() {
     let emailText = nameText.slice(0, end).split(' ').join('') + '.' + nameText.slice(end+1);
     emailText = emailText.toLowerCase() + "@ufl.edu";
 
-    nameInput.placeholder = nameText; 
+    nameInput.placeholder = nameText + ' (for example)'; 
     emailInput.placeholder = emailText;
     statement.placeholder = `They call me ${nameText}, but my real name is ${nextName}.\nDon't tell anyone🤫.`;
 
@@ -49,12 +49,14 @@ title.addEventListener('contextmenu', (ev) => {
 
 addButton.addEventListener('click', (ev) => {
     cancelEvent(ev);
-    const ref = template.append(portfolio, {
+    const ref = portfolioTemplate({
         'button': $bindEvent('click', (ev) => {
+            cancelEvent(ev);
             portfolio.removeChild(ref);
         }),
-        [TemplateRoot]: (el) => el.name = `item-${itemCount++}`
+        [RootNode]: (el) => el.name = `item-${itemCount++}`
     });
+    portfolio.appendChild(ref);
 });
 
 advanceText();
