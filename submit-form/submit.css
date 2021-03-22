@@ -99,7 +99,6 @@ textarea {
     font-family: 'Helvetica', 'sans serif';
     resize: vertical;
     width: 100%;
-    max-width: 60ch;
     height: 8ch;
 }
 

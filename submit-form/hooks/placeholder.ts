@@ -8,7 +8,7 @@ export type Placeholder = {
     nextName: string;
 }
 
-function nextPlaceholder(place? : Placeholder) : Placeholder {
+export function nextPlaceholder(place? : Placeholder) : Placeholder {
     const name = (place) ? place.nextName : generateName(); 
     const end = name.lastIndexOf(" ");
     let email = name.slice(0, end).split(' ').join('') + '.' + name.slice(end+1);

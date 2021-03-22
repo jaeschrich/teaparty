@@ -1,17 +1,19 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import teaEmoji from '../../assets/svg/tea-emoji.svg';
-import { useFakeName } from '../hooks/placeholder';
-import { AppState, emptyState, intoFormData, reducer } from '../reducer';
+import { nextPlaceholder } from '../hooks/placeholder';
+import { AppState, emptyState, intoFormData, isValidState, reducer } from '../reducer';
 import { SubmissionList } from './SubmissionList';
 
 export function App() {
-    const [fake, nextFake] = useFakeName();
+    const [fake, setFake] = useState(nextPlaceholder());
     const [state, dispatch] = useReducer(reducer, emptyState, (x: AppState) => {
         let s: AppState = JSON.parse(localStorage.getItem('form-state') || 'false') || x;
         s.submissions.forEach(x => x.editing = true);
         s.error = null;
         return s;
     });
+
+    const formRef = useRef<any>(null);
 
     useEffect(() => {
         localStorage.setItem('form-state', JSON.stringify(state));
@@ -31,19 +33,13 @@ export function App() {
         }).then(x => (window.location as any) = "/submitted");
     };
 
-    const editing = state.submissions.filter(x => x.editing).length > 0;
-
-    const canSubmit = (state.name)
-        && (state.email)
-        && (state.statement)
-        && (state.submissions.length > 0)
-        && !editing;
-
     let message = (<>Submit to<img 
             style={{ verticalAlign: "bottom" }} alt="TEA" src={teaEmoji} /></>);
 
     let buttonClass = "green-button";
-    if (!canSubmit) {
+    let valid = isValidState(state);
+
+    if (!valid) {
         message = <>Editing...</>;
         buttonClass = "";
     }
@@ -54,7 +50,7 @@ export function App() {
                 id="submit"
                 style={{ width: "20ch" }}
                 className={buttonClass}
-                disabled={!canSubmit}>
+                disabled={!valid}>
                 <span style={{ textAlign: "center" }}>{message}</span></button>
 
             <button style={{ marginLeft: "auto" }} onClick={(ev) => {
@@ -65,28 +61,34 @@ export function App() {
             }}
                 onContextMenu={(ev) => {
                     ev.preventDefault();
-                    nextFake();
+                    setFake(nextPlaceholder(fake));
                 }}
             >Add Item</button>
         </div>
         <div id="form">
             <div id="id-form">
-                <form className="form">
+                <form className="form" ref={formRef}>
                     <div role="group">
                         <label htmlFor="name">Name </label>
                         <input required type="text" name="name"
-                            value={state.name} onChange={(ev) => dispatch({
+                            value={state.name.value} onChange={(ev) => dispatch({
                                 type: 'set-name',
-                                payload: ev.target.value
+                                payload: {
+                                    value: ev.target.value,
+                                    isValid: ev.target.validity.valid
+                                }
                             })}
                             placeholder={fake.name + " (for example)"} />
                     </div>
                     <div role="group">
                         <label htmlFor="UFL Email">Email </label>
                         <input required type="email"
-                            value={state.email} onChange={(ev) => dispatch({
+                            value={state.email.value} onChange={(ev) => dispatch({
                                 type: 'set-email',
-                                payload: ev.target.value.trim()
+                                payload: {
+                                    value: ev.target.value.trim(),
+                                    isValid: ev.target.validity.valid
+                                }
                             })}
                             name="email" placeholder={fake.email}
                             pattern=".+@ufl.edu" title="Please provide a UFL e-mail address" />
@@ -94,9 +96,12 @@ export function App() {
                     <div role="group">
                         <label htmlFor="UFID">UFID </label>
                         <input required type="text" maxLength={8} minLength={8}
-                            value={state.UFID} onChange={(ev) => dispatch({
+                            value={state.UFID.value} onChange={(ev) => dispatch({
                                 type: 'set-ufid',
-                                payload: ev.target.value
+                                payload: {
+                                    value: ev.target.value,
+                                    isValid: ev.target.validity.valid
+                                }
                             })}
                             name="UFID" placeholder={"00000000"}
                             pattern="[0-9]{8}"
@@ -105,10 +110,12 @@ export function App() {
                     <div role="group" style={{ flexDirection: "column", justifySelf: "flex-end" }}>
                         <label htmlFor="artist-statement">Personal Statement</label>
                         <textarea required
-                            value={state.statement} onChange={(ev) => dispatch({
+                            value={state.statement.value} onChange={(ev) => dispatch({
                                 type: 'set-statement',
-                                payload: ev.target.value
-                            })}
+                                payload: {
+                                    value: ev.target.value,
+                                    isValid: ev.target.validity.valid
+                                }                            })}
                             placeholder={fake.text} name="artist-statement"></textarea>
 
                     </div>

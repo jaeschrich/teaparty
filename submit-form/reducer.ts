@@ -1,20 +1,20 @@
 import { Submission } from "./types/Submission";
 
 export type AppState = {
-    name: string;
-    email: string;
-    UFID: string;
-    statement: string;
+    name: { value: string, isValid: boolean };
+    email: { value: string, isValid: boolean };
+    UFID: { value: string, isValid: boolean };
+    statement: { value: string, isValid: boolean };
     submissions: Submission[];
     error: string|null;
 }
 
 export function intoFormData(state : AppState) : FormData {
     let data = new FormData();
-    data.append('name', state.name);
-    data.append('email', state.email);
-    data.append('statement', state.statement);
-    data.append('UFID', state.UFID);
+    data.append('name', state.name.value);
+    data.append('email', state.email.value);
+    data.append('statement', state.statement.value);
+    data.append('UFID', state.UFID.value);
     for (let sub of state.submissions) {
         data.append('titles', sub.title);
         data.append('categories', sub.category);
@@ -33,12 +33,19 @@ export type Action = {
 }
 
 export const emptyState : AppState = {
-    name: "",
-    email: "",
-    UFID: "",
-    statement: "",
+    name: {value: "", isValid: false},
+    email: {value: "", isValid: false},
+    UFID: {value: "", isValid: false},
+    statement: {value: "", isValid: false},
     submissions: [],
     error: null
+}
+
+export function isValidState(state : AppState):boolean {
+    let editing = state.submissions.filter(x=>x.editing).length > 0;
+    let validInputs = state.name.isValid && state.email.isValid && state.UFID.isValid && state.statement.isValid;
+
+    return (!editing) && validInputs && state.submissions.length > 0;
 }
 
 export function reducer(state : AppState, action: any) : AppState {
@@ -49,6 +56,9 @@ export function reducer(state : AppState, action: any) : AppState {
             return { ...state, email: action.payload };
         case 'set-statement':
             return { ...state, statement: action.payload };
+        case 'set-ufid' : {
+            return { ...state, UFID: action.payload };
+        }    
         case 'add-submission': {
             const newSub: Submission = {
                 category: "prose",
@@ -64,9 +74,7 @@ export function reducer(state : AppState, action: any) : AppState {
             let subs = state.submissions.filter(x => x !== action.payload);
             return { ...state, submissions: subs };
         }
-        case 'set-ufid' : {
-            return { ...state, UFID: action.payload };
-        }
+
         case 'update-submission': {
             let subs = state.submissions.slice();
             let index = state.submissions.indexOf(action.payload.oldValue);
