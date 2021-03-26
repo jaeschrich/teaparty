@@ -6,7 +6,7 @@ export function generateName() {
     return firstNames[ifirstName] + " " + lastNames[ilastName];
 }
 
-export function generateNames(count) {
+export function generateNames(count : number) {
     let names = new Set();
     for (let i = 0; i < count; i++) {
         names.add(generateName());

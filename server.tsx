@@ -69,7 +69,7 @@ export async function main() {
     app.use('/dist', express.static(join(__dirname, "/dist")));
     app.use('/assets/twemoji/', express.static(join(__dirname, "/assets", "twemoji")));
     app.use('/assets/svg/', express.static(join(__dirname, "/assets", "svg")));
-
+    app.use('/assets/LemonMilk/', express.static(join(__dirname, "/assets", "LemonMilk")));
     app.get('/', (req, res) => {
         res.redirect("/app");
     })

@@ -12,3 +12,4 @@ google-auth.json
 **/.DS_Store
 .parcel-cache/
 data/
+yarn-error.log

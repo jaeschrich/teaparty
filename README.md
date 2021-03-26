@@ -1,8 +1,6 @@
 # teaparty
 A collaboration tool for literary magazines
 
-
-
 ## Development instructions
 
 ### General tools

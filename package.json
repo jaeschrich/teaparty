@@ -62,10 +62,10 @@
     "validator": "^13.5.2"
   },
   "scripts": {
-    "dev": "npx concurrently \"node ./build.js --watch\" \"nodemon ./server.tsx\"",
+    "dev": "npx concurrently \"node ./scripts/build.js --watch\" \"nodemon ./server.tsx\"",
     "prestart": "npx yarn build",
     "start": "npx ts-node ./server.tsx",
-    "build": "node ./build.js",
+    "build": "node ./scripts/build.js",
     "test": "npx jest"
   },
   "targets": {

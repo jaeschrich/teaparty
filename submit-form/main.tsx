@@ -1,7 +1,7 @@
 import React from 'react';
 import { hydrate, render } from 'react-dom';
 import { App } from './components/App';
-import './submit.css'
+import './submit.css';
 
 let app = document.getElementById("app");
 
