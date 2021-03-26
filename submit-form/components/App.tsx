@@ -1,7 +1,7 @@
-import React, { useEffect, useReducer, useRef, useState } from 'react';
+import React, { Dispatch, useEffect, useReducer, useRef, useState } from 'react';
 import teaEmoji from '../../assets/svg/tea-emoji.svg';
 import { nextPlaceholder } from '../hooks/placeholder';
-import { AppState, emptyState, intoFormData, isValidState, reducer } from '../reducer';
+import { Action, AppState, emptyState, intoFormData, isValidState, reducer } from '../reducer';
 import { SubmissionList } from './SubmissionList';
 
 export function App() {
@@ -128,4 +128,25 @@ export function App() {
 
         </div>
     </>);
+}
+
+function InputGroup({ label, dispatch, input } : { label: string, dispatch: Dispatch<any>, input: any }) {
+    let name = input.props.name;
+    let newInput = React.cloneElement(input, {
+        required: true,
+        onChange: (ev:any) => {
+            dispatch({
+                type: `set-${name}` ,
+                payload: {
+                    value: ev.target.value,
+                    isValid: ev.target.validity.valid
+                }
+            })
+        }
+    })
+    input.props.name;
+    return (<div role="group" className="">
+        <label className="lemon-milk" htmlFor={name}>{label} </label>
+        {newInput}
+        </div>);
 }
