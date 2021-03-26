@@ -6,6 +6,7 @@ import { getNames } from './actions/getNames';
 import { SubmissionsView, Submission } from './submissions';
 import './app.css';
 import { saveScroll } from './hooks/saveScroll';
+import { VotingStats } from './components/VotingStats';
 
 const subs : Submission[] = []
 
@@ -25,6 +26,9 @@ export function App(props : any) {
             <Link to="/submissions">Submissions</Link>
         </nav>
         <Switch>
+            <Route path="/voting-statistics">
+                <VotingStats />
+            </Route>
             <Route path="/submissions">
                     <SubmissionsView scrollState={useState(0)} submissions={submissions}></SubmissionsView>
             </Route>
