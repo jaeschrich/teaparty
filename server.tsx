@@ -16,6 +16,7 @@ import { randomBytes } from "crypto";
 import { readFile } from 'fs/promises';
 import { generateNames } from './shared/generateNames';
 import multer from 'multer';
+import { queries } from '@testing-library/dom';
 
 type SubmittedFile = {
     originalname : string, 
@@ -63,7 +64,7 @@ const storage = multer.diskStorage({
 const adapter = new FileAsync<DatabaseSchema>('data/db.json');
 
 export async function main() {
-    const db = await low(adapter);
+    // const db = await low(adapter);
     // const generateHtml = (reactDom : string) => template.join(reactDom);
     app.use('/dist', express.static(join(__dirname, "/dist")));
     app.use('/assets/twemoji/', express.static(join(__dirname, "/assets", "twemoji")));
@@ -125,6 +126,17 @@ export async function main() {
         // const html = generateHtml(renderToString(jsx));
         res.sendFile(join(__dirname, "views", "index.html"))
     });
-    db.defaults({ submissions: [], users: [] });
+    // db.defaults({ submissions: [], users: [] });
     return app;
+}
+
+if (require.main === module) {
+    main().then((app: any) => {
+        const port = process.env.PORT || '8080';
+        app.listen(port);
+        console.log(`Server listening at port ${port}!!`); 
+    }).catch((e: Error) => {
+        console.log(e.message);
+        process.exit(1)
+    })
 }

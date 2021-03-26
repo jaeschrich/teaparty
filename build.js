@@ -1,6 +1,7 @@
 const { join } = require('path');
 const esbuild = require('esbuild');
 const autoprefixer = require("autoprefixer");
+const cssImport = require("postcss-import");
 const postCssPlugin = require("esbuild-plugin-postcss2").default;
 
 const frontendEntry = join(__dirname, 'frontend', 'client.tsx')
@@ -17,7 +18,7 @@ function build(overrideOptions = {}) {
         loader: { '.svg': 'dataurl' },
         plugins: [
             postCssPlugin({
-                plugins: [ autoprefixer ]
+                plugins: [ autoprefixer, cssImport ]
             })
         ],
         define: {
