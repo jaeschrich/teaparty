@@ -16,7 +16,7 @@ for(let i = 0; i < 100; i++) {
 
 export function App(props : any) { 
     let names : any = useSelector<any>(state => state.submissionView.names);
-    let submissions : Submission[] = names.map((n, i) => ({ title: `Piece ${i}`, author: n }));
+    let submissions : Submission[] = names.map((n : any, i : any) => ({ title: `Piece ${i}`, author: n }));
     let dispatch = useDispatch();
     if (names.length < 100) dispatch(getNames(100));
 

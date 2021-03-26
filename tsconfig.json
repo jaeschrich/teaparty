@@ -75,6 +75,6 @@
     "node_modules",
     "dist",
     "jest.config.js",
-    "assets"
+    "assets/**" // ignore assets
   ]
 }
