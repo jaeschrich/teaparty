@@ -5,7 +5,6 @@ const postCssPlugin = require("esbuild-plugin-postcss2").default;
 
 const frontendEntry = join(__dirname, 'frontend', 'client.tsx')
 const submitFormEntry = join(__dirname, 'submit-form', 'main.tsx')
-const submitFormCSS = join(__dirname, 'submit-form', 'submit.css')
 
 function build(overrideOptions = {}) {
     return esbuild.build({
@@ -18,7 +17,7 @@ function build(overrideOptions = {}) {
         loader: { '.svg': 'dataurl' },
         plugins: [
             postCssPlugin({
-                plugins: [ autoprefixer, atImport ]
+                plugins: [ autoprefixer ]
             })
         ],
         define: {
