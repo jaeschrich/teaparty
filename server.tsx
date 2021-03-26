@@ -5,7 +5,7 @@ import ReactDOM, { renderToString } from "react-dom/server";
 import { readFileSync } from 'fs';
 import { access, mkdir, stat } from 'fs/promises';
 import { StaticRouter } from 'react-router-dom';
-import { App } from './frontend/app';
+// import { App } from './frontend/app/app';
 import { join, extname } from 'path';
 import low from 'lowdb';
 import validator from 'validator';

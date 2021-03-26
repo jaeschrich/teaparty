@@ -1,5 +1,5 @@
 import React, { Dispatch, useEffect, useReducer, useRef, useState } from 'react';
-import teaEmoji from '../../assets/svg/tea-emoji.svg';
+import teaEmoji from '../../../assets/svg/tea-emoji.svg';
 import { nextPlaceholder } from '../hooks/placeholder';
 import { Action, AppState, emptyState, intoFormData, isValidState, reducer } from '../reducer';
 import { SubmissionList } from './SubmissionList';

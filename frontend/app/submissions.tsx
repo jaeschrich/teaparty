@@ -1,9 +1,9 @@
 import React, { MouseEventHandler, useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 
 import './submissions.css';
-import voteYesSvg from '../assets/svg/vote-yes.svg';
-import voteNoSvg from '../assets/svg/vote-no.svg';
-import zipFaceSvg from '../assets/twemoji/1f910.svg';
+import voteYesSvg from '../../assets/svg/vote-yes.svg';
+import voteNoSvg from '../../assets/svg/vote-no.svg';
+import zipFaceSvg from '../../assets/twemoji/1f910.svg';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +13,7 @@ export type Submission = { title: string, author: string }
 
 export function SubmissionsView(props : any) {
     const ref = saveScroll(props.scrollState);
-    let nodes = props.submissions.map(sub => <SubmissionView key={sub.title+sub.author} value={sub} />)
+    let nodes = props.submissions.map((sub: any) => <SubmissionView key={sub.title+sub.author} value={sub} />)
     return (
     <div role="main" aria-label="Submission" ref={ref}>
         {nodes}

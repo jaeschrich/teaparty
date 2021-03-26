@@ -4,8 +4,8 @@ const autoprefixer = require("autoprefixer");
 const cssImport = require("postcss-import");
 const postCssPlugin = require("esbuild-plugin-postcss2").default;
 
-const frontendEntry = join(__dirname, '..', 'frontend', 'client.tsx')
-const submitFormEntry = join(__dirname, '..', 'submit-form', 'main.tsx')
+const frontendEntry = join(__dirname, '..', 'frontend', 'app', 'client.tsx')
+const submitFormEntry = join(__dirname, '..', 'frontend', 'submit', 'main.tsx')
 
 function build(overrideOptions = {}) {
     return esbuild.build({
