@@ -17,6 +17,7 @@ import { readFile } from 'fs/promises';
 import { generateNames } from './shared/generateNames';
 import multer from 'multer';
 import { queries } from '@testing-library/dom';
+import {clientID, clientSecret} from './google-auth.json';
 
 type SubmittedFile = {
     originalname : string, 
@@ -127,6 +128,37 @@ export async function main() {
         res.sendFile(join(__dirname, "views", "index.html"))
     });
     // db.defaults({ submissions: [], users: [] });
+
+
+    /*User Authentication w/ Google (DARIAN)*/
+    const passport = require('passport');
+    const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+
+    passport.use(
+        new GoogleStrategy({
+            callbackURL: "http://localhost:8080/auth/google/callback",
+            clientID: clientID,
+            clientSecret: clientSecret
+        },
+        function() {
+            //User.findOrCreate({ googleId: profile.id }, function (err, user) {
+            //  return done(err, user);
+            //});       //For Jose
+       }
+    ));
+
+    app.get('/auth/google', passport.authenticate('google', { 
+        scope: ['https://www.googleapis.com/auth/plus.login'] 
+    }));
+
+    app.get('/auth/google/callback', passport.authenticate('google', { 
+        failureRedirect: '/login' 
+    }),
+        function(req, res) {
+            res.redirect('/');
+        }
+    );
+
     return app;
 }
 
