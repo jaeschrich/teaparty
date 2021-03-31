@@ -1,5 +1,5 @@
 import { Response, Request } from "express"
-import { IUser } from "../../types/user"
+import { IUser } from "../../types/types"
 import User from "../../models/user"
 
 const getUsers = async (req: Request, res: Response): Promise<void> => {
@@ -13,11 +13,19 @@ const getUsers = async (req: Request, res: Response): Promise<void> => {
 
 const addUser = async (req: Request, res: Response): Promise<void> => {
     try {
-      const body = req.body as Pick<IUser, "name" | "password" | "role">
+
+      const body = req.body as Pick<IUser, "name" | "password" | "role" | "penName">
       const user: IUser= new User({
         name: body.name,
         password: body.password,
         role: body.role,
+        penName: body.penName,
+        intro: "",
+        content: [],
+        submissions: [],
+        requested_edit_submissions: [],
+        submissions_array_vote: [],
+        vote_log: []
       })
   
       const newUser: IUser = await user.save()
@@ -38,13 +46,14 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
         params: { id },
         body,
       } = req
+      
       const updateUser: IUser | null = await User.findByIdAndUpdate(
         { _id: id },
         body
       )
       const allUsers: IUser[] = await User.find()
       res.status(200).json({
-        message: "Todo updated",
+        message: "User updated",
         user: updateUser,
         users: allUsers,
       })
@@ -60,7 +69,7 @@ const deleteUser = async (req: Request, res: Response): Promise<void> => {
       )
       const allUsers: IUser[] = await User.find()
       res.status(200).json({
-        message: "Todo deleted",
+        message: "User deleted",
         user: deletedUser,
         todos: allUsers,
       })
@@ -70,3 +79,6 @@ const deleteUser = async (req: Request, res: Response): Promise<void> => {
   }
   
   export { getUsers, addUser, updateUser, deleteUser }
+
+
+  
