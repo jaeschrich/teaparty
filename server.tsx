@@ -130,34 +130,86 @@ export async function main() {
     // db.defaults({ submissions: [], users: [] });
 
 
-    /*User Authentication w/ Google (DARIAN)*/
-    const passport = require('passport');
-    const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+    /*-----Google Authentication-----*/
+        /*const passport = require('passport');
+        const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-    passport.use(
-        new GoogleStrategy({
-            callbackURL: "http://localhost:8080/auth/google/callback",
-            clientID: clientID,
-            clientSecret: clientSecret
-        },
-        function() {
-            //User.findOrCreate({ googleId: profile.id }, function (err, user) {
-            //  return done(err, user);
-            //});       //For Jose
-       }
-    ));
-
-    app.get('/auth/google', passport.authenticate('google', { 
-        scope: ['https://www.googleapis.com/auth/plus.login'] 
-    }));
-
-    app.get('/auth/google/callback', passport.authenticate('google', { 
-        failureRedirect: '/login' 
-    }),
-        function(req, res) {
-            res.redirect('/');
+        passport.use(
+            new GoogleStrategy({
+                callbackURL: "http://localhost:8080/auth/google/callback",
+                clientID: clientID,
+                clientSecret: clientSecret
+            },
+            function() {
+                //User.findOrCreate({ googleId: profile.id }, function (err, user) {
+                //  return done(err, user);
+                //});       //For Jose
         }
-    );
+        ));
+
+        app.get('/auth/google', passport.authenticate('google', { 
+            scope: ['https://www.googleapis.com/auth/plus.login'] 
+        }));
+
+        app.get('/auth/google/callback', passport.authenticate('google', { 
+            failureRedirect: '/login' 
+        }),
+            function(req, res) {
+                res.redirect('/');
+            }
+        );*/
+
+    /*-----Local Authentication-----*/
+        /*const passport = require('passport');
+        const LocalStrategy = require('passport-local').Strategy;
+        const OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+        const connection = require('../backend/user');
+        const User = connection.model.userSchema;
+
+        passport.use(
+            new LocalStrategy({
+                usernameField: 'username',
+                passwordField: 'password'
+            },
+            function(username, password, done) {
+                User.findOne({ username: username }, function(err, user) {
+                    if(err) {
+                        return done(err);
+                    }
+                    if(!user){
+                        return done(null, false, { message: 'Incorrect username.' });
+                    }
+                    if(!user.validPassword(password)){
+                        return done(null, false, { message: 'Incorrect password.' });
+                    }
+                    return done(null, user);
+                });    //Jose: Check with backend?
+            }
+        ));
+        
+        //Serialize (Create cookie);  Used after the user has been found OR created in callback function below
+        passport.serializeUser((user, done) => {
+            done(null, user.id); //User.id comes from MongoDB
+        });
+
+        //Deserialize (Decode cookie; Retrieve user info)
+        passport.deserializeUser((id, done) => {
+            User.findById(id).then((user) => {
+                done(null, user); //Pass the user info along
+            });
+        });
+
+        //Middleware
+        app.use(passport.initialize()); //Initialize Passport
+        app.use(passport.session()); //For "persisten login sessions"
+
+        //Route
+        app.post('/login',
+            passport.authenticate('local', { successRedirect: '/',
+                                   failureRedirect: '/login',
+                                   failureFlash: true })
+            );
+        */
 
     return app;
 }
