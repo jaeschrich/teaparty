@@ -7,6 +7,7 @@ import { SubmissionsView, Submission } from './submissions';
 import './app.css';
 import { saveScroll } from './hooks/saveScroll';
 import { VotingStats } from './components/VotingStats';
+import { AuthorPage } from './components/AuthorPage';
 
 const subs : Submission[] = []
 
@@ -37,6 +38,9 @@ export function App(props : any) {
                     <ViewSubmissionContent />
                 </div>
             </Route> 
+            <Route path="/view-author/:name">
+                <AuthorPage name="fake name for now" />
+            </Route>
             <Route path="/">
                 <div role="main" aria-label="App Content">
                     <p>Tea Party Homepage :)</p>
