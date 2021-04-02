@@ -187,7 +187,7 @@ export async function main() {
             }
         ));
         
-        //Serialize (Create cookie);  Used after the user has been found OR created in callback function below
+        //Serialize (Create cookie);  Used after the user has been found OR created in callback function
         passport.serializeUser((user, done) => {
             done(null, user.id); //User.id comes from MongoDB
         });
@@ -201,7 +201,7 @@ export async function main() {
 
         //Middleware
         app.use(passport.initialize()); //Initialize Passport
-        app.use(passport.session()); //For "persisten login sessions"
+        app.use(passport.session()); //For "persistent login sessions"
 
         //Route
         app.post('/login',
@@ -209,6 +209,8 @@ export async function main() {
                                    failureRedirect: '/login',
                                    failureFlash: true })
             );
+
+        //Need app.get stuff?
         */
 
     return app;
