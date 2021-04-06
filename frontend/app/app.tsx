@@ -28,18 +28,20 @@ export function App(props : any) {
         </nav>
         <Switch>
             <Route path="/voting-statistics">
-                <VotingStats />
+                <div role="main" aria-label="Voting Statistics">
+                    <VotingStats />
+                </div>
             </Route>
             <Route path="/submissions">
                     <SubmissionsView scrollState={useState(0)} submissions={submissions}></SubmissionsView>
             </Route>
             <Route path="/view-submission/:name">
-                <div role="main" aria-label="App Content">
-                    <ViewSubmissionContent />
-                </div>
+                <ViewSubmissionContent />
             </Route> 
             <Route path="/view-author/:name">
-                <AuthorPage name="fake name for now" />
+                <div role="main" aria-label="View Author">
+                    <AuthorPage name="fake name for now" />
+                </div>
             </Route>
             <Route path="/">
                 <div role="main" aria-label="App Content">
