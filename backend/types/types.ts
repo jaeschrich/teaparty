@@ -24,24 +24,24 @@ export interface Content {
   link: string,
 }
 
-export interface Submission {
-
-}
 
 export interface ISubmission extends Document {
   id_content: string,
   author:  string,
-  comments:  number,
+  comments:  string,
   accepted: number, // 0 - not reviewed / 1 - rejected / 2 accepted
   voting_session:  string,
-  link: string
 }
 
 export interface IVotingSession extends Document {
   name: string,
   opening_date: Date,
   closing_date: Date,
-  submissions_array: Array<Vote>
+  submissions_array: [
+    {
+      sub_id: String,
+      count: number,
+    }],
 }
 
 

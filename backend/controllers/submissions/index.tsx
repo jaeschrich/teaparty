@@ -32,7 +32,6 @@ const getVSSubmissionsByName = async (req: Request, res: Response): Promise<void
 
 const getVSSubBetweenDates = async (req: Request, res: Response): Promise<void> => {
   try {
-
       const body = req.body as any; // start date // end_date
       const response: IVotingSession[] = await VotingSession.find({ //query today up to tonight
          createdAt: {
@@ -44,8 +43,8 @@ const getVSSubBetweenDates = async (req: Request, res: Response): Promise<void> 
       res.status(200).json({response})
        
     }catch (error) {
-     
-    throw error
+      res.status(200).json({error})
+      throw error;
   }
 }
 
@@ -58,10 +57,11 @@ const postVotingSession = async (req: Request, res: Response): Promise<void> => 
         closing_date: body.closing_date,
         submissions_array: [],
       })
-
+      
       const vs_post : IVotingSession = await vs.save()
       res.status(200).json({vs_post})
     } catch (error) {
+      res.status(400).json({error})
       throw error
     }
   }
@@ -78,19 +78,14 @@ const postContent = async (req: Request, res: Response): Promise<void> => { // N
       comment: String(body.comment)
     }
 
-    console.log("Finding User ...")
-    let result = await User.findById(body.author_id);
-    console.log("Found User")
-    result?.content.push(content);
 
-    //const newContent: IContent = await content.save()
+    const updatedUser = await User.findOneAndUpdate({_id:body.author_id},
+     {$push: {content: content}});
+    
 
-    //const updatedUser = await User.findOneAndUpdate({_id:body.author_id},
-    // {$push: {content: content}});
-    //const allUsers: IUser[] = await Voting.find()
-
-    res.status(201).json({ message: "Content Posted", user: result})
+    res.status(201).json({ message: "Content Posted", user: updatedUser})
   } catch (error) {
+    res.status(400).json({error})
     throw error
   }
 }
@@ -100,32 +95,33 @@ const postContent = async (req: Request, res: Response): Promise<void> => { // N
 const postSub = async (req: Request, res: Response): Promise<void> => { // Not done
     try {
       
-        const body = req.body as Pick<ISubmission, "id_content" | "author" | "comments" | "accepted"| "voting_session"| "link">
+        const body = req.body as Pick<ISubmission, "id_content" | "author" | "comments" | "voting_session">
         const submission: ISubmission = new Submission({
         id_content: body.id_content,
-        password: body.author,
+        author: body.author,
         comments: body.comments,
         accepted: 0,
-        voting_Session: body.voting_session,
-        link: body.link
+        voting_session: body.voting_session,
       })
-  
+      
       const newSubmission: ISubmission = await submission.save()
-      const vote: Vote = {_id:submission._id, count:0};
+      console.log("Saved submission");
 
-      const UpdatedVotingSession = VotingSession.update(
+      const UpdatedVotingSession = await VotingSession.findOneAndUpdate(
         { _id: submission.voting_session }, 
-        { $push: { submissions_array: vote } },
-    );
+        { $push: { submissions_array: {sub_id: submission._id, count:0 } }}
+      );
+      console.log("Updated voting session");
       //const allUsers: IUser[] = await Voting.find()
   
-      res
-        .status(201)
-        .json({ message: "Submission Posted", votingSession: UpdatedVotingSession, submission: newSubmission})
+      res.status(201).json({ message: "Submission Posted", votingSession: UpdatedVotingSession, submission: newSubmission})
     } catch (error) {
+      res.status(400).json(error)
       throw error
     }
   }
+
+
 
 const voteSub = async (req: Request, res: Response): Promise<void> => {// id_sub / id_vs / vote
     try {
@@ -143,6 +139,7 @@ const voteSub = async (req: Request, res: Response): Promise<void> => {// id_sub
         sub:  updatedVotingClass,
       })
     } catch (error) {
+      res.status(200).json({error})
       throw error
     }
 }

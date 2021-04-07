@@ -7,8 +7,12 @@ const submissionSchema: Schema = new Schema(
       type: String,
       required: true,
     },
+    author: {
+      type: String,
+      require: true,
+    },
     comments: {
-      type: Number,
+      type: String,
       required: true,
     },
     accepted: {
