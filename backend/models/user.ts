@@ -1,6 +1,9 @@
 import { IUser } from "../types/types"
 import { model, Schema } from "mongoose"
 
+
+
+
 const userSchema: Schema = new Schema(
   {
     name: {
@@ -37,14 +40,10 @@ const userSchema: Schema = new Schema(
       type: Array,
       required: false
     },
-    submissions_array_vote: {
-      type: Array,
-      required: false
-    },
-    vote_log : {
-      type: Array,
-      required: false
-    }
+    vote_log : [ {
+      submission: {type: String, required: true},
+      vote: {type: Number, required: true}
+    }]
   },
   { timestamps: true }
 )

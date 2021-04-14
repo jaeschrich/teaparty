@@ -15,10 +15,12 @@ const votingSessionSchema: Schema = new Schema(
       type: Date,
       required: true,
     },
-    submissions_array:{
-      type: Array,
-      required: false
-    },
+    submissions_array:[
+        {
+          sub_id: {type: String, required: true},
+          count: {type: Number, required: true}
+        }],
+
   },
   { timestamps: true }
 )

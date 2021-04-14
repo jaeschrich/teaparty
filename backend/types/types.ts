@@ -13,8 +13,10 @@ export interface IUser extends Document {
     }],
   submissions: Array<string>,
   requested_edit_submissions:Array<string>,
-  submissions_array_vote:Array<string>,
-  vote_log:Array<String> // submission, vote
+  vote_log:[{
+    submission: String,
+    vote: number,
+  }] // submission, vote
 
 }
 
@@ -24,24 +26,24 @@ export interface Content {
   link: string,
 }
 
-export interface Submission {
-
-}
 
 export interface ISubmission extends Document {
   id_content: string,
   author:  string,
-  comments:  number,
+  comments:  string,
   accepted: number, // 0 - not reviewed / 1 - rejected / 2 accepted
   voting_session:  string,
-  link: string
 }
 
 export interface IVotingSession extends Document {
   name: string,
   opening_date: Date,
   closing_date: Date,
-  submissions_array: Array<Vote>
+  submissions_array: [
+    {
+      sub_id: String,
+      count: number,
+    }],
 }
 
 
