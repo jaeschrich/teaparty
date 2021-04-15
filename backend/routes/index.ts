@@ -1,9 +1,8 @@
 import { Router } from "express"
 import { getUsers, addUser, updateUser, deleteUser } from "../controllers/user"
-import { postSub , voteSub, getAllSub ,getVSSubBetweenDates,getVSSubmissionsByName,postVotingSession, postContent} from "../controllers/submissions"
-/*
-Don't handle / or /app. Leave those routes for the main server file.
-*/
+import { postSub , voteSub, getAllSub ,getVSSubBetweenDates,getVSSubmissionsByName,postVotingSession, postContent} from "../controllers/submissions";
+
+/* Don't handle / or /app. Leave those routes for the main server file. */
 const router: Router = Router()
 
 
