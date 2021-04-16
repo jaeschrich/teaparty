@@ -20,6 +20,7 @@ import { queries } from '@testing-library/dom';
 import passport, { authenticate } from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import session from 'express-session';
+// import { createEngine } from 'express-react-views';
 
 type SubmittedFile = {
     originalname : string, 
@@ -81,6 +82,9 @@ passport.deserializeUser((id, done) => {
 export async function main() {
     // const db = await low(adapter);
     // const generateHtml = (reactDom : string) => template.join(reactDom)
+    // app.set('views', join(__dirname, "views"));
+    // app.set('view engine', 'jsx');
+    // app.engine('jsx', createEngine());
     app.use(urlencoded({ extended: false }));
     app.use(session({ secret: "very secret indeed", resave: true, saveUninitialized: true }));
     app.use(passport.initialize());
@@ -112,6 +116,10 @@ export async function main() {
 
     app.get('/create-account', (req, res) => {
         res.sendFile(join(__dirname, "views", "create-account.html"))
+    })
+
+    app.post('/create-account', (req, res) => {
+        // req.body contains info for account
     })
 
     app.get('/logout', (req, res) => {
