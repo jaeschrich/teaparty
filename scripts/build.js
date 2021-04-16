@@ -34,7 +34,10 @@ function build(overrideOptions = {}) {
 
     let back = esbuild.build({
         entryPoints: [serverEntry],
-        outdir: "."
+        outdir: ".",
+        platform: "node",
+        format: "cjs",
+        bundle: true
     })
 
     return Promise.all([front, back])
