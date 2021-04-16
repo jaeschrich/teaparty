@@ -13,8 +13,10 @@ export interface IUser extends Document {
     }],
   submissions: Array<string>,
   requested_edit_submissions:Array<string>,
-  submissions_array_vote:Array<string>,
-  vote_log:Array<String> // submission, vote
+  vote_log:[{
+    submission: String,
+    vote: number,
+  }] // submission, vote
 
 }
 

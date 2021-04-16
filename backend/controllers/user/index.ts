@@ -2,6 +2,7 @@ import { Response, Request } from "express"
 import { IUser } from "../../types/types"
 import User from "../../models/user"
 
+
 const getUsers = async (req: Request, res: Response): Promise<void> => {
   try {
     const users: IUser[] = await User.find()
@@ -11,6 +12,15 @@ const getUsers = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
+//
+//{
+//  "name": "Michael Jackson",
+//  "password": "jiji",
+//  "role": 1,
+//  "penName": "TheKingOfPop",
+//  "intro": "Im a legend"
+//}
+//
 const addUser = async (req: Request, res: Response): Promise<void> => {
     try {
 
@@ -24,7 +34,6 @@ const addUser = async (req: Request, res: Response): Promise<void> => {
         content: [],
         submissions: [],
         requested_edit_submissions: [],
-        submissions_array_vote: [],
         vote_log: []
       })
   
