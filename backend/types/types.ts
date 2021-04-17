@@ -7,21 +7,18 @@ export interface IUser extends Document {
   email: string,
   penName: string,
   intro: string,
-  content: [
-    {
-      link: String,
-      comment: String,
-    }],
   submissions: Array<string>,
   requested_edit_submissions:[
   {
     sub_id: String, 
     comments: String,
+    resubmitted: boolean,
+    new_link: String
   }],
   vote_log:[{
     submission: String,
     vote: number,
-  }] // submission, vote
+  }]
 
 }
 
@@ -54,8 +51,12 @@ export interface IVotingSession extends Document {
   resubmissions_array: [
     {
       sub_id: String,
-      comments: String,
-    }]
+      comment_from_editor: String,
+      comment_from_author: String,
+      new_link: String,
+      resubmitted:boolean,
+    }],
+  closed: Boolean
 }
 
 

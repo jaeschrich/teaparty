@@ -5,6 +5,7 @@ import User from "../../models/user"
 import { IVotingSession} from "../../types/types"
 import VotingSession from "../../models/voting_session"; // VotingSession -> VS
 import { submissionView } from "frontend/app/reducers"
+import { truncate } from "fs/promises"
 
 /*
 export interface VotingSessionModel extends ISubmission
@@ -166,22 +167,22 @@ const deleteSub = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
-const deleteContent = async (req: Request, res: Response): Promise<void> => {
-  try {
-
-    const newUser = await User.findOneAndUpdate(
-        { _id: req.body.author_id}, 
-        { $pull: {"content": { "_id": req.body.content_id }}},{new: true});
-    
-    res.status(200).json({
-      message: "Voting updated",
-      updated_user: newUser
-    })
-  } catch (error) {
-    res.status(200).json({error})
-    throw error
-  }
-}
+//const deleteContent = async (req: Request, res: Response): Promise<void> => {
+//  try {
+//
+//    const newUser = await User.findOneAndUpdate(
+//        { _id: req.body.author_id}, 
+//        { $pull: {"content": { "_id": req.body.content_id }}},{new: true});
+//    
+//    res.status(200).json({
+//      message: "Voting updated",
+//      updated_user: newUser
+//    })
+//  } catch (error) {
+//    res.status(200).json({error})
+//    throw error
+//  }
+//}
 
 const getAllSub = async (res: Response): Promise<void> => { 
   try {
@@ -199,7 +200,7 @@ const requestEdit = async (req: Request, res: Response): Promise<void> => {
   try {
 
       const updatedUser = await User.findOneAndUpdate( { _id: req.body.author }, 
-        { $push: { requested_edit_submissions: {sub_id: req.body.sub_id, comments: req.body.comments } }});
+        { $push: { requested_edit_submissions: {sub_id: req.body.sub_id, comments: req.body.comments, resubmitted: false, new_link:"" } }});
       
       //  {_id:req.body.author},
       //{$push: {requested_edit_submissions: {sub_id: req.body.sub_id, comments: req.body.comment}}});
@@ -208,7 +209,7 @@ const requestEdit = async (req: Request, res: Response): Promise<void> => {
 
       const updatedVotingSession = await VotingSession.findOneAndUpdate(
       { _id: req.body.voting_session }, 
-      { $push: { resubmissions_array: {sub_id: req.body.sub_id, comments: req.body.comments }}});
+      { $push: { resubmissions_array:  {sub_id: req.body.sub_id, comment_from_editor: req.body.comments, comment_from_author: req.body.comment_from_author, new_link: "", resubmitted: false}}});
 
     console.log("Updated voting session");
     //const allUsers: IUser[] = await Voting.find()
@@ -218,12 +219,61 @@ const requestEdit = async (req: Request, res: Response): Promise<void> => {
   catch (error) {
     res.status(400).json(error)
     throw error
-}
+  }
 }
 
-export { getAllSub, postSub, voteSub, requestEdit,
+const postEdit = async (req: Request, res: Response): Promise<void> => { // 
+  try {
+      
+      const updatedUser = await User.findOneAndUpdate( { _id: req.body.author, }, 
+        { $set: {"requested_edit_submissions.$[el].new_link": req.body.link, "requested_edit_submissions.$[el].submitted": true }},
+        { 
+          arrayFilters: [{ "el.sub_id": req.body.sub_id }],
+          new: true
+        }
+      );
+
+      const updatedVotingSession = await VotingSession.findOneAndUpdate(
+        { _id: req.body.voting_session }, 
+        { $set: { "resubmissions_array.$[el].new_link": req.body.new_link, "resubmissions_array.$[el].comment_from_author": req.body.comment_from_author, 
+                   "resubmissions_array.$[el].resubmitted":true}}, 
+        { 
+          arrayFilters: [{ "el.sub_id": req.body.sub_id }],
+          new: true
+        });
+
+
+      console.log("Updated voting session");
+
+    res.status(201).json({ message: "Submission Posted", votingSession: updatedVotingSession, author: updatedUser})
+  } 
+  catch (error) {
+    res.status(400).json(error)
+    throw error
+  }
+}
+
+const close_open_vs = async (req: Request, res: Response): Promise<void> => { // 
+  try {
+      
+      const updatedVotingSession = await VotingSession.findOneAndUpdate(
+        { _id: req.body.voting_session }, 
+        { $set: { "closed": req.body.closed}}, 
+        );
+        
+      console.log("Updated voting session");
+
+    res.status(201).json({ message: "Submission Posted", votingSession: updatedVotingSession})
+  } 
+  catch (error) {
+    res.status(400).json(error)
+    throw error
+  }
+}
+
+export { getAllSub, postSub, voteSub, requestEdit, postEdit,
          getVSSubBetweenDates, getVSSubmissionsByName,
-         postVotingSession,deleteContent, deleteSub}
+         postVotingSession, deleteSub, close_open_vs}
 
 
 

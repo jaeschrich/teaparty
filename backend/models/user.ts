@@ -40,7 +40,9 @@ const userSchema: Schema = new Schema(
     requested_edit_submissions: [
       {
       sub_id: {type: String, required: true},
-      comments: {type: String, required: true}
+      comments: {type: String, required: false},
+      resubmitted: {type: String, required: true},
+      new_link: {type: String, required: false}
       }
     ],
     vote_log : [ {
