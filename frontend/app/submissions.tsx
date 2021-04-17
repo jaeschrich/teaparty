@@ -36,7 +36,7 @@ export function SubmissionView(props: { value: Submission }) {
     };
  
     return (<div className="submission">
-        <span><Link to={`/view-submission/${props.value.title}`}>&ldquo;{props.value.title}&rdquo;</Link> by {props.value.author}</span>
+        <span><Link to={`/view-submission/${props.value.title}`}>&ldquo;{props.value.title}&rdquo;</Link> by <Link to={`/view-author/${props.value.author}`}> {props.value.author}</Link></span>
         <div role="group">
             <VoteYesButton onClick={voteYes} />
             <VoteNoButton onClick={voteNo} />

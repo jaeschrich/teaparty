@@ -58,7 +58,7 @@ div#form > * {
     margin-bottom: 1rem;
 }
 
-input[type="text"], input[type="email"] { 
+input[type="text"], input[type="email"], input[type="password"] { 
     border: none;
     border-bottom: 0.2rem solid blue;
     font-family: 'Helvetica', 'sans serif';

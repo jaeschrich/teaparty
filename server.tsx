@@ -1,5 +1,5 @@
 
-import express from 'express';
+import express, { json, urlencoded } from 'express';
 import React from 'react';
 import ReactDOM, { renderToString } from "react-dom/server";
 import { readFileSync } from 'fs';
@@ -17,6 +17,10 @@ import { readFile } from 'fs/promises';
 import { generateNames } from './shared/generateNames';
 import multer from 'multer';
 import { queries } from '@testing-library/dom';
+import passport, { authenticate } from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
+import session from 'express-session';
+// import { createEngine } from 'express-react-views';
 
 type SubmittedFile = {
     originalname : string, 
@@ -61,11 +65,30 @@ const storage = multer.diskStorage({
         cb(null, (randomBytes(8).toString('hex')) + extname(file.originalname));
     }
 });
-const adapter = new FileAsync<DatabaseSchema>('data/db.json');
+
+passport.use(new LocalStrategy({ usernameField: "email", passwordField: "password"}, (username, password, done) => {
+    console.log("hi")
+    return done(null, { username, password, type: "staff" })
+}));
+
+passport.serializeUser((user, done) => {
+    // return done(null, user.id);
+})
+
+passport.deserializeUser((id, done) => {
+    // find user by id
+})
 
 export async function main() {
     // const db = await low(adapter);
-    // const generateHtml = (reactDom : string) => template.join(reactDom);
+    // const generateHtml = (reactDom : string) => template.join(reactDom)
+    // app.set('views', join(__dirname, "views"));
+    // app.set('view engine', 'jsx');
+    // app.engine('jsx', createEngine());
+    app.use(urlencoded({ extended: false }));
+    app.use(session({ secret: "very secret indeed", resave: true, saveUninitialized: true }));
+    app.use(passport.initialize());
+    app.use(passport.session());
     app.use('/dist', express.static(join(__dirname, "/dist")));
     app.use('/assets/twemoji/', express.static(join(__dirname, "/assets", "twemoji")));
     app.use('/assets/svg/', express.static(join(__dirname, "/assets", "svg")));
@@ -81,6 +104,27 @@ export async function main() {
     })
 
     const upload = multer({ storage });
+
+    app.get('/login', (req, res) => {
+        res.sendFile(join(__dirname, "views", "login.html"))
+    })
+
+    app.post('/login', passport.authenticate('local', { session: false }), (req : any, res) => {
+        console.log(req.user)
+        return res.redirect("/app");
+    })
+
+    app.get('/create-account', (req, res) => {
+        res.sendFile(join(__dirname, "views", "create-account.html"))
+    })
+
+    app.post('/create-account', (req, res) => {
+        // req.body contains info for account
+    })
+
+    app.get('/logout', (req, res) => {
+        res.sendFile(join(__dirname, "views", "logout.html"))
+    })
 
     app.post('/submit', upload.array('files'), async (req : any, res) => {
         // console.log(req.body);

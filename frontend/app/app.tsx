@@ -7,9 +7,10 @@ import { SubmissionsView, Submission } from './submissions';
 import './app.css';
 import { saveScroll } from './hooks/saveScroll';
 import { VotingStats } from './components/VotingStats';
+import { AuthorPieces } from './components/AuthorPieces';
 import { AuthorPage } from './components/AuthorPage';
 
-const subs : Submission[] = []
+export const subs : Submission[] = []
 
 for(let i = 0; i < 100; i++) {
     subs.push({ title: `Piece ${i}`, author: "Craig Cregbert" });
@@ -39,6 +40,11 @@ export function App(props : any) {
                 <ViewSubmissionContent />
             </Route> 
             <Route path="/view-author/:name">
+                <div role="main" aria-label="View Author">
+                    <AuthorPieces name="fake name for now" />
+                </div>
+            </Route>
+            <Route path="/author/:name">
                 <div role="main" aria-label="View Author">
                     <AuthorPage name="fake name for now" />
                 </div>
