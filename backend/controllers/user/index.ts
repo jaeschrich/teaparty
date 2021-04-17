@@ -5,26 +5,38 @@ import User from "../../models/user"
 
 const getUsers = async (req: Request, res: Response): Promise<void> => {
   try {
-    const users: IUser[] = await User.find()
+    const users: IUser[] = await User.find().select(['-password'])
     res.status(200).json({ users })
   } catch (error) {
     throw error
   }
 }
 
-//
-//{
-//  "name": "Michael Jackson",
-//  "password": "jiji",
-//  "role": 1,
-//  "penName": "TheKingOfPop",
-//  "intro": "Im a legend"
-//}
-//
+const getUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const user : IUser[] = await User.find({email: req.body.email}, function (err:any, results:any) {
+      if (!results) { 
+        res.status(200).json({message:"User not found", error: err})
+      }
+      else {
+        res.status(200).json({user})
+      }
+    })
+
+    res.status(200).json({ user })
+
+  } catch (error) {
+    res.status(400).json({error})
+    throw error
+  }
+}
+
+
+// Should import hashPassword functionality 
 const addUser = async (req: Request, res: Response): Promise<void> => {
     try {
 
-      const body = req.body as Pick<IUser, "name" | "password" | "role" | "penName">
+      const body = req.body as Pick<IUser, "name" | "password" | "role" | "penName" | "email">
       const user: IUser= new User({
         name: body.name,
         password: body.password,
@@ -34,7 +46,8 @@ const addUser = async (req: Request, res: Response): Promise<void> => {
         content: [],
         submissions: [],
         requested_edit_submissions: [],
-        vote_log: []
+        vote_log: [],
+        email: body.email
       })
   
       const newUser: IUser = await user.save()
@@ -45,20 +58,18 @@ const addUser = async (req: Request, res: Response): Promise<void> => {
         .status(201)
         .json({ message: "User added", user: newUser, users: allUsers })
     } catch (error) {
+      res
+      .status(400)
+      .json({error })
       throw error
     }
   }
 
 const updateUser = async (req: Request, res: Response): Promise<void> => {
     try {
-      const {
-        params: { id },
-        body,
-      } = req
-      
       const updateUser: IUser | null = await User.findByIdAndUpdate(
-        { _id: id },
-        body
+        { _id: req.body._id },
+        req.body
       )
       const allUsers: IUser[] = await User.find()
       res.status(200).json({
@@ -67,6 +78,7 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
         users: allUsers,
       })
     } catch (error) {
+      res.status(400).json({error})
       throw error
     }
 }
@@ -87,7 +99,7 @@ const deleteUser = async (req: Request, res: Response): Promise<void> => {
     }
   }
   
-  export { getUsers, addUser, updateUser, deleteUser }
+  export { getUsers, getUser, addUser, updateUser, deleteUser, }
 
 
   

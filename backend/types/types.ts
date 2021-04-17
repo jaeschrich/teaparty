@@ -4,6 +4,7 @@ export interface IUser extends Document {
   name: string,
   password: string,
   role: number,
+  email: string,
   penName: string,
   intro: string,
   content: [
@@ -12,7 +13,11 @@ export interface IUser extends Document {
       comment: String,
     }],
   submissions: Array<string>,
-  requested_edit_submissions:Array<string>,
+  requested_edit_submissions:[
+  {
+    sub_id: String, 
+    comments: String,
+  }],
   vote_log:[{
     submission: String,
     vote: number,
@@ -28,11 +33,13 @@ export interface Content {
 
 
 export interface ISubmission extends Document {
-  id_content: string,
-  author:  string,
-  comments:  string,
+  author: string,
+  comments: string,
   accepted: number, // 0 - not reviewed / 1 - rejected / 2 accepted
   voting_session:  string,
+  link: string,
+  title: string,
+  category: string,
 }
 
 export interface IVotingSession extends Document {
@@ -44,26 +51,12 @@ export interface IVotingSession extends Document {
       sub_id: String,
       count: number,
     }],
+  resubmissions_array: [
+    {
+      sub_id: String,
+      comments: String,
+    }]
 }
 
-
-export interface IContent extends Document {
-  author_id: string,
-  comment: Date,
-  link: Date,
-}
-
-export class Vote {
-  _id: string;
-  count: number;
-
-  constructor(
-      _id: string,
-      count: number
-  ){
-    this._id = _id;
-    this.count = count;
-  }
-}
 
 

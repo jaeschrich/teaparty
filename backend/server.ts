@@ -1,4 +1,4 @@
-import userRoutes from "./routes"
+import routes from "./routes"
 import express, { Express } from "express"
 import mongoose from "mongoose"
 import cors from "cors"
@@ -30,7 +30,7 @@ mongoose.connection.on('error', err => {
 app.use(cors())
 app.use(morgan("dev"));
 app.use(bodyParser.json());
-app.use(userRoutes);
+app.use(routes);
 
 //app.use(expressValidator());
 

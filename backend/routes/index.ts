@@ -1,39 +1,30 @@
 import { Router } from "express"
 import { getUsers, addUser, updateUser, deleteUser } from "../controllers/user"
-import { postSub , voteSub, getAllSub ,getVSSubBetweenDates,getVSSubmissionsByName,postVotingSession, postContent} from "../controllers/submissions"
+import { postSub , voteSub, getAllSub ,getVSSubBetweenDates,getVSSubmissionsByName,postVotingSession, requestEdit, deleteContent, deleteSub} from "../controllers/submissions"
 /*
 Don't handle / or /app. Leave those routes for the main server file.
 */
 const router: Router = Router()
 
-
 router.get("/users", getUsers);
+router.get("/user", getUsers);
 router.post("/add-user", addUser);
-router.put("/edit-user/:id", updateUser);
-router.delete("/delete-user/:id", deleteUser);
+router.put("/edit-user/", updateUser);
+router.delete("/delete-user/", deleteUser);
 
-// getContent// post content Author routes to work on
+router.post("/post-voting-session", postVotingSession);
 
-router.post("/post-voting-session", postVotingSession); // works
-
-
-router.post("/post-sub", postSub);  // works
-router.post("/post-content", postContent); //works
-
+router.post("/post-sub", postSub);   
+router.put("/delete-sub", deleteSub);
+router.post("/delete-content", deleteContent); 
 
 router.post("/vote-sub", voteSub);
 
-router.get("/all-sub", getAllSub); 
+router.get("/voting-session-between-dates",  getVSSubBetweenDates);
+router.get("/vs-name" , getVSSubmissionsByName);
 
+router.get("/requestEdit", requestEdit);
 
-//{
-//    "start_date": "1980-7-14",
-//    "end_date": "2025-9-9"
-//}
-
-
-router.get("/voting-session-between-dates",  getVSSubBetweenDates);//works
-router.get("/vs-name" , getVSSubmissionsByName);//works
-
+// getContent of Author
 
 export default router

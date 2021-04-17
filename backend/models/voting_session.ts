@@ -1,4 +1,4 @@
-import { IVotingSession , Vote} from "../types/types"
+import { IVotingSession} from "../types/types"
 import { model, Schema } from "mongoose"
 
 const votingSessionSchema: Schema = new Schema(
@@ -20,7 +20,14 @@ const votingSessionSchema: Schema = new Schema(
           sub_id: {type: String, required: true},
           count: {type: Number, required: true}
         }],
-
+    resubmissions_array:
+    [
+      {
+      sub_id: {type: String, required: true},
+      comment: {type: String, required: true}
+      }
+    ]
+    
   },
   { timestamps: true }
 )
