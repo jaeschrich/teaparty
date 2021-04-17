@@ -1,9 +1,14 @@
-<!doctype html>
-<meta charset="utf-8">
-<title>Submit to TEA</title>
-<div id="app"></div>
+<div id="file-input-toolbar">
+    <button
+        id="submit"
+        style="width: 20ch"
+        class="green-class"
+        disabled="!valid">
+        <span style="text-align:center">Submit to TEA</span></button>
 
-
-<link rel="stylesheet" href="/assets/LemonMilk/fonts.css" />
-<link rel="stylesheet" href="/dist/submit/main.css" />
-<script src="/dist/submit/main.js"></script>
+    <button style="margin-left: auto" hx-get="/submit/adding-item" id="add-item-button">Add Item</button>
+</div>
+<div id="form">
+    <div role="region" id="file-input-area" class="form">
+    </div>
+</div>
