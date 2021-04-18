@@ -10,7 +10,7 @@ const init: types.ITeaPartyState  = {
     submissions: []
 };
 
-const { PATH } = process.env;
+const PATH = ""
 
 const postVS = (state:types.ITeaPartyState, name:string, startingDate: Date, endingDate: Date, role: Number): types.ITeaPartyState =>{
     let newState: types.ITeaPartyState= { ...state }; 
