@@ -102,7 +102,7 @@ const postSub = async (req: Request, res: Response): Promise<void> => {
       console.log("Updated voting session");
       //const allUsers: IUser[] = await Voting.find()
 
-      res.status(201).json({ message: "Submission Posted", votingSession: UpdatedVotingSession, submission: newSubmission})
+      res.status(201).json({UpdatedVotingSession})
     } 
     catch (error) {
       res.status(400).json(error)
@@ -134,10 +134,7 @@ const voteSub = async (req: Request, res: Response): Promise<void> => { // vote 
         {_id: voting_session, "submissions_array.sub_id" : sub_id} , 
         {$inc : {"submissions_array.$.count" : vote} },{new: true});
 
-      res.status(200).json({
-        message: "Voting updated",
-        sub:  updatedVotingClass,
-      })
+      res.status(200).json({ updatedVotingClass})
     } catch (error) {
       res.status(200).json({error})
       throw error

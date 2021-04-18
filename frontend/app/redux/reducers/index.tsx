@@ -19,9 +19,10 @@ const postVS = (state:types.ITeaPartyState, name:string, startingDate: Date, end
         name: name,
         starting_date: startingDate,
         ending_date: endingDate,
+    }).then(response => {
+        newState.vs = response.data;
     });
 
-    newState.vs = post;
     
     return newState;
       
@@ -33,9 +34,9 @@ const close_open_vs = (state:types.ITeaPartyState, voting_session:string, closed
     let post = axios.put(PATH+'close_open_vs', {
         voting_session: voting_session,
         closed: closed
+    }).then(response => {
+        newState.vs = response.data;
     });
-
-    newState.vs = post.votingSession;
     return newState; 
 }
 
@@ -45,9 +46,11 @@ const vote_sub = (state:types.ITeaPartyState, vote: Number, voting_session:strin
     let post = axios.post(PATH+'vote-sub', {
         voting_session: voting_session,
         closed: closed
+    }).then(response => {
+        newState.vs = response.data;
     });
 
-    newState.vs = post.sub;
+ 
     return newState; 
 }
 
@@ -57,9 +60,9 @@ const vs_between_dates = (state:types.ITeaPartyState, start_date:string, end_dat
     let post = axios.put(PATH+'voting-session-between-dates', {
         start_date: start_date,
         end_date: end_date
+    }).then(response => {
+        newState.vs = response.data;
     });
-
-    newState.vs = post.sub;
     
     return newState; 
 }
