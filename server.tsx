@@ -20,6 +20,7 @@ import { queries } from '@testing-library/dom';
 import passport, { authenticate } from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import session from 'express-session';
+import { storage } from 'backend/storage';
 // import { createEngine } from 'express-react-views';
 
 type SubmittedFile = {
@@ -46,25 +47,6 @@ type DatabaseSchema = {
 }
  
 const app = express();
-const storage = multer.diskStorage({
-    destination: async function(req, file, cb) {
-        let authorPrefix = req.body.UFID.split('').filter((c: any) => c in "0123456789".split('')).join('');
-        let path = join(__dirname, 'data', 'files', authorPrefix);
-        stat(path)
-        .then(st => {
-            if (!st.isDirectory()) {
-                return Promise.reject();
-            }
-        }).catch((e) => {
-            return mkdir(path)
-        }).then(() => {
-            cb(null, path)
-        })
-    },
-    filename: function(req, file, cb) {
-        cb(null, (randomBytes(8).toString('hex')) + extname(file.originalname));
-    }
-});
 
 passport.use(new LocalStrategy({ usernameField: "email", passwordField: "password"}, (username, password, done) => {
     console.log("hi")

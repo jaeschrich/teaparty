@@ -1,7 +1,7 @@
 
 import html from '../../shared/html';
 
-export default function(props) {
+export default function(submissions) {
     return html`
         <div id="file-input-toolbar">
             <button
@@ -17,6 +17,7 @@ export default function(props) {
         </div>
         <div id="form">
             <div role="region" id="file-input-area" class="form">
+            ${viewItems(submissions)}
             </div>
         </div>
     `;
