@@ -5,7 +5,7 @@
         "MONGO_DB": "Tea-Party",
         "debug": true
     },
-    "watch": ["backend", "./server.tsx", "./template.html"],
+    "watch": ["backend", "./server.tsx", "./template.html", "views/**"],
     "ext": "ts,json",
     "exec": "ts-node",
     "ignore": ["backend/**/*.test.js"]

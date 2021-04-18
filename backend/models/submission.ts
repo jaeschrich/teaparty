@@ -3,12 +3,20 @@ import { model, Schema } from "mongoose"
 
 const submissionSchema: Schema = new Schema(
   {
-    id_content: {
-      type: String,
-      required: true,
-    },
     author: {
       type: String,
+      require: true,
+    },
+    title: {
+      type: String,
+      require: true,
+    },
+    category: {
+      type: Number, 
+      require: true,
+    },
+    link: {
+      link: Number,
       require: true,
     },
     comments: {

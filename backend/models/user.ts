@@ -2,8 +2,6 @@ import { IUser } from "../types/types"
 import { model, Schema } from "mongoose"
 
 
-
-
 const userSchema: Schema = new Schema(
   {
     name: {
@@ -11,6 +9,10 @@ const userSchema: Schema = new Schema(
       required: true,
     },
     password: {
+      type: String,
+      required: true,
+    },
+    email: {
       type: String,
       required: true,
     },
@@ -30,16 +32,19 @@ const userSchema: Schema = new Schema(
       {
         link: {type: String, required: true},
         comment: {type: String, required: true}
-      }]
-    , 
+      }], 
     submissions: {
       type: Array,
       required: false
     },
-    requested_edit_submissions: {
-      type: Array,
-      required: false
-    },
+    requested_edit_submissions: [
+      {
+      sub_id: {type: String, required: true},
+      comments: {type: String, required: false},
+      resubmitted: {type: String, required: true},
+      new_link: {type: String, required: false}
+      }
+    ],
     vote_log : [ {
       submission: {type: String, required: true},
       vote: {type: Number, required: true}

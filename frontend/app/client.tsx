@@ -4,7 +4,7 @@ import { App } from './app';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
-import { reducer } from './reducers';
+import { reducer } from './redux/reducers';
 import { promiseMiddlware } from './promise-middleware';
 import TeaSymbol from '../../assets/twemoji/1f375.svg';
 import PartyPopper from '../../assets/twemoji/1f389.svg';

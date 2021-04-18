@@ -1,24 +1,12 @@
 import { Response, Request } from "express"
-import { ISubmission, IContent, IUser} from "../../types/types"
+import { ISubmission, IUser} from "../../types/types"
 import Submission from "../../models/submission"
-import Content from "../../models/content"
-
 import User from "../../models/user"
-
-import { IVotingSession, Vote } from "../../types/types"
+import { IVotingSession} from "../../types/types"
 import VotingSession from "../../models/voting_session"; // VotingSession -> VS
-import { submissionView } from "frontend/app/reducers"
+import { submissionView } from "frontend/app/redux/reducers"
+import { truncate } from "fs/promises"
 
-const getAllSub = async (res: Response): Promise<void> => { 
-  try {
- 
-    const submission: ISubmission[] = await Submission.find()
-    res.status(200).json({ submission})
-
-  } catch (error) {
-    throw error
-  }
-}
 /*
 export interface VotingSessionModel extends ISubmission
 */
@@ -30,10 +18,10 @@ const getVSSubmissionsByName = async (req: Request, res: Response): Promise<void
     res.status(200).json({vs})
 
   }catch (error) {
+    res.status(200).json({error})
     throw error
   }
 }
-
 const getVSSubBetweenDates = async (req: Request, res: Response): Promise<void> => {
   try {
 
@@ -44,7 +32,6 @@ const getVSSubBetweenDates = async (req: Request, res: Response): Promise<void> 
       $lt: body.end_date
       }});
       
-      console.log(response);
       res.status(200).json({response})
        
     }catch (error) {
@@ -80,30 +67,6 @@ const postVotingSession = async (req: Request, res: Response): Promise<void> => 
 //    "link": "www.michaeljackson.com"
 //}
 
-const postContent = async (req: Request, res: Response): Promise<void> => { 
-
-  try {
-      console.log("Starting request..")
-    
-      const body = req.body as Pick<IContent,  "author_id" | "comment" | "link">
-      const content = {
-      link: String(body.link),
-      comment: String(body.comment)
-
-    }
-
-
-    const updatedUser = await User.findOneAndUpdate({_id:body.author_id},
-     {$push: {content: content}});
-    
-
-    res.status(201).json({ message: "Content Posted", user: updatedUser}) // might not reflect change, but it does change in database
-
-  } catch (error) {
-    res.status(400).json({error})
-    throw error
-  }
-}
 
 
 //{
@@ -112,45 +75,46 @@ const postContent = async (req: Request, res: Response): Promise<void> => {
 //    "author": "606493fdda9c019ab13eeb13",
 //    "voting_session":"605542933ee7a7b2fc911d09"
 //}
+
 const postSub = async (req: Request, res: Response): Promise<void> => { 
     try {
-      
-        const body = req.body as Pick<ISubmission, "id_content" | "author" | "comments" | "voting_session">
+        const body = req.body as Pick<ISubmission, "author" | "comments" | "voting_session" | "link"| "category"| "title">
         const submission: ISubmission = new Submission({
-        id_content: body.id_content,
         author: body.author,
         comments: body.comments,
+        link: body.link,
+        category: body.category,
+        title: body.title,
         accepted: 0,
-        voting_session: body.voting_session,
-      })
+        voting_session: body.voting_session})
       
-      const newSubmission: ISubmission = await submission.save()
-      console.log(newSubmission._id);
+        const newSubmission: ISubmission = await submission.save()
       
-      const updatedUser = await User.findOneAndUpdate({_id:body.author},
+        const updatedUser = await User.findOneAndUpdate({_id:body.author},
         {$push: {submissions: newSubmission._id}});
 
-      //const foundSubmission : ISubmission = await Submission.find({id_content: body.id_content, comments: body.comments });
+        //const foundSubmission : ISubmission = await Submission.find({id_content: body.id_content, comments: body.comments });
 
-      const UpdatedVotingSession = await VotingSession.findOneAndUpdate(
+        const UpdatedVotingSession = await VotingSession.findOneAndUpdate(
         { _id: submission.voting_session }, 
-        { $push: { submissions_array: {sub_id: newSubmission._id , count:0 } }}
+        { $push: { submissions_array: {sub_id: newSubmission._id , count: 0 } }}
       );
       console.log("Updated voting session");
       //const allUsers: IUser[] = await Voting.find()
-  
-      res.status(201).json({ message: "Submission Posted", votingSession: UpdatedVotingSession, submission: newSubmission})
-    } catch (error) {
+
+      res.status(201).json({UpdatedVotingSession})
+    } 
+    catch (error) {
       res.status(400).json(error)
       throw error
-    }
   }
+}
 
 //{
 //   "sub_id": "607273c0af82a917bc2591be",
 //   "vote": 1,
 //   "voting_session": "605542933ee7a7b2fc911d09",
-//   "user":"606493fdda9c019ab13eeb13"
+//   "voter":"606493fdda9c019ab13eeb13"
 //}
 
 const voteSub = async (req: Request, res: Response): Promise<void> => { // vote / voting_session / sub_id / user
@@ -159,7 +123,7 @@ const voteSub = async (req: Request, res: Response): Promise<void> => { // vote 
       const vote = req.body.vote;
       const voting_session = req.body.voting_session ;
       const sub_id = req.body.sub_id;
-      const voter = req.body.user;
+      const voter = req.body.voter;
 
       const pullout = await User.findOneAndUpdate(
         { _id: voter },
@@ -170,17 +134,143 @@ const voteSub = async (req: Request, res: Response): Promise<void> => { // vote 
         {_id: voting_session, "submissions_array.sub_id" : sub_id} , 
         {$inc : {"submissions_array.$.count" : vote} },{new: true});
 
-      res.status(200).json({
-        message: "Voting updated",
-        sub:  updatedVotingClass,
-      })
+      res.status(200).json({ updatedVotingClass})
     } catch (error) {
       res.status(200).json({error})
       throw error
     }
 }
 
-export { getAllSub, postSub, voteSub, getVSSubBetweenDates, getVSSubmissionsByName, postVotingSession,postContent  }
+
+const deleteSub = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const newList = await VotingSession.findOneAndUpdate(
+      { _id: req.body.vs_id}, 
+      { $pull: {"submissions_array": { "sub_id": req.body.sub_id }}},{new: true});
+
+    const newUser = await User.findOneAndUpdate(
+        { _id: req.body.author_id}, 
+        { $pull: {"submissions": { "sub_id": req.body.sub_id }}},{new: true});
+    
+    res.status(200).json({
+      message: "Voting updated",
+      voting_session:  newList,
+      updated_user: newUser
+    })
+  } catch (error) {
+    res.status(200).json({error})
+    throw error
+  }
+}
+
+//const deleteContent = async (req: Request, res: Response): Promise<void> => {
+//  try {
+//
+//    const newUser = await User.findOneAndUpdate(
+//        { _id: req.body.author_id}, 
+//        { $pull: {"content": { "_id": req.body.content_id }}},{new: true});
+//    
+//    res.status(200).json({
+//      message: "Voting updated",
+//      updated_user: newUser
+//    })
+//  } catch (error) {
+//    res.status(200).json({error})
+//    throw error
+//  }
+//}
+
+const getAllSub = async (res: Response): Promise<void> => { 
+  try {
+ 
+    const submission: ISubmission[] = await Submission.find()
+    res.status(200).json({ submission})
+
+  } catch (error) {
+    res.status(200).json({error})
+    throw error
+  }
+}
+
+const requestEdit = async (req: Request, res: Response): Promise<void> => { 
+  try {
+
+      const updatedUser = await User.findOneAndUpdate( { _id: req.body.author }, 
+        { $push: { requested_edit_submissions: {sub_id: req.body.sub_id, comments: req.body.comments, resubmitted: false, new_link:"" } }});
+      
+      //  {_id:req.body.author},
+      //{$push: {requested_edit_submissions: {sub_id: req.body.sub_id, comments: req.body.comment}}});
+
+      //const foundSubmission : ISubmission = await Submission.find({id_content: body.id_content, comments: body.comments });
+
+      const updatedVotingSession = await VotingSession.findOneAndUpdate(
+      { _id: req.body.voting_session }, 
+      { $push: { resubmissions_array:  {sub_id: req.body.sub_id, comment_from_editor: req.body.comments, comment_from_author: req.body.comment_from_author, new_link: "", resubmitted: false}}});
+
+    console.log("Updated voting session");
+    //const allUsers: IUser[] = await Voting.find()
+
+    res.status(201).json({ message: "Submission Posted", votingSession: updatedVotingSession, author: updatedUser})
+  } 
+  catch (error) {
+    res.status(400).json(error)
+    throw error
+  }
+}
+
+const postEdit = async (req: Request, res: Response): Promise<void> => { // 
+  try {
+      
+      const updatedUser = await User.findOneAndUpdate( { _id: req.body.author, }, 
+        { $set: {"requested_edit_submissions.$[el].new_link": req.body.link, "requested_edit_submissions.$[el].submitted": true }},
+        { 
+          arrayFilters: [{ "el.sub_id": req.body.sub_id }],
+          new: true
+        }
+      );
+
+      const updatedVotingSession = await VotingSession.findOneAndUpdate(
+        { _id: req.body.voting_session }, 
+        { $set: { "resubmissions_array.$[el].new_link": req.body.new_link, "resubmissions_array.$[el].comment_from_author": req.body.comment_from_author, 
+                   "resubmissions_array.$[el].resubmitted":true}}, 
+        { 
+          arrayFilters: [{ "el.sub_id": req.body.sub_id }],
+          new: true
+        });
+
+
+      console.log("Updated voting session");
+
+    res.status(201).json({ message: "Submission Posted", votingSession: updatedVotingSession, author: updatedUser})
+  } 
+  catch (error) {
+    res.status(400).json(error)
+    throw error
+  }
+}
+
+const close_open_vs = async (req: Request, res: Response): Promise<void> => { // 
+  try {
+      
+      const updatedVotingSession = await VotingSession.findOneAndUpdate(
+        { _id: req.body.voting_session }, 
+        { $set: { "closed": req.body.closed}}, 
+        );
+
+      console.log("Updated voting session");
+
+    res.status(201).json({ message: "Submission Posted", votingSession: updatedVotingSession})
+  } 
+  catch (error) {
+    res.status(400).json(error)
+    throw error
+  }
+}
+
+export { getAllSub, postSub, voteSub, requestEdit, postEdit,
+         getVSSubBetweenDates, getVSSubmissionsByName,
+         postVotingSession, deleteSub, close_open_vs}
+
 
 
    // const updatedVotingClass: ISubmission | null = await Submission.findByIdAndUpdate(
@@ -194,6 +284,5 @@ export { getAllSub, postSub, voteSub, getVSSubBetweenDates, getVSSubmissionsByNa
     //} = req
 
     //id
-
 
 //db.col_name.update({name :"name_for_match"},{$addToSet :  { videoId : "video_id_value"}})
