@@ -7,6 +7,8 @@ import { SubmissionsView, Submission } from './submissions';
 import './app.css';
 import { saveScroll } from './hooks/saveScroll';
 import { VotingStats } from './components/VotingStats';
+import { IndividualVotes } from './components/IndividualVotes';
+
 import { AuthorPieces } from './components/AuthorPieces';
 import { AuthorPage } from './components/AuthorPage';
 
@@ -31,6 +33,11 @@ export function App(props : any) {
             <Route path="/voting-statistics">
                 <div role="main" aria-label="Voting Statistics">
                     <VotingStats />
+                </div>
+            </Route>
+            <Route path="/voting-statistics-individual">
+                <div role="main" aria-label="Individual Voting Statistics">
+                    <IndividualVotes />
                 </div>
             </Route>
             <Route path="/submissions">
