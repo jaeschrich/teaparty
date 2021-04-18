@@ -4,7 +4,7 @@ import Submission from "../../models/submission"
 import User from "../../models/user"
 import { IVotingSession} from "../../types/types"
 import VotingSession from "../../models/voting_session"; // VotingSession -> VS
-import { submissionView } from "frontend/app/reducers"
+import { submissionView } from "frontend/app/redux/reducers"
 import { truncate } from "fs/promises"
 
 /*
@@ -32,7 +32,6 @@ const getVSSubBetweenDates = async (req: Request, res: Response): Promise<void> 
       $lt: body.end_date
       }});
       
-      console.log(response);
       res.status(200).json({response})
        
     }catch (error) {
@@ -103,7 +102,7 @@ const postSub = async (req: Request, res: Response): Promise<void> => {
       console.log("Updated voting session");
       //const allUsers: IUser[] = await Voting.find()
 
-      res.status(201).json({ message: "Submission Posted", votingSession: UpdatedVotingSession, submission: newSubmission})
+      res.status(201).json({UpdatedVotingSession})
     } 
     catch (error) {
       res.status(400).json(error)
@@ -115,7 +114,7 @@ const postSub = async (req: Request, res: Response): Promise<void> => {
 //   "sub_id": "607273c0af82a917bc2591be",
 //   "vote": 1,
 //   "voting_session": "605542933ee7a7b2fc911d09",
-//   "author_id":"606493fdda9c019ab13eeb13"
+//   "voter":"606493fdda9c019ab13eeb13"
 //}
 
 const voteSub = async (req: Request, res: Response): Promise<void> => { // vote / voting_session / sub_id / user
@@ -124,7 +123,7 @@ const voteSub = async (req: Request, res: Response): Promise<void> => { // vote 
       const vote = req.body.vote;
       const voting_session = req.body.voting_session ;
       const sub_id = req.body.sub_id;
-      const voter = req.body.author_id;
+      const voter = req.body.voter;
 
       const pullout = await User.findOneAndUpdate(
         { _id: voter },
@@ -135,10 +134,7 @@ const voteSub = async (req: Request, res: Response): Promise<void> => { // vote 
         {_id: voting_session, "submissions_array.sub_id" : sub_id} , 
         {$inc : {"submissions_array.$.count" : vote} },{new: true});
 
-      res.status(200).json({
-        message: "Voting updated",
-        sub:  updatedVotingClass,
-      })
+      res.status(200).json({ updatedVotingClass})
     } catch (error) {
       res.status(200).json({error})
       throw error
@@ -260,7 +256,7 @@ const close_open_vs = async (req: Request, res: Response): Promise<void> => { //
         { _id: req.body.voting_session }, 
         { $set: { "closed": req.body.closed}}, 
         );
-        
+
       console.log("Updated voting session");
 
     res.status(201).json({ message: "Submission Posted", votingSession: updatedVotingSession})
