@@ -20,7 +20,8 @@ import { queries } from '@testing-library/dom';
 import passport, { authenticate } from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import session from 'express-session';
-import { storage } from 'backend/storage';
+import { storage } from './backend/storage';
+import { router as submitRouter } from './backend/submit';
 // import { createEngine } from 'express-react-views';
 
 type SubmittedFile = {
@@ -109,33 +110,32 @@ export async function main() {
         res.sendFile(join(__dirname, "views", "logout.html"))
     })
 
-    app.post('/submit', upload.array('files'), async (req : any, res) => {
-        // console.log(req.body);
-        let filesMap : { [key:string]: SubmittedFile } = {};
+    app.use('/submit', submitRouter);
 
-        for (let i = 0; i < req.files.length; i++) {
-            const item = req.files[i];
-            const title = req.body.titles[i];
-            filesMap[title] = {
-                originalname: item.originalname,
-                title: title,
-                destination: item.destination,
-                mimetype: item.mimetype,
-                encoding: item.encoding,
-                size: item.size,
-                filename: item.filename,
-                path: item.path,
-                category: req.body.categories[i],
-                commentary: req.body.comments[i]
-            }
-        }
-        // db  .get('submissions')
-        //     .push({ files: files,  })
-        res.sendFile(join(__dirname, 'views', 'submit.html'));
-    });
+    // app.post('/submit', upload.array('files'), async (req : any, res) => {
+    //     // console.log(req.body);
+    //     let filesMap : { [key:string]: SubmittedFile } = {};
 
-    // app.get("/submit", require("./views/submit/index"));
-    
+    //     for (let i = 0; i < req.files.length; i++) {
+    //         const item = req.files[i];
+    //         const title = req.body.titles[i];
+    //         filesMap[title] = {
+    //             originalname: item.originalname,
+    //             title: title,
+    //             destination: item.destination,
+    //             mimetype: item.mimetype,
+    //             encoding: item.encoding,
+    //             size: item.size,
+    //             filename: item.filename,
+    //             path: item.path,
+    //             category: req.body.categories[i],
+    //             commentary: req.body.comments[i]
+    //         }
+    //     }
+    //     // db  .get('submissions')
+    //     //     .push({ files: files,  })
+    //     res.sendFile(join(__dirname, 'views', 'submitted.html'));
+    // });
 
     app.get("/submitted", async (req, res) => {
         res.sendFile(join(__dirname, "views", "submitted.html"));

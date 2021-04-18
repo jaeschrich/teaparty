@@ -15,5 +15,3 @@ export const acceptMap : { [key: string] : string } = ({
     "photography": ".jpg,.jpeg,.png,.gif",
     "visual-art": ".jpg,.jpeg,.png,.gif"
 });
-
-const accept = acceptMap[state.category];

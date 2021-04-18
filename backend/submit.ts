@@ -1,10 +1,9 @@
 import express, { Router } from 'express';
 import { join } from 'path';
-import html from './shared/html';
-import { upload } from './backend/storage';
 import { nanoid } from 'nanoid';
 import { rm } from 'fs/promises';
-import { Submission, SubmissionFile, acceptMap } from './shared/SubmissionTypes';
+import { Submission, SubmissionFile, acceptMap } from '../shared/SubmissionTypes';
+import { upload } from './storage';
 
 const fileTable: {[key: string]: SubmissionFile} = {};
 const submissionsTable: {[key: string]: Submission}  = {};
@@ -12,9 +11,9 @@ let submissions = {};
 
 export const router = Router();
 
-router.post('/', (req, res) => {
-    
-})
+router.get('/', (req, res) => {
+    res.sendFile(join(__dirname, '..', 'views', 'submit.html'));
+});
 
 router.get('/items', (req, res) => {
     res.json(Object.values(submissions));
@@ -55,7 +54,20 @@ router.post('/file', upload.single('file'), (req, res) => {
 });
 
 router.delete('/file/:id', async (req, res) => {
-    await rm(fileTable[req.params.id].path); // super dangerous but it should be ok, because the path comes from multer
+    // super dangerous but it should be ok, because the path comes from multer
+    await rm(fileTable[req.params.id].path);
     delete fileTable[req.params.id];
     res.send({ id: req.params.id });
+});
+
+router.post('/', (req, res) => {
+    for (let sub of req.body) {
+        let id = nanoid();
+        submissionsTable[id] = {
+            id,
+            ...sub
+        };
+        console.log(submissionsTable[id]);
+    }
+    res.send({ redirectTo: "/submitted" });
 });

@@ -46,8 +46,8 @@ export function App() {
     }
 
     return (<>
-        <div id="file-input-toolbar">
-            <button onClick={handleSubmit}
+        <div style={{display: "flex", justifyContent: "space-between"}}>
+            <button onClick={handleSubmit} 
                 id="submit"
                 style={{ width: "20ch" }}
                 className={buttonClass}
@@ -66,66 +66,21 @@ export function App() {
                 }}
             >Add Item</button>
         </div>
-        <div id="form">
-            <div id="id-form">
-                <form className="form" ref={formRef}>
-                    <div role="group">
-                        <label htmlFor="name">Name </label>
-                        <input required type="text" name="name"
-                            value={state.name.value} onChange={(ev) => dispatch({
-                                type: 'set-name',
-                                payload: {
-                                    value: ev.target.value,
-                                    isValid: ev.target.validity.valid
-                                }
-                            })}
-                            placeholder={fake.name + " (for example)"} />
-                    </div>
-                    <div role="group">
-                        <label htmlFor="UFL Email">Email </label>
-                        <input required type="email"
-                            value={state.email.value} onChange={(ev) => dispatch({
-                                type: 'set-email',
-                                payload: {
-                                    value: ev.target.value.trim(),
-                                    isValid: ev.target.validity.valid
-                                }
-                            })}
-                            name="email" placeholder={fake.email}
-                            pattern=".+@ufl.edu" title="Please provide a UFL e-mail address" />
-                    </div>
-                    <div role="group">
-                        <label htmlFor="UFID">UFID </label>
-                        <input required type="text" maxLength={8} minLength={8}
-                            value={state.UFID.value} onChange={(ev) => dispatch({
-                                type: 'set-ufid',
-                                payload: {
-                                    value: ev.target.value,
-                                    isValid: ev.target.validity.valid
-                                }
-                            })}
-                            name="UFID" placeholder={"00000000"}
-                            pattern="[0-9]{8}"
-                            title="Please provide your UFID, no spaces or dashes." />
-                    </div>
-                    <div role="group" style={{ flexDirection: "column", justifySelf: "flex-end" }}>
-                        <label htmlFor="artist-statement">Personal Statement</label>
-                        <textarea required
-                            value={state.statement.value} onChange={(ev) => dispatch({
-                                type: 'set-statement',
-                                payload: {
-                                    value: ev.target.value,
-                                    isValid: ev.target.validity.valid
-                                }                            })}
-                            placeholder={fake.text} name="artist-statement"></textarea>
-                    </div>
-                </form>
+        <div id="form" style={{display: "flex", maxHeight: "80vh", height: "100%", gap: "1rem"}}>
+            <div role="group" style={{ flexDirection: "column", justifySelf: "flex-end" }}>
+                <label htmlFor="artist-statement">Personal Statement</label>
+                <textarea required
+                    value={state.statement.value} onChange={(ev) => dispatch({
+                        type: 'set-statement',
+                        payload: {
+                            value: ev.target.value,
+                            isValid: ev.target.validity.valid
+                        }                            })}
+                    placeholder={fake.text} name="artist-statement"></textarea>
             </div>
-            <div role="region" id="file-input-area" className="form">
-
+            <div role="region" id="submissions">
                 <SubmissionList dispatch={dispatch} state={state.submissions} />
             </div>
-
         </div>
     </>);
 }

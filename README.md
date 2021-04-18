@@ -30,3 +30,11 @@ $ yarn test
 ## Attributions
 
 Emoji SVGs from [https://twemoji.twitter.com/](twimoji).
+
+
+## emails
+
+```
+staff@ufl.edu
+author@ufl.edu
+```
