@@ -36,7 +36,7 @@ export interface ISubmission extends Document {
   voting_session:  string,
   link: string,
   title: string,
-  category: string,
+  category: number,
 }
 
 export interface IVotingSession extends Document {

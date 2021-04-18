@@ -2,7 +2,7 @@ import { SIGBUS } from 'node:constants';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, Link, useParams, useLocation } from 'react-router-dom';
-import { getNames } from './actions/getNames';
+import { getNames } from './redux/actions/getNames';
 import { SubmissionsView, Submission } from './submissions';
 import './app.css';
 import { saveScroll } from './hooks/saveScroll';
