@@ -1,5 +1,6 @@
 
 import html from '../../shared/html';
+import viewItems from './view-items';
 
 export default function(submissions) {
     return html`
@@ -12,7 +13,7 @@ export default function(submissions) {
                 <span style="text-align:center">Submit to TEA</span></button>
 
             <button style="margin-left: auto" 
-                    data-hx-get="/submit/adding-item" 
+                    data-hx-get="/submit/edit-item" 
                     data-hx-target="#file-input-area" id="add-item-button" data-hx-swap="afterbegin">Add Item</button>
         </div>
         <div id="form">

@@ -5,6 +5,7 @@ import html from './shared/html';
 import addingItem from './views/submit/edit-item';
 import { upload } from './backend/storage';
 import { nanoid } from 'nanoid';
+import { rm } from 'fs/promises';
 
 function requireUncached(module: any) {
     delete require.cache[require.resolve(module)];
@@ -13,24 +14,29 @@ function requireUncached(module: any) {
 
 let load = (process.env.debug) ? requireUncached : require;
 
+const acceptMap : { [key: string] : string } = ({
+    "prose": ".doc,.docx,.pdf,.txt",
+    "poetry": ".doc,.docx,.pdf,.txt",
+    "photography": ".jpg,.jpeg,.png,.gif",
+    "visual-art": ".jpg,.jpeg,.png,.gif"
+});
+
+
 // massive hack
 // we're going to store the files table in memory rather create a new db collection
 type SubmissionFile = {
     originalname : string, 
-    title: string,
     encoding : string, 
     mimetype : string, 
-    size : string, 
+    size : number, 
     destination : string, 
     filename : string, 
     path : string,
-    category: string,
-    commentary: string
 }
 const fileTable: {[key: string]: SubmissionFile} = {};
 
 type Submission = { 
-    file: SubmissionFile;
+    file: string; // id
     author: string; // id
     category: "prose"|"poetry"|"visual-art"|"photography";
     id: string;
@@ -63,14 +69,36 @@ router.get('/items', (req, res) => {
         Object.values(submissions)
     ));
 })
-router.get('/new-item', (req, res) => {
+router.get('/edit-item', (req, res) => {
+    const id = nanoid();
     res.send(load('./views/submit/edit-item').default({
-        submitMethod: `hx-post="/item"`,
-        deleteMethod: `hx-get="/items" hx-target="file-input-area"`
+        submitMethod: `hx-put="/submit/item/${id}"`,
+        deleteMethod: `hx-delete="/submit/item/${id}"`
+    }));
+});
+
+router.get('/edit-item/:id', (req, res) => {
+    res.send(load('./views/submit/edit-item').default({
+        ...submissionsTable[req.params.id],
+        submitMethod: `hx-patch="/submit/item/${req.params.id}"`,
+        deleteMethod: `hx-delete="/submit/item/${req.params.id}"`
     }));
 });
 
 router.put('/item/:id', (req, res) => {
+    const id = req.params.id;
+    submissionsTable[id] = {
+        id,
+        file: req.body.fileID,
+        category: req.body.category,
+        title: req.body.title,
+        author: "FAKE_AUTHOR_ID",
+        comment: req.body.comment
+    };
+    res.send(load('./views/submit/view-item').default(submissionsTable[id]));
+})
+
+router.post('/new-item', (req, res) => {
     const id = nanoid();
     submissionsTable[id] = {
         id,
@@ -83,52 +111,42 @@ router.put('/item/:id', (req, res) => {
     res.send(load('./views/submit/view-item').default(submissionsTable[id]));
 })
 
-router.post('/item/:id', (req, res) => {
-    const id = nanoid();
-    submissionsTable[id] = {
-        id,
-        file: req.body.fileID,
-        category: req.body.category,
-        title: req.body.title,
-        author: "FAKE_AUTHOR_ID",
-        comment: req.body.comment
-    };
-    res.send(load('./views/submit/view-item').default(submissionsTable[id]));
-})
-
-
-router.patch('/item/:id', (req, res) => {
-    let id = parseInt(req.params.id);
-    let old = submissionsTable[id]
-    submissionsTable[id] = {
-        ...old,
-        title: req.body.title,
-        category: req.body.category,
-        comment: req.body.comment.trim(),
-        complete: !!old.filename
+router.delete('/item/:id', async (req, res) => {
+    if (submissionsTable[req.params.id]) {
+        let entry = submissionsTable[req.params.id];
+        delete fileTable[entry.file]; // TODO: remove file from HD too
     }
-
-    return res.send()
-});
-
-router.delete('/item/:id', (req, res) => {
-    let id = parseInt(req.params.id)
-    delete submissions[id];
+    delete submissionsTable[req.params.id];
     res.send("");
 });
 
-router.post('/file/:id', upload.single('file'), (req, res) => {
-    req.file
+router.get('/file', (req, res) => {
+    let accept = acceptMap[req.body.category];
+    res.send(html`
+        <input required type="file" name="file" accept=${accept} />
+    `);
+})
+
+router.post('/file', upload.single('file'), (req, res) => {
+    let id = nanoid();
+    fileTable[id] = {
+        ...req.file
+    }
+    res.send(html`
+        <span>${req.file.originalname}</span>
+    `)
 });
 
-router.delete('/file/:id', (req, res) => {
-
-})
+router.delete('/file/:id', async (req, res) => {
+    await rm(fileTable[req.params.id].path); // super dangerous but it should be ok, because the path comes from multer
+    delete fileTable[req.params.id];
+    res.send("<p>NO FILE</p>"); // todo, send file input element
+});
 
 
 if (require.main === module) {
     const app = express();
-    app.use(express.json());
+    app.use(express.urlencoded());
     app.use('/dist', express.static(join(__dirname, "/dist")));
     app.use('/assets/twemoji/', express.static(join(__dirname, "/assets", "twemoji")));
     app.use('/assets/js/', express.static(join(__dirname, "/assets", "js")));

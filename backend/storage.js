@@ -1,4 +1,4 @@
-import mutler from 'multer';
+import multer from 'multer';
 
 export const storage = multer.diskStorage({
     destination: async function(req, file, cb) {
