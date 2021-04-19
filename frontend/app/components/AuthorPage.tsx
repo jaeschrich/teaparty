@@ -1,8 +1,8 @@
 import React, {MouseEventHandler} from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Submission } from '../submissions';
-import {subs} from '../app';
 
 //Might need to change the Route in app.tsx to somewhere else following Author login
 
@@ -29,6 +29,7 @@ function SubmitButton({ onClick } : { onClick : MouseEventHandler }){
 }
 
 function ViewSubmitted(props : any) {
+    let subs:any = (useSelector<any>(state => state.submissionView.names) as any).map((n : any, i : any) => ({ title: `Piece ${i}`, author: n }));
     let nodes = subs.map((sub: any) => <Submitted key={sub.title+sub.author} value={sub} />).slice(0,5);
     return (
     <div role="main" aria-label="Submission">

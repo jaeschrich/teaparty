@@ -86,7 +86,8 @@ export async function main() {
         const qcount = (req.query.count || '1').toString();
         const count = parseInt(qcount);
         res.writeHead(200, {"Content-type": "text/json"});
-        res.end(JSON.stringify(generateNames(count)));
+        let names = generateNames(count).map(([first, last]) => `${first} ${last}`);
+        res.end(JSON.stringify(names));
     })
 
     // const upload = multer({ storage });

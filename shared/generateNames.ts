@@ -2,7 +2,7 @@ import { firstNames, lastNames } from '../assets/names.json';
 
 const pronounChoices = ["he/him", "she/her", "he/they", "she/they", "they/he", "they/she", "they/them", "any/all" ];
 
-export function generateName() {
+export function generateName(): [string,string] {
     let ifirstName = Math.floor(Math.random() * firstNames.length);
     let ilastName = Math.floor(Math.random() * lastNames.length);
     return [firstNames[ifirstName], lastNames[ilastName]];
@@ -12,8 +12,8 @@ export function generatePronouns() {
     return pronounChoices[Math.floor(Math.random() * pronounChoices.length)];
 }
 
-export function generateNames(count : number) {
-    let names = new Set();
+export function generateNames(count : number): [string, string][] {
+    let names = new Set<[string,string]>();
     for (let i = 0; i < count; i++) {
         names.add(generateName());
     }

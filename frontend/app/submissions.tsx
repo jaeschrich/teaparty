@@ -46,8 +46,11 @@ export function SubmissionView(props: { value: Submission }) {
 }
 
 // adapted from twemoji 2611
-function VoteYesButton({ onClick } : { onClick : MouseEventHandler }) {
-    return (<button onClick={onClick} title="Vote Yes">
+function VoteYesButton({ onClick, selected } : { onClick : MouseEventHandler, selected: boolean }) {
+    let style:any = {};
+    if (selected) style.backgroundColor = "#000";
+
+    return (<button onClick={onClick} title="Vote Yes" style={style}>
         <img src={voteYesSvg} />
     </button>);
 }
