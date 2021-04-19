@@ -13,7 +13,7 @@ let submissions = {};
 export const router = Router();
 
 router.post('/', (req, res) => {
-    
+
 })
 
 router.get('/items', (req, res) => {
@@ -46,15 +46,16 @@ router.delete('/item/:id', async (req, res) => {
     res.send({ id: req.params.id });
 });
 
-router.post('/file', upload.single('file'), (req, res) => {
-    let id = nanoid();
-    fileTable[id] = {
+router.post('/file', upload.single('file'), (req: any, res) => {
+    fileTable[req.file.id] = {
         ...req.file
-    }
-    res.send({ id, filename: req.file.originalname });
+    };
+    
+    res.send({ id: req.file.id, filename: req.file.filename });
 });
 
 router.delete('/file/:id', async (req, res) => {
+    console.log(fileTable[req.params.id]);
     await rm(fileTable[req.params.id].path); // super dangerous but it should be ok, because the path comes from multer
     delete fileTable[req.params.id];
     res.send({ id: req.params.id });

@@ -7,7 +7,7 @@ export type SubmissionFile = {
     size : number, 
     destination : string, 
     filename : string, 
-    path : string,
+    path : string
 }
 
 export type Submission = { 

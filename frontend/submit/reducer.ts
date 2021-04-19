@@ -9,21 +9,11 @@ export type AppState = {
     error: string|null;
 }
 
-export function intoFormData(state : AppState) : FormData {
-    let data = new FormData();
-    data.append('name', state.name.value);
-    data.append('email', state.email.value);
-    data.append('statement', state.statement.value);
-    data.append('UFID', state.UFID.value);
-    for (let sub of state.submissions) {
-        data.append('titles', sub.title);
-        data.append('categories', sub.category);
-        data.append('comments', sub.comment);
-    }
-    for (let sub of state.submissions) {
-        data.append('files', sub.file!);
-    }
-
+export function intoFormData(state : AppState) : any {
+    let data = {
+        'statement': state.statement.value,
+        'submissions': state.submissions
+    };
     return data;
 }
 
@@ -43,7 +33,7 @@ export const emptyState : AppState = {
 
 export function isValidState(state : AppState):boolean {
     let editing = state.submissions.filter(x=>x.editing).length > 0;
-    let validInputs = state.name.isValid && state.email.isValid && state.UFID.isValid && state.statement.isValid;
+    let validInputs = state.statement.isValid;
 
     return (!editing) && validInputs && state.submissions.length > 0;
 }
@@ -61,7 +51,7 @@ export function reducer(state : AppState, action: any) : AppState {
         }    
         case 'add-submission': {
             const newSub: Submission = {
-                category: "prose",
+                category: "",
                 key: new Date().toISOString(),
                 file: null,
                 title: "",
@@ -74,7 +64,7 @@ export function reducer(state : AppState, action: any) : AppState {
             let subs = state.submissions.filter(x => x !== action.payload);
             return { ...state, submissions: subs };
         }
-
+        
         case 'update-submission': {
             let subs = state.submissions.slice();
             let index = state.submissions.indexOf(action.payload.oldValue);

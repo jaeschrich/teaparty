@@ -1,6 +1,6 @@
 
 export type Submission = {
-    file: File|null;
+    file: { id: string, filename: string}|null;
     title: string;
     comment: string;
     category: string;

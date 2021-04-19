@@ -1,17 +1,18 @@
 import React, { Dispatch } from 'react';
 import { SubmissionInput } from './SubmissionInput';
-import { Submission } from '../types/Submission';
+import { Submission, Submissions } from '../state';
 import { Action } from '../reducer';
 import { SubmissionView } from "./SubmissionView";
+import { observer } from 'mobx-react-lite';
 
-export function SubmissionList({ state, dispatch }: { state: Submission[]; dispatch: Dispatch<Action>; }) {
+export const SubmissionList = observer(({ submissions } : { submissions: Submissions }) => {
     return (<>
-        {state.map((sub, index) => {
+        {submissions.submissions.map((sub) => {
             if (sub.editing) {
-                return (<SubmissionInput key={sub.key} state={sub} dispatch={dispatch} />);
+                return (<SubmissionInput key={sub.id} value={sub} />);
             } else {
-                return (<SubmissionView key={sub.key} state={sub} dispatch={dispatch} />);
+                return (<SubmissionView key={sub.id} value={sub} />);
             }
         })}
     </>);
-}
+});

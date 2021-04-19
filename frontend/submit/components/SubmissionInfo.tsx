@@ -1,8 +1,9 @@
-import { Submission } from '../types/Submission';
+import { Submission } from '../state';
 import React from 'react';
 import '../styles/SubmissionInfo.css'
+import { observer } from 'mobx-react-lite';
 
-export function SubmissionInfo({ value } : { value : Submission }) {
+export const SubmissionInfo = observer(({ value } : { value : Submission }) => {
     const comment = (value.comment.length < 50) ? value.comment : value.comment.slice(0, 50) + "...";
 
     return (<div className="submission-info">
@@ -10,7 +11,7 @@ export function SubmissionInfo({ value } : { value : Submission }) {
             <span arial-label="title">&ldquo;{value.title}&rdquo;</span>
             <span aria-label="category">{value.category}</span>
         </div>
-        <p aria-label="file name">{value.file!.name}</p>
+        <p aria-label="file name">{value.file!.filename}</p>
         {(comment.length>0)?(<div className="submission-info-comment"><span>{comment}</span></div>):null}
     </div>)
-}
+});

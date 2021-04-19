@@ -3,6 +3,7 @@
 <title>Login</title>
 <h1 role="doc-title" title="Right click me to see more names!">Log in to TEA</h1>
 <p><img style="vertical-align:bottom; height: 1.5rem;" src="/assets/svg/tea-emoji.svg" alt="TEA" /></p>
+
 <form action="/login" method="POST">
     <div style="display:flex;justify-content: space-between;">
         <label for="email">Email: </label><input type="text" name="email" pattern=".+@ufl.edu" />
@@ -14,8 +15,9 @@
 </form>
 <link rel="stylesheet" href="/assets/LemonMilk/fonts.css" />
 <link rel="stylesheet" href="/dist/submit/main.css" />
+<h4><a href="/create-account">Create Account</a></h4>
 <style>
-
+    a { font-family: "LEMON MILK"; }
     body {  max-width: 80ch;text-align: center; margin-left: auto; margin-right: auto; }
     body > * { padding: 1rem;  }
     form > * {

@@ -1,9 +1,12 @@
 import multer from 'multer';
+import { nanoid } from 'nanoid';
+import { join, extname } from 'path';
+import { stat, mkdir } from 'fs/promises';
 
 export const storage = multer.diskStorage({
-    destination: async function(req, file, cb) {
-        let authorPrefix = req.body.UFID.split('').filter((c) => c in "0123456789".split('')).join('');
-        let path = join(__dirname, 'data', 'files', authorPrefix);
+    destination: function(req, file, cb) {
+        let authorPrefix = req.session.user.UFID;
+        let path = join(__dirname, '..', 'data', 'files', authorPrefix + "_" + req.session.user.id);
         stat(path)
         .then(st => {
             if (!st.isDirectory()) {
@@ -16,7 +19,8 @@ export const storage = multer.diskStorage({
         })
     },
     filename: function(req, file, cb) {
-        cb(null, (randomBytes(8).toString('hex')) + extname(file.originalname));
+        file.id = nanoid();
+        cb(null, file.id + extname(file.originalname));
     }
 });
 

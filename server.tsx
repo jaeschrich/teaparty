@@ -17,11 +17,12 @@ import { readFile } from 'fs/promises';
 import { generateNames } from './shared/generateNames';
 import multer from 'multer';
 import { queries } from '@testing-library/dom';
-import passport, { authenticate } from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
 import session from 'express-session';
 import { storage } from './backend/storage';
 import { router as submitRouter } from './backend/submit';
+import { usersTable } from './backend/accounts';
+import { nanoid } from 'nanoid';
+
 // import { createEngine } from 'express-react-views';
 
 type SubmittedFile = {
@@ -46,32 +47,33 @@ type DatabaseSchema = {
     }>
     usedNames: string[], // keys are fake, values are real
 }
- 
 const app = express();
 
-passport.use(new LocalStrategy({ usernameField: "email", passwordField: "password"}, (username, password, done) => {
-    console.log("hi")
-    return done(null, { username, password, type: "staff" })
-}));
-
-passport.serializeUser((user, done) => {
-    // return done(null, user.id);
-})
-
-passport.deserializeUser((id, done) => {
-    // find user by id
-})
-
 export async function main() {
+    const auth = (types: string[] = ["author", "staff", "editor", "eic"]) => (req: any, res: any, next: any) => {
+        if (req.session.user) {
+            console.log(types, req.session.user.type)
+            if (types.indexOf(req.session.user.type) === -1) return res.redirect("/login")
+            next();
+        } else {
+            return res.redirect("/login")
+        }
+    }
     // const db = await low(adapter);
     // const generateHtml = (reactDom : string) => template.join(reactDom)
     // app.set('views', join(__dirname, "views"));
     // app.set('view engine', 'jsx');
     // app.engine('jsx', createEngine());
     app.use(urlencoded({ extended: false }));
+    app.use(json());
+    app.use(session({
+        secret: 'tea partyyy',
+        resave: false,
+        saveUninitialized: true,
+        cookie: { secure: false, httpOnly: false }
+    }))
     app.use(session({ secret: "very secret indeed", resave: true, saveUninitialized: true }));
-    app.use(passport.initialize());
-    app.use(passport.session());
+
     app.use('/dist', express.static(join(__dirname, "/dist")));
     app.use('/assets/twemoji/', express.static(join(__dirname, "/assets", "twemoji")));
     app.use('/assets/svg/', express.static(join(__dirname, "/assets", "svg")));
@@ -87,61 +89,53 @@ export async function main() {
         res.end(JSON.stringify(generateNames(count)));
     })
 
-    const upload = multer({ storage });
+    // const upload = multer({ storage });
 
     app.get('/login', (req, res) => {
         res.sendFile(join(__dirname, "views", "login.html"))
     })
 
-    app.post('/login', passport.authenticate('local', { session: false }), (req : any, res) => {
-        console.log(req.user)
-        return res.redirect("/app");
+    app.post('/login', (req : any, res, next) => {
+        let search = Object.values(usersTable).filter(user => user.email === req.body.email && user.password === req.body.password);
+        if (search.length === 1) {
+            req.session.user = search[0]
+            if (["staff", "editor", "eic"].indexOf(req.session.user.type) >= 0) return res.redirect("/app");
+            return res.redirect("/submit");
+        } else {
+            return res.redirect("/login");
+        }
     })
 
     app.get('/create-account', (req, res) => {
         res.sendFile(join(__dirname, "views", "create-account.html"))
     })
 
-    app.post('/create-account', (req, res) => {
-        // req.body contains info for account
-    })
+    app.post('/create-account', (req: any, res) => {
+        let id = nanoid();
+        usersTable[id] = {
+            id, 
+            email: req.body.email, 
+            password: req.body.password, 
+            UFID: req.body.UFID.split('').filter((c: any) => c in "0123456789".split('')).join(''),
+            pronouns: req.body.pronouns, 
+            name: req.body.name,
+            type: "author"
+        }
+        req.session.user = usersTable[id]
+        if (["staff", "editor", "eic"].indexOf(req.session.user.type) >= 0) return res.redirect("/app");
+        return res.redirect("/submit");    });
 
     app.get('/logout', (req, res) => {
         res.sendFile(join(__dirname, "views", "logout.html"))
     })
 
-    app.use('/submit', submitRouter);
-
-    // app.post('/submit', upload.array('files'), async (req : any, res) => {
-    //     // console.log(req.body);
-    //     let filesMap : { [key:string]: SubmittedFile } = {};
-
-    //     for (let i = 0; i < req.files.length; i++) {
-    //         const item = req.files[i];
-    //         const title = req.body.titles[i];
-    //         filesMap[title] = {
-    //             originalname: item.originalname,
-    //             title: title,
-    //             destination: item.destination,
-    //             mimetype: item.mimetype,
-    //             encoding: item.encoding,
-    //             size: item.size,
-    //             filename: item.filename,
-    //             path: item.path,
-    //             category: req.body.categories[i],
-    //             commentary: req.body.comments[i]
-    //         }
-    //     }
-    //     // db  .get('submissions')
-    //     //     .push({ files: files,  })
-    //     res.sendFile(join(__dirname, 'views', 'submitted.html'));
-    // });
+    app.use('/submit', auth(), submitRouter);
 
     app.get("/submitted", async (req, res) => {
         res.sendFile(join(__dirname, "views", "submitted.html"));
     })
 
-    app.get("/app/?*", (req, res) => {
+    app.get("/app/?*", auth(["staff", "editor", "eic"]), (req, res) => {
         // const ctx = {};
         // const path = req.url.split("/app")[1];
         // const jsx = (

@@ -1,41 +1,34 @@
 import React, { Dispatch } from 'react';
-import { Submission } from '../types/Submission';
 import { Action } from '../reducer';
 import { ConfirmClick } from './ConfirmClick';
 import { SubmissionInfo } from './SubmissionInfo';
 import '../styles/SubmissionView.css'
+import { Submission } from '../state';
+import {action} from 'mobx';
+import { observer } from 'mobx-react-lite';
 
-export function SubmissionView({ state, dispatch }: { state: Submission; dispatch: Dispatch<Action>; }) {
+export const SubmissionView = observer(({ value }: { value: Submission }) => {
     return (
-        <div role="region" className="submission" key={state.key}>
-            <SubmissionInfo value={state} />
+        <div role="region" className="submission">
+            <SubmissionInfo value={value} />
             <div role="group" className="controls">
                 <div style={{ display: "flex", flexDirection: "row" }}>
                     <ConfirmClick
                         initial={<button className="red-button">Delete</button>}
                         accept={<button className="red-button">Confirm?</button>}
                         reject={<button>Cancel</button>}
-                        onClick={(ev) => {
+                        onClick={action((ev) => {
                             ev.preventDefault();
                             ev.stopPropagation();
-                            dispatch({
-                                type: 'delete-submission',
-                                payload: state
-                            });
-                        }} />
+                            value.destroy();
+                        })} />
                 </div>
-                <div><button onClick={(ev) => {
+                <div><button onClick={action((ev) => {
                     ev.preventDefault();
-                    dispatch({
-                        type: 'update-submission',
-                        payload: {
-                            oldValue: state,
-                            newValue: { ...state, editing: true }
-                        }
-                    });
-                }}>Edit</button></div>
+                    value.editing = true;
+                })}>Edit</button></div>
             </div>
 
         </div>
     );
-}
+})
