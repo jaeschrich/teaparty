@@ -8,6 +8,7 @@ import './app.css';
 import { saveScroll } from './hooks/saveScroll';
 import { VotingStats } from './components/VotingStats';
 import { IndividualVotes } from './components/IndividualVotes';
+import {ViewIndividualVote} from './components/ViewIndividualVote';
 
 import { AuthorPieces } from './components/AuthorPieces';
 import { AuthorPage } from './components/AuthorPage';
@@ -40,6 +41,11 @@ export function App(props : any) {
                     <IndividualVotes />
                 </div>
             </Route>
+            <Route path="/view-individual">
+                <div role="main" aria-label="Voting Statistics">
+                    <ViewIndividualVote />
+                </div>
+            </Route> 
             <Route path="/submissions">
                     <SubmissionsView scrollState={useState(0)} submissions={submissions}></SubmissionsView>
             </Route>
