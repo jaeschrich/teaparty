@@ -9,7 +9,6 @@ import { submissionView } from '../reducers';
 
 import Tabs from 'react-bootstrap/Tabs' /*first attempt at getting tabs to work, bootstrap installation gave me errors */
 import './VotingStats.css';
-// import './Tabs.jsx';
 import './index.js';
 
 import { Route, Switch, Link, useParams, useLocation } from 'react-router-dom';
@@ -17,29 +16,9 @@ import { IndividualVotes } from './IndividualVotes';
 import {MouseEventHandler} from 'react';
 
 import { Pie } from 'react-chartjs-2';
+import { defaults } from 'react-chartjs-2';
 
 //overall voting stats page first
-
-
-// export class Tabs extends Component {
-//   static propTypes = {
-//     children: PropTypes.instanceOf(Array).isRequired,
-//   }
-
-//   constructor(props) {
-//     super(props);
-
-//     this.state = {
-//       activeTab: this.props.children[0].props.label,
-//     };
-//   }
-
-//   onClickTabItem = (tab) => {
-//     this.setState({ activeTab: tab });
-//  }
-
-// }
-
 
 export class VotingStats extends Component {
     vote = {
@@ -60,47 +39,52 @@ export class VotingStats extends Component {
             <div>
                 <span>{this.printHeader()}</span>
 
-                {/* <button>Individual Votes</button> <button onClick={this.handleClick}>+</button> */}
-
                 <p>Total Votes: {this.findTotalVotes()}</p>
-                <p>Yes: {this.findDegreeYes()} degrees</p>
-                <p>No: {this.findDegreeNo()} degrees</p>
-                <p>Abstain: {this.findDegreeAbstain()} degrees</p>
 
                 <div>
-                    {/* <button onClick={() => <Link to='/voting-statistics-individual'></Link>}>Ind Test</button> */}
                     <Link to="/voting-statistics-individual" className = "btn btn-primary">Individual Votes</Link>
-                </div>
-                
-                {/* <Pie
-                    data ={
-                        {
-                            this.vote.yes
-                        }}
-                
-                /> */}
                     
-                {/* <div className="pie"></div> */}
-                {/* <Tabs>hello?</Tabs> */}
+                </div>
 
-                {}
-
-                {this.sneakySneakyFunction()}
-                {/* <p>{this.SubmissionsView(this.vote.Submission)}</p> */}
-                {/* <SubmissionsView submissions={subs}/> 
-                    iterate through the nodes and just show name and title
-                */}
-                {/* {nodes} */}
+                <div className="style">
+                    {this.createGraph()}
+                </div>
             </div>
         );
     }
-
-    handleClick = () => {
-        console.log('button clicked');
-    }
-
+    
     createGraph() {
-        
+        return(
+            <div>
+                <div>
+                <Pie
+                    data={{
+                        labels: ['Yes', 'No', 'Abstain'],
+                        datasets: [
+                        {
+                            // label: 'Number of votes',
+                            data: [this.vote.yes, this.vote.no, this.vote.abstain],
+                            backgroundColor: [
+                            'rgba(0, 125, 0, 0.2)',
+                            'rgba(195, 0, 0, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            ],
+                            borderColor: [
+                            'rgba(0, 255, 0, 1)',
+                            'rgba(255, 0, 0, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            ],
+                            borderWidth: 1,
+                        },
+                        ],
+                    }}
+                    height={100}
+                    width={100}
+                />
+                </div>
+                
+            </div>
+        );
     }
 
     printHeader() {
@@ -115,41 +99,4 @@ export class VotingStats extends Component {
             this.vote.yes + this.vote.no + this.vote.abstain
         )
     }
-
-    findDegreeYes() {
-        return(
-            //this.vote.pieceName
-            Math.round((this.vote.yes / this.findTotalVotes()) * 360) 
-        )
-    }
-
-    findDegreeNo() {
-        return(
-            //this.vote.pieceName
-            Math.round((this.vote.no / this.findTotalVotes()) * 360) 
-        )
-    }
-
-    findDegreeAbstain() {
-        return(
-            //this.vote.pieceName
-            Math.round((this.vote.abstain / this.findTotalVotes()) * 360) 
-        )
-    }
-
-    sneakySneakyFunction() {
-        console.log('Help me I\'m trapped')
-    }
 }
-
-
-/* THIS IS THE ORIGINAL VERSION DO NOT DELETE
-IF THINGS GO WRONG, DELETE EVERYTHING ELSE AND
-REINSTATE THIS VERSION HERE
-export function VotingStats() {
-    return (<>
-        <div>Voting Stats!</div>
-        
-    </>)
-} 
-*/
