@@ -30,7 +30,7 @@ const userSchema: Schema = new Schema(
     },
     content: [
       {
-        link: {type: String, required: true},
+        link: {type: String, required: true },
         comment: {type: String, required: true}
       }], 
     submissions: {

@@ -12,7 +12,7 @@ import validator from 'validator';
 import FileAsync from 'lowdb/adapters/FileAsync';
 import { randomBytes } from "crypto";
 
-// import { app } from './backend/server';
+import { app as backend } from './backend/server';
 import { readFile } from 'fs/promises';
 import { generateNames } from './shared/generateNames';
 import multer from 'multer';
@@ -73,7 +73,7 @@ export async function main() {
         cookie: { secure: false, httpOnly: false }
     }))
     app.use(session({ secret: "very secret indeed", resave: true, saveUninitialized: true }));
-
+    app.use(backend);
     app.use('/dist', express.static(join(__dirname, "/dist")));
     app.use('/assets/twemoji/', express.static(join(__dirname, "/assets", "twemoji")));
     app.use('/assets/svg/', express.static(join(__dirname, "/assets", "svg")));
@@ -105,7 +105,7 @@ export async function main() {
         } else {
             return res.redirect("/login");
         }
-    })
+    });
 
     app.get('/create-account', (req, res) => {
         res.sendFile(join(__dirname, "views", "create-account.html"))

@@ -5,19 +5,19 @@ const submissionSchema: Schema = new Schema(
   {
     author: {
       type: String,
-      require: true,
+      required: true,
     },
     title: {
       type: String,
-      require: true,
+      required: true,
     },
     category: {
       type: Number, 
-      require: true,
+      required: true,
     },
     link: {
-      link: Number,
-      require: true,
+      type: Number,
+      required: true,
     },
     comments: {
       type: String,
