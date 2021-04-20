@@ -145,10 +145,7 @@ export class State {
         let data = yield fetch("/submit/state").then(res => res.json());
         this.statement = data.statement;
         this.submissions = new Submissions(data.submissions.map((x: any) => {
-            let filename = x.filename;
-            console.log(x)
-            delete x.filename;
-            x.file = { filename: filename, value: null };
+            x.file.value = null;
             return x;
         }));
     }

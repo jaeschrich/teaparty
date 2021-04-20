@@ -1,4 +1,3 @@
-import { isJSDocTypeExpression } from "typescript";
 
 export default (strings, ...values) => {
     let res = [strings[0]]
@@ -11,7 +10,13 @@ export default (strings, ...values) => {
     while (s.length > 0 && /^\s*$/g.test(s[s.length - 1])) s.splice(s.length - 1, 1);
     if (s.length === 0) return "";
 
-    let start = "";
-    while (start.length < s[0].length && s[0][start.length] === ' ') start+=" ";
-    return s.map(x => start+x.trim()).join("\n")
+    let start = 0;
+    while (start < s[0].length && s[0][start] === ' ') start++;
+    return s.map(x => {
+        let i;
+        for (i = 0; i < start; i++) {
+            if (x[i] !== ' ') break;
+        }
+        return x.slice(i)
+    }).join("\n")
 }

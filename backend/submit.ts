@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid';
 import { rm } from 'fs/promises';
 import { Submission, SubmissionFile, acceptMap } from '../shared/StorageTypes';
 import { upload, db } from './storage';
+import { extract, extractFrom } from '../shared';
 
 // const fileTable: {[key: string]: SubmissionFile} = {};
 // const submissionsTable: {[key: string]: Submission}  = {};
@@ -16,18 +17,21 @@ router.get('/', (req, res) => {
 });
 
 router.get('/state', (req: any, res) => {
-    let subs = db.get('submissions').filter({ author: req.session.user.id }).map((doc: any) => {
-        const { title, category, comment, file, id } = doc;
-        return {
-            title, category, comment, id, 
-            filename: file.originalname
+    let subs = db.get('submissions').filter({ author: req.session.user.id }).map(extract({
+        title: true, 
+        category: true, 
+        comment: true, 
+        id: true, 
+        file: {
+            originalname: 'filename'
         }
-    });
+    }));
     let user: any = db.get('users').find({ id: req.session.user.id });
     let ob = {
         submissions: subs.value(),
         statement: user.value().statement 
     };
+    console.log(JSON.stringify(ob, null, 2))
 
     res.json(ob);
 });
