@@ -18,11 +18,10 @@ import { generateNames } from './shared/generateNames';
 import multer from 'multer';
 import { queries } from '@testing-library/dom';
 import session from 'express-session';
-import { storage } from './backend/storage';
+import { storage, db } from './backend/storage';
 import { router as submitRouter } from './backend/submit';
-import { usersTable } from './backend/accounts';
+import { checkPassword, createPassword } from './backend/accounts';
 import { nanoid } from 'nanoid';
-
 // import { createEngine } from 'express-react-views';
 
 type SubmittedFile = {
@@ -38,18 +37,11 @@ type SubmittedFile = {
     commentary: string
 }
 
-type DatabaseSchema = {
-    submissions: any[],
-    users: Map<String, {
-        name: string,
-        alias: string,
-        email: string
-    }>
-    usedNames: string[], // keys are fake, values are real
-}
+
 const app = express();
 
 export async function main() {
+
     const auth = (types: string[] = ["author", "staff", "editor", "eic"]) => (req: any, res: any, next: any) => {
         if (req.session.user) {
             console.log(types, req.session.user.type)
@@ -97,9 +89,9 @@ export async function main() {
     })
 
     app.post('/login', (req : any, res, next) => {
-        let search = Object.values(usersTable).filter(user => user.email === req.body.email && user.password === req.body.password);
-        if (search.length === 1) {
-            req.session.user = search[0]
+        let search = db.get('users').find({ email: req.body.email });
+        if (search.value() && checkPassword(req.body.password, search.value().password)) {
+            req.session.user = search.value()
             if (["staff", "editor", "eic"].indexOf(req.session.user.type) >= 0) return res.redirect("/app");
             return res.redirect("/submit");
         } else {
@@ -113,18 +105,21 @@ export async function main() {
 
     app.post('/create-account', (req: any, res) => {
         let id = nanoid();
-        usersTable[id] = {
+        let user = {
             id, 
             email: req.body.email, 
-            password: req.body.password, 
+            password: createPassword(req.body.password), 
             UFID: req.body.UFID.split('').filter((c: any) => c in "0123456789".split('')).join(''),
             pronouns: req.body.pronouns, 
             name: req.body.name,
-            type: "author"
+            type: "author",
+            statement: ""
         }
-        req.session.user = usersTable[id]
+        db.get('users').push(user).write()
+        req.session.user = user;
         if (["staff", "editor", "eic"].indexOf(req.session.user.type) >= 0) return res.redirect("/app");
-        return res.redirect("/submit");    });
+        return res.redirect("/submit");    
+    });
 
     app.get('/logout', (req, res) => {
         res.sendFile(join(__dirname, "views", "logout.html"))

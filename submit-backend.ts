@@ -4,7 +4,7 @@ import html from './shared/html';
 import { upload } from './backend/storage';
 import { nanoid } from 'nanoid';
 import { rm } from 'fs/promises';
-import { Submission, SubmissionFile, acceptMap } from './shared/SubmissionTypes';
+import { Submission, SubmissionFile, acceptMap } from './shared/StorageTypes';
 
 const fileTable: {[key: string]: SubmissionFile} = {};
 const submissionsTable: {[key: string]: Submission}  = {};

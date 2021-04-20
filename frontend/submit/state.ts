@@ -1,11 +1,11 @@
 
 import { makeAutoObservable, observable } from 'mobx';
-import { acceptMap } from 'shared/SubmissionTypes';
+import { acceptMap } from 'shared/StorageTypes';
 import { nanoid } from 'nanoid';
 
 export type SubmitFile = {
     filename: string;
-    value: File|string
+    value: File|null;
 }
 
 export interface ISubmission {
@@ -14,11 +14,10 @@ export interface ISubmission {
     id: string;
     category: string;
     file: {
-        value: string,
+        value: null,
         filename: string
     }
 }
-
 
 export class Submissions {
     public submissions: Submission[] = [];
@@ -87,13 +86,13 @@ export class Submission {
         data.append('id', this.id);
         data.append('comment', this.comment);
         data.append('category', this.category);
-        data.append('file', this.file.value);
+        if (this.file.value) data.append('file', this.file.value);
 
         let res = yield fetch("/submit/item", {
             method: "PUT",
             body: data
         }).then(res => res.json())
-        this.file = res.file; // file on server now
+        this.file = { filename: res.filename, value: null } // file on server now
         this._serverSync = true;
         this.editing = false;
     }
@@ -145,7 +144,13 @@ export class State {
     *load(): any {
         let data = yield fetch("/submit/state").then(res => res.json());
         this.statement = data.statement;
-        this.submissions = new Submissions(data.submissions);
+        this.submissions = new Submissions(data.submissions.map((x: any) => {
+            let filename = x.filename;
+            console.log(x)
+            delete x.filename;
+            x.file = { filename: filename, value: null };
+            return x;
+        }));
     }
 
     get valid() {

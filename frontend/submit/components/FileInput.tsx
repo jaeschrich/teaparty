@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { acceptMap } from 'shared/SubmissionTypes';
+import { acceptMap } from 'shared/StorageTypes';
 import { Submission } from '../state';
 import '../styles/hidden-file-input.css';
 import { observer } from 'mobx-react-lite';

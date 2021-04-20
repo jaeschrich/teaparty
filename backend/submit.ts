@@ -2,12 +2,12 @@ import express, { json, Router } from 'express';
 import { join } from 'path';
 import { nanoid } from 'nanoid';
 import { rm } from 'fs/promises';
-import { Submission, SubmissionFile, acceptMap } from '../shared/SubmissionTypes';
-import { upload } from './storage';
+import { Submission, SubmissionFile, acceptMap } from '../shared/StorageTypes';
+import { upload, db } from './storage';
 
-const fileTable: {[key: string]: SubmissionFile} = {};
-const submissionsTable: {[key: string]: Submission}  = {};
-let statementTable: {[key: string]: string} = {};
+// const fileTable: {[key: string]: SubmissionFile} = {};
+// const submissionsTable: {[key: string]: Submission}  = {};
+// let statementTable: {[key: string]: string} = {};
 
 export const router = Router();
 
@@ -16,54 +16,69 @@ router.get('/', (req, res) => {
 });
 
 router.get('/state', (req: any, res) => {
+    let subs = db.get('submissions').filter({ author: req.session.user.id }).map((doc: any) => {
+        const { title, category, comment, file, id } = doc;
+        return {
+            title, category, comment, id, 
+            filename: file.originalname
+        }
+    });
+    let user: any = db.get('users').find({ id: req.session.user.id });
     let ob = {
-        submissions: Object.values(submissionsTable).filter(item => item.author === req.session.user.id).map(({ title, category, comment, file, id }) => {
-                        return {
-                            title, category, comment, id, 
-                            file: { value: file, filename: fileTable[file].originalname }
-                        }
-                    }),
-        statement: statementTable[req.session.user.id] || ""
+        submissions: subs.value(),
+        statement: user.value().statement 
     };
-    console.log(statementTable)
 
     res.json(ob);
 });
 
 router.put('/statement', (req: any, res) => {
-    statementTable[req.session.user.id] = req.body.statement;
+    db.get('users').find({ id: req.session.user.id }).assign({ statement: req.body.statement }).write();
     res.send();
 })
 
 router.put('/item', upload.single('file'), async (req:any, res) => {
-    const id = req.body.id;
-    const fileID = req.body.file || nanoid();
+    let id = req.body.id;
+    const sub = db.get('submissions').find({ id });
     if (req.file) {
-        if (fileTable[fileID]) await rm(fileTable[fileID].path);
-        fileTable[fileID] = req.file;
+        if (sub.value()) {
+            await rm(sub.value().file.path);
+            db.get('submissions').remove({ id }).write();
+            id = nanoid();
+        }
     }
-    let file = { value: fileID, filename: fileTable[fileID].originalname };
 
-    if (!fileTable[fileID]) res.status(500).send({ error: "invalid" })
-    submissionsTable[id] = {
-        id,
-        file: fileID,
-        author: req.session.user.id,
-        category: req.body.category,
-        title: req.body.title,
-        comment: req.body.comment
-    };
-    res.send({ id, file });
+    if (sub.value()) {
+        sub.update((x: any) => {
+            return {
+                id,
+                file: x.file,
+                author: req.session.user.id,
+                category: req.body.category,
+                title: req.body.title,
+                comment: req.body.comment       
+            }
+        }).write();
+    } else {
+        db.get('submissions').push({
+            id,
+            file: req.file,
+            author: req.session.user.id,
+            category: req.body.category,
+            title: req.body.title,
+            comment: req.body.comment       
+        }).write();
+    }
+    console.log(sub.value())
+    res.send({ id, filename: sub.value().file.originalname });
 });
 
 router.delete('/item', async (req, res) => {
-    console.log(req.body, submissionsTable)
     let id = req.body.id;
-    if (submissionsTable[id]) {
-        let entry = submissionsTable[id];
-        await rm(fileTable[entry.file].path);
-        delete fileTable[entry.file]; // TODO: remove file from HD too
-    }
-    delete submissionsTable[id];
-    res.send({ id });
+    const sub = db.get('submissions').find({ id });
+    if (sub.value()) {
+        await rm(sub.value().file.path);
+        db.get('submissions').remove({ id }).write();
+        res.send({ id });
+    } else res.status(500).send({ id })
 });
