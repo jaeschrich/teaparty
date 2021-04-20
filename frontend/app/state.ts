@@ -37,9 +37,12 @@ export class Submission {
                 id: this.id,
                 vote
             })
-        });
+        })
         if (res.status !== 200) {
             this.vote = oldVote; // an error occured, reset to old vote
+        } else {
+            res = yield res.json()
+            this.votes = res.votes;
         }
     }
 }

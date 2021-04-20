@@ -32,6 +32,7 @@ router.get('/state', async (req: any, res) => {
 
 router.put('/vote', async (req: any, res) => {
     await setVote(req.body.id, req.session.user.id, req.body.vote);
-    return res.send();
+    const votes = (await getSubmission(req.body.id )).votes;
+    return res.send({ votes });
 });
 
