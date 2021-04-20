@@ -47,13 +47,13 @@ function build(overrideOptions = {}) {
 
 if (require.main === module) {
     const watch = process.argv.indexOf('--watch') > -1
-    stat(join(__dirname, '..', 'data'))
+    stat(join(__dirname, '..', 'data', 'files'))
     .then(st => {
         if (!st.isDirectory()) {
             return Promise.reject();
         }
     }).catch((e) => {
-        return mkdir(join(__dirname, '..', 'data'))
+        return mkdir(join(__dirname, '..', 'data', 'files'), { recursive: true })
     }).then(() => build({ watch }))
     .catch(e => {
         console.log(e.message)
