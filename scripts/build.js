@@ -1,4 +1,5 @@
 const { join } = require('path');
+const { stat, mkdir } = require('fs/promises');
 const esbuild = require('esbuild');
 const autoprefixer = require("autoprefixer");
 const cssImport = require("postcss-import");
@@ -46,7 +47,15 @@ function build(overrideOptions = {}) {
 
 if (require.main === module) {
     const watch = process.argv.indexOf('--watch') > -1
-    build({ watch }).catch(e => {
+    stat(join(__dirname, '..', 'data'))
+    .then(st => {
+        if (!st.isDirectory()) {
+            return Promise.reject();
+        }
+    }).catch((e) => {
+        return mkdir(join(__dirname, '..', 'data'))
+    }).then(() => build({ watch }))
+    .catch(e => {
         console.log(e.message)
         process.exit(1)
     });
