@@ -8,42 +8,48 @@ import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveScroll } from './hooks/saveScroll';
+import { Submission } from './state';
+import { action } from 'mobx';
+import { observer } from 'mobx-react-lite';
 
-export type Submission = { title: string, author: string }
 
-export function SubmissionsView(props : any) {
+export const SubmissionsView = observer((props : { scrollState: any, submissions: Submission[] }) => {
     const ref = saveScroll(props.scrollState);
-    let nodes = props.submissions.map((sub: any) => <SubmissionView key={sub.title+sub.author} value={sub} />)
+    let nodes = props.submissions.map((sub: any) => <SubmissionView key={sub.id} value={sub} />)
     return (
     <div role="main" aria-label="Submission" ref={ref}>
         {nodes}
     </div>);
-}
+})
 
-export function SubmissionView(props: { value: Submission }) {
-    const dispatch = useDispatch();
-    const voteYes = (ev: any) => {
-        ev.stopPropagation();
-        dispatch({ type: 'vote/yes', payload: props.value });
-    }
-    const voteNo = (ev: any) => {
-        ev.stopPropagation();
-        dispatch({ type: 'vote/no', payload: props.value });
-    };
-    const voteAbstain = (ev: any) => {
-        ev.stopPropagation();
-        dispatch({ type: 'vote/abstain', payload: props.value });
-    };
- 
+export const SubmissionView = observer(({ value }: { value: Submission }) => { 
     return (<div className="submission">
-        <span><Link to={`/view-submission/${props.value.title}`}>&ldquo;{props.value.title}&rdquo;</Link> by <Link to={`/view-author/${props.value.author}`}> {props.value.author}</Link></span>
-        <div role="group">
-            <VoteYesButton onClick={voteYes} />
-            <VoteNoButton onClick={voteNo} />
-            <VoteAbstainButton onClick={voteAbstain} />
-        </div>
+        <span><Link to={`/view-submission/${value.id}`}>&ldquo;{value.title}&rdquo;</Link> by <Link to={`/view-author/${value.author.id}`}> {value.authorName}</Link></span>
+        <VotingPanel value={value} />
     </div>)
-}
+});
+
+export const VotingPanel = observer(({ value } : { value: Submission }) => {
+    const voteYes = action((ev: any) => {
+        ev.stopPropagation();
+        value.setVote('yes')
+    })
+    const voteNo = action((ev: any) => {
+        ev.stopPropagation();
+        value.setVote("no")
+    });
+    const voteAbstain = action((ev: any) => {
+        ev.stopPropagation();
+        value.setVote("abstain");
+    });
+    return (
+        <div role="group" className="voting-panel">
+            <VoteYesButton onClick={voteYes} selected={value.vote === "yes" }/>
+            <VoteNoButton onClick={voteNo} selected={value.vote === "no"} />
+            <VoteAbstainButton onClick={voteAbstain} selected={value.vote === "abstain"}/>
+        </div>
+    );
+});
 
 // adapted from twemoji 2611
 function VoteYesButton({ onClick, selected } : { onClick : MouseEventHandler, selected: boolean }) {
@@ -56,15 +62,19 @@ function VoteYesButton({ onClick, selected } : { onClick : MouseEventHandler, se
 }
 
 // adapted from twemoji 274e
-function VoteNoButton({ onClick } : { onClick : MouseEventHandler }) {
+function VoteNoButton({ onClick, selected } : { onClick : MouseEventHandler, selected: boolean }) {
+    let style:any = {};
+    if (selected) style.backgroundColor = "#000";
     return (
-        <button onClick={onClick} title="Vote No">
+        <button style={style} onClick={onClick} title="Vote No">
             <img src={voteNoSvg} />
          </button>);
 }
 
-function VoteAbstainButton({ onClick } : { onClick : MouseEventHandler }) {
+function VoteAbstainButton({ onClick, selected } : { onClick : MouseEventHandler, selected: boolean }) {
+    let style:any = {};
+    if (selected) style.backgroundColor = "#000";
     return (
-        <button onClick={onClick} title="Abstain from Voting"><img src={zipFaceSvg} /></button>
+        <button style={style} onClick={onClick} title="Abstain from Voting"><img src={zipFaceSvg} /></button>
     );
 }

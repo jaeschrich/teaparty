@@ -13,7 +13,6 @@ function getFile(accept: string, ev: any) {
     let p = new Promise<File>((accept, reject) => {
         function handle() {
             if (f.files) { 
-                console.log(f.files.length)
                 accept(f.files![0])
             }
             else { reject(null) } 

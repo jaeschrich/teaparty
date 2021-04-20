@@ -1,6 +1,6 @@
 
 import { makeAutoObservable, observable } from 'mobx';
-import { acceptMap } from 'shared/StorageTypes';
+import { acceptMap } from '../../shared/StorageTypes';
 import { nanoid } from 'nanoid';
 
 export type SubmitFile = {

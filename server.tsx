@@ -1,27 +1,30 @@
 
 import express, { json, urlencoded } from 'express';
-import React from 'react';
-import ReactDOM, { renderToString } from "react-dom/server";
-import { readFileSync } from 'fs';
-import { access, mkdir, stat } from 'fs/promises';
-import { StaticRouter } from 'react-router-dom';
+// import React from 'react';
+// import ReactDOM, { renderToString } from "react-dom/server";
+// import { readFileSync } from 'fs';
+// import { access, mkdir, stat } from 'fs/promises';
+// import { StaticRouter } from 'react-router-dom';
 // import { App } from './frontend/app/app';
 import { join, extname } from 'path';
-import low from 'lowdb';
-import validator from 'validator';
-import FileAsync from 'lowdb/adapters/FileAsync';
-import { randomBytes } from "crypto";
+// import low from 'lowdb';
+// import validator from 'validator';
+// import FileAsync from 'lowdb/adapters/FileAsync';
+// import { randomBytes } from "crypto";
 
-import { app as backend } from './backend/server';
-import { readFile } from 'fs/promises';
+// import { app as backend } from './backend/server';
+// import { readFile } from 'fs/promises';
 import { generateNames } from './shared/generateNames';
-import multer from 'multer';
-import { queries } from '@testing-library/dom';
+// import multer from 'multer';
 import session from 'express-session';
-import { storage, db } from './backend/storage';
+import { storage, db, createUser, getUserById, getUserByEmail, getSubmission } from './backend/storage';
 import { router as submitRouter } from './backend/submit';
 import { checkPassword, createPassword } from './backend/accounts';
 import { nanoid } from 'nanoid';
+const makeLowdbStore = require('lowdb-session-store');
+import api from './backend/api';
+import html from './shared/html';
+
 // import { createEngine } from 'express-react-views';
 
 type SubmittedFile = {
@@ -44,7 +47,6 @@ export async function main() {
 
     const auth = (types: string[] = ["author", "staff", "editor", "eic"]) => (req: any, res: any, next: any) => {
         if (req.session.user) {
-            console.log(types, req.session.user.type)
             if (types.indexOf(req.session.user.type) === -1) return res.redirect("/login")
             next();
         } else {
@@ -62,10 +64,10 @@ export async function main() {
         secret: 'tea partyyy',
         resave: false,
         saveUninitialized: true,
-        cookie: { secure: false, httpOnly: false }
+        cookie: { secure: false, httpOnly: false },
+        store: new (makeLowdbStore(session))(db.get('sessions'))
     }))
-    app.use(session({ secret: "very secret indeed", resave: true, saveUninitialized: true }));
-    app.use(backend);
+    // app.use(backend);
     app.use('/dist', express.static(join(__dirname, "/dist")));
     app.use('/assets/twemoji/', express.static(join(__dirname, "/assets", "twemoji")));
     app.use('/assets/svg/', express.static(join(__dirname, "/assets", "svg")));
@@ -88,10 +90,10 @@ export async function main() {
         res.sendFile(join(__dirname, "views", "login.html"))
     })
 
-    app.post('/login', (req : any, res, next) => {
-        let search = db.get('users').find({ email: req.body.email });
-        if (search.value() && checkPassword(req.body.password, search.value().password)) {
-            req.session.user = search.value()
+    app.post('/login', async (req: any, res, next) => {
+        let search = await getUserByEmail(req.body.email);
+        if (search && checkPassword(req.body.password, search.password)) {
+            req.session.user = search;
             if (["staff", "editor", "eic"].indexOf(req.session.user.type) >= 0) return res.redirect("/app");
             return res.redirect("/submit");
         } else {
@@ -103,20 +105,16 @@ export async function main() {
         res.sendFile(join(__dirname, "views", "create-account.html"))
     })
 
-    app.post('/create-account', (req: any, res) => {
-        let id = nanoid();
-        let user = {
-            id, 
-            email: req.body.email, 
-            password: createPassword(req.body.password), 
-            UFID: req.body.UFID.split('').filter((c: any) => c in "0123456789".split('')).join(''),
-            pronouns: req.body.pronouns, 
-            name: req.body.name,
-            type: "author",
-            statement: ""
-        }
-        db.get('users').push(user).write()
-        req.session.user = user;
+    app.post('/create-account', async (req: any, res) => {
+        req.session.user = await createUser({ 
+            email: req.body.email as string, 
+            UFID: req.body.UFID as string, 
+            pronouns: req.body.pronouns as string, 
+            name: req.body.name as string, 
+            password: req.body.password,
+            type: "author" 
+        });
+
         if (["staff", "editor", "eic"].indexOf(req.session.user.type) >= 0) return res.redirect("/app");
         return res.redirect("/submit");    
     });
@@ -126,6 +124,7 @@ export async function main() {
     })
 
     app.use('/submit', auth(), submitRouter);
+    app.use('/api', auth(["staff", "editor", "eic"]), api);
 
     app.get("/submitted", async (req, res) => {
         res.sendFile(join(__dirname, "views", "submitted.html"));
@@ -142,6 +141,18 @@ export async function main() {
         // const html = generateHtml(renderToString(jsx));
         res.sendFile(join(__dirname, "views", "index.html"))
     });
+    app.get('/api/submission-file/:id', async (req, res) => {
+        let id = req.params.id;
+        let sub = await getSubmission(id);
+        if (sub) {
+            res.sendFile(sub.file.path);
+        } else res.status(404).send(html`
+            <!DOCTYPE html>
+            <meta charset="utf-8">
+            <title>File Not Found</title>
+            <p>Couldn't locate file!</p>
+        `)
+    })
     // db.defaults({ submissions: [], users: [] });
     return app;
 }

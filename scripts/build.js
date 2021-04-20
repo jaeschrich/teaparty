@@ -17,6 +17,7 @@ function build(overrideOptions = {}) {
         entryPoints: [ frontendEntry, submitFormEntry, loginEntry, createAccountEntry ],
         bundle: true,
         outdir: 'dist',
+        // minify: true,
         sourcemap: true,
         logLevel: 'info',
         logLimit: 0,

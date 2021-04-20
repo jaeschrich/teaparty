@@ -1,5 +1,5 @@
 
-export default (strings, ...values) => {
+export default (strings: TemplateStringsArray, ...values: any[]) => {
     let res = [strings[0]]
     for (let i = 0; i < values.length; i++) {
         res.push(values[i]);

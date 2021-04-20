@@ -3,12 +3,8 @@ import { join } from 'path';
 import { nanoid } from 'nanoid';
 import { rm } from 'fs/promises';
 import { Submission, SubmissionFile, acceptMap } from '../shared/StorageTypes';
-import { upload, db } from './storage';
-import { extract, extractFrom } from '../shared';
-
-// const fileTable: {[key: string]: SubmissionFile} = {};
-// const submissionsTable: {[key: string]: Submission}  = {};
-// let statementTable: {[key: string]: string} = {};
+import { upload, db, getSubmissions, getUserById, setStatement, removeSubmission, updateSubmission, createSubmission, getSubmission } from './storage';
+import { extract } from '../shared';
 
 export const router = Router();
 
@@ -16,8 +12,8 @@ router.get('/', (req, res) => {
     res.sendFile(join(__dirname, '..', 'views', 'submit.html'));
 });
 
-router.get('/state', (req: any, res) => {
-    let subs = db.get('submissions').filter({ author: req.session.user.id }).map(extract({
+router.get('/state', async (req: any, res) => {
+    let subs = (await getSubmissions(req.session.user.id)).map(extract({
         title: true, 
         category: true, 
         comment: true, 
@@ -26,63 +22,60 @@ router.get('/state', (req: any, res) => {
             originalname: 'filename'
         }
     }));
-    let user: any = db.get('users').find({ id: req.session.user.id });
+    let user: any = await getUserById(req.session.user.id);
     let ob = {
-        submissions: subs.value(),
-        statement: user.value().statement 
+        submissions: subs,
+        statement: user.statement 
     };
-    console.log(JSON.stringify(ob, null, 2))
 
     res.json(ob);
 });
 
-router.put('/statement', (req: any, res) => {
-    db.get('users').find({ id: req.session.user.id }).assign({ statement: req.body.statement }).write();
+router.put('/statement', async (req: any, res) => {
+    await setStatement(req.session.user.id, req.body.statement);
     res.send();
 })
 
 router.put('/item', upload.single('file'), async (req:any, res) => {
     let id = req.body.id;
-    const sub = db.get('submissions').find({ id });
+    let sub = await getSubmission(id);
     if (req.file) {
-        if (sub.value()) {
-            await rm(sub.value().file.path);
-            db.get('submissions').remove({ id }).write();
+        if (sub) {
+            await rm(sub.file.path);
+            await removeSubmission(id);
             id = nanoid();
+            sub = undefined;
         }
     }
 
-    if (sub.value()) {
-        sub.update((x: any) => {
-            return {
-                id,
-                file: x.file,
-                author: req.session.user.id,
-                category: req.body.category,
-                title: req.body.title,
-                comment: req.body.comment       
-            }
-        }).write();
+    if (sub) {
+        sub = await updateSubmission(id,  {
+            id,
+            author: req.session.user.id,
+            category: req.body.category,
+            title: req.body.title,
+            comment: req.body.comment, 
+        });
     } else {
-        db.get('submissions').push({
+        sub = await createSubmission({
             id,
             file: req.file,
             author: req.session.user.id,
             category: req.body.category,
             title: req.body.title,
-            comment: req.body.comment       
-        }).write();
+            comment: req.body.comment,
+        });
     }
-    console.log(sub.value())
-    res.send({ id, filename: sub.value().file.originalname });
+    res.send({ id, filename: sub.file.originalname });
 });
 
 router.delete('/item', async (req, res) => {
     let id = req.body.id;
-    const sub = db.get('submissions').find({ id });
-    if (sub.value()) {
-        await rm(sub.value().file.path);
-        db.get('submissions').remove({ id }).write();
+    let sub = await getSubmission(id);
+
+    if (sub) {
+        await rm(sub.file.path);
+        await removeSubmission(id);
         res.send({ id });
     } else res.status(500).send({ id })
 });

@@ -1,9 +1,7 @@
 import React, { Dispatch, useEffect, useReducer, useRef, useState } from 'react';
-import { Placeholder } from 'shared/generateNames';
+import { Placeholder } from '../../../shared/generateNames';
 import teaEmoji from '../../../assets/svg/tea-emoji.svg';
-import { nextPlaceholder } from '../hooks/placeholder';
-import { Action, AppState, emptyState, intoFormData, isValidState, reducer } from '../reducer';
-import { State, Submissions } from '../state';
+import { State } from '../state';
 import { SubmissionList } from './SubmissionList';
 import { observer } from 'mobx-react-lite';
 import { action } from 'mobx';
