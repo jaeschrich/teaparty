@@ -32,7 +32,7 @@ $ yarn test
 Emoji SVGs from [https://twemoji.twitter.com/](twimoji).
 
 
-## emails
+## Emails
 
 ```
 staff@ufl.edu
