@@ -78,7 +78,7 @@
   "scripts": {
     "dev": "npx concurrently \"node ./scripts/build.js --watch\" \"nodemon ./server.tsx\"",
     "prestart": "npx yarn build",
-    "start": "npx ts-node ./server.js",
+    "start": "npx ts-node ./server.tsx",
     "build": "node ./scripts/build.js",
     "test": "npx jest"
   },
