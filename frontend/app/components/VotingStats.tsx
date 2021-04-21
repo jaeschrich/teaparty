@@ -7,7 +7,6 @@ import PropTypes from 'prop-types'; /*also possibly not needed */
 
 import Tabs from 'react-bootstrap/Tabs' /*first attempt at getting tabs to work, bootstrap installation gave me errors */
 import './VotingStats.css';
-import './index.js';
 
 import { Route, Switch, Link, useParams, useLocation } from 'react-router-dom';
 import { IndividualVotes } from './IndividualVotes';
@@ -23,11 +22,6 @@ const vote = {
     yes: 2,
     no: 1,
     abstain: 1,
-    //pieceName: ["Piece 1"]
-    // Submission : {
-    //     title: 'title',
-    //     author: 'author'
-    // }
 };
 
 //overall voting stats page first
@@ -77,11 +71,6 @@ export const VotingStats = observer(({ submissions } : { submissions: Submission
             <h1>Voting Statistics Page  - Overall</h1>
 
             <p>Total Votes: {allVotes.length}</p>
-
-            <div>
-                {/* <Link to="/voting-statistics-individual" className = "btn btn-primary">Individual Votes</Link> */}
-                
-            </div>
 
             <div className="chart-container">{pie}</div>
             

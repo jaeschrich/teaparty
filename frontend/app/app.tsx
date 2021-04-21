@@ -57,7 +57,8 @@ export const App = observer((props : any) => {
             </Route>
             <Route path="/">
                 <div role="main" aria-label="App Content">
-                    <p>Tea Party Homepage :)</p>
+                    <h1>Welcome to Tea Party!</h1>
+                    <p>Tea Party is a collaborative tool for the TEA Literary and Arts Magazine.</p>
                 </div>
             </Route>
         </Switch>
