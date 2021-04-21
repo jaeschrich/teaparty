@@ -67,8 +67,8 @@ export const VotingStats = observer(({ submissions } : { submissions: Submission
             },
             ],
         }}
-        height={100}
-        width={100}
+        height= {1}
+        width={1}
     />) : (<span>No Votes Yet!</span>);
 
     let nodes = submissions.map((sub: any) => <SubmissionView key={sub.title+sub.author} value={sub} />).slice(0,5)
@@ -79,11 +79,11 @@ export const VotingStats = observer(({ submissions } : { submissions: Submission
             <p>Total Votes: {allVotes.length}</p>
 
             <div>
-                <Link to="/voting-statistics-individual" className = "btn btn-primary">Individual Votes</Link>
+                {/* <Link to="/voting-statistics-individual" className = "btn btn-primary">Individual Votes</Link> */}
                 
             </div>
 
-            <div className="style">{pie}</div>
+            <div className="chart-container">{pie}</div>
             
         </div>
     );
