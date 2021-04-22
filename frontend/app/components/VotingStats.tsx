@@ -7,7 +7,6 @@ import PropTypes from 'prop-types'; /*also possibly not needed */
 
 import Tabs from 'react-bootstrap/Tabs' /*first attempt at getting tabs to work, bootstrap installation gave me errors */
 import './VotingStats.css';
-import './index.js';
 
 import { Route, Switch, Link, useParams, useLocation } from 'react-router-dom';
 import { IndividualVotes } from './IndividualVotes';
@@ -23,11 +22,6 @@ const vote = {
     yes: 2,
     no: 1,
     abstain: 1,
-    //pieceName: ["Piece 1"]
-    // Submission : {
-    //     title: 'title',
-    //     author: 'author'
-    // }
 };
 
 //overall voting stats page first
@@ -67,8 +61,8 @@ export const VotingStats = observer(({ submissions } : { submissions: Submission
             },
             ],
         }}
-        height={100}
-        width={100}
+        height= {1}
+        width={1}
     />) : (<span>No Votes Yet!</span>);
 
     let nodes = submissions.map((sub: any) => <SubmissionView key={sub.title+sub.author} value={sub} />).slice(0,5)
@@ -78,12 +72,7 @@ export const VotingStats = observer(({ submissions } : { submissions: Submission
 
             <p>Total Votes: {allVotes.length}</p>
 
-            <div>
-                <Link to="/voting-statistics-individual" className = "btn btn-primary">Individual Votes</Link>
-                
-            </div>
-
-            <div className="style">{pie}</div>
+            <div className="chart-container">{pie}</div>
             
         </div>
     );

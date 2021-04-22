@@ -15,9 +15,7 @@ const Submitted = observer(({ value} : {value : Submission}) => {
     return (<div className="submission">
             <span><Link to={`/view-submission/${value.title}`}>&ldquo;{value.title}&rdquo;</Link></span>
             <div role="group">
-                {/* <viewGraph onClick={() => <Link to='/submit'></Link>} /> */}
                 <Link to="/view-individual">Graph</Link>
-                {/* <button onClick={viewGraph}> + </button> */}
             </div>
         </div>
     )
@@ -31,12 +29,6 @@ export const IndividualVotes = observer(({ submissions }: { submissions: Submiss
         <div>
             <h1>Voting Statistics Page  - Individual</h1>
             <Link to="/voting-statistics" className = "btn btn-primary">Overall Votes</Link>
-            <div>
-                {/* {nodes.concat(<Button>Button!</Button>)} */}
-                {/* {nodes} */}
-                {/* {nodes2.forEach((sub: any) => sub.author = subs.concat(<Button></Button>))} */}
-            </div>
-            {/*COMMENT THIS OUT FOR NOW, DONT WANT TO SEE NODES WHILE TESTING ACCORDION vvvvv*/}
             {nodes}
         </div>
     );

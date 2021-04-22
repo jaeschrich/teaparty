@@ -6,7 +6,6 @@ import PropTypes from 'prop-types'; /*also possibly not needed */
 
 import Tabs from 'react-bootstrap/Tabs' /*first attempt at getting tabs to work, bootstrap installation gave me errors */
 import './VotingStats.css';
-import './index.js';
 
 import { Route, Switch, Link, useParams, useLocation } from 'react-router-dom';
 import { VotingStats } from './VotingStats';
