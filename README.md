@@ -1,8 +1,6 @@
 # teaparty
 A collaboration tool for literary magazines
 
-
-
 ## Development instructions
 
 ### General tools
@@ -26,4 +24,17 @@ $ yarn run dev
 
 ```
 $ yarn test
+```
+
+
+## Attributions
+
+Emoji SVGs from [https://twemoji.twitter.com/](twimoji).
+
+
+## Emails
+
+```
+staff@ufl.edu
+author@ufl.edu
 ```

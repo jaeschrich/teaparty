@@ -1,0 +1,35 @@
+#submit {
+    font: normal 24pt "LEMON MILK";
+    width: max-content;
+    font-weight: bold;
+    color: black;
+}
+
+#submit img {
+    height: 32pt;
+    margin-left: 0.5ch;
+}
+
+.red-button {
+    background-color: #cc3333 !important; 
+}
+
+.red-button:hover:enabled {
+    background-color: #d86565!important;
+}
+
+.red-button:active:enabled {
+    background-color: #992626!important;
+}
+
+.green-button:enabled {
+    background-color: #77dd77;
+}
+
+.green-button:hover:enabled {
+    background-color: #99e599;
+}
+
+.green-button:hover:active {
+    background-color: #32cc32;
+}

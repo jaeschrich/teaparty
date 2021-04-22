@@ -1,4 +1,4 @@
-import userRoutes from "./routes"
+import routes from "./routes"
 import express, { Express } from "express"
 import mongoose from "mongoose"
 import cors from "cors"
@@ -15,7 +15,7 @@ export const app: Express = express()
 const ud : string = "mongodb+srv://teaparty_jose:DnGTkqGcxQtpr7TA@cluster0.fsdna.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 mongoose.connect(ud, {
-        useNewUrlParser: true,  useUnifiedTopology: true
+        useNewUrlParser: true,  useUnifiedTopology: true,useFindAndModify: false
     })
     .then(() => console.log('DB Connected'));
 
@@ -30,7 +30,8 @@ mongoose.connection.on('error', err => {
 app.use(cors())
 app.use(morgan("dev"));
 app.use(bodyParser.json());
-app.use(userRoutes);
+app.use(routes);
+
 //app.use(expressValidator());
 
 //const uri: string = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.fsdna.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;

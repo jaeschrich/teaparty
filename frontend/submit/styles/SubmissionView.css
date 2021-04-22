@@ -1,0 +1,46 @@
+.submission {
+    font-family: 'Helvetica', 'sans-serif';
+    display: flex;
+    gap: 1rem;
+    flex-direction: column !important;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.submission > div[role="group"] {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+.controls > div {
+    flex-basis: 50%;
+}
+
+.controls > div button {
+    width: 100%;
+}
+
+.submission > table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    vertical-align: middle;
+}
+
+
+@media(max-width: 500px) {
+    /* .submission {
+        flex-direction: column !important;
+    }
+    .submission > div[role="group"].controls {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        width: 100%;
+        max-width: 100%;
+    }
+    .submission > div[role="group"].controls > * {
+        width: 50%;
+    } */
+}

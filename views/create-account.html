@@ -1,0 +1,40 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Create Account</title>
+<h1 role="doc-title" title="Right click me to see more names!">Create Account</h1>
+<p><img style="vertical-align:bottom; height: 1.5rem;" src="/assets/svg/tea-emoji.svg" alt="TEA" /></p>
+<form action="/create-account" method="POST">
+    <div style="display:flex;justify-content: space-between;">
+        <label for="password">Name: </label><input type="text" name="name" placeholder="" required />
+    </div>
+    <div style="display:flex;justify-content: space-between;">
+        <label for="pronouns">Pronouns: </label><input type="text" name="pronouns" placeholder="" required />
+    </div>
+    <div style="display:flex;justify-content: space-between;">
+        <label for="UFID">UFID: </label><input type="text" name="UFID" placeholder="an 8 digit UFID" pattern="[0-9]{8}" required />
+    </div>
+    <div style="display:flex;justify-content: space-between;">
+        <label for="email">Email: </label><input type="text" name="email" pattern=".+@ufl.edu" required />
+    </div>
+    <div style="display:flex;justify-content: space-between;">
+        <label for="password">Password: </label><input type="password" name="password" placeholder="Maybe choose a short line of poetry as your password!" required />
+    </div>
+    
+    <button type="submit">Create Account</button>
+</form>
+<link rel="stylesheet" href="/assets/LemonMilk/fonts.css" />
+<link rel="stylesheet" href="/dist/submit/main.css" />
+<style>
+
+    body {  max-width: 80ch;text-align: center; margin-left: auto; margin-right: auto; }
+    body > * { padding: 1rem;  }
+    form > * {
+        margin-bottom: 1rem;
+    }
+    label {
+        font-family: "LEMON MILK";
+    }
+    p { font-weight: 100;}
+    input { max-width: 60ch; }
+</style>
+<script src="/dist/login/create-account.js"></script>

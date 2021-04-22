@@ -10,3 +10,7 @@ shared/node_modules/
 google-auth.json
 .DS_Store
 **/.DS_Store
+.parcel-cache/
+data/
+yarn-error.log
+server.js
