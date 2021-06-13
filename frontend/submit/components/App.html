@@ -1,0 +1,33 @@
+<div id="toolbar" style="display: flex; justify-content: space-between"> 
+    <button data-on:click="handleSubmit" id="submit" style="width: 20ch"
+        data-bind:class="buttonClass"
+        disabled="!this.state.valid">
+        <span style="text-align: center" v-bind:textContent="message"></span>
+    </button>
+    <button style="margin-left: auto" data-on:click="addImte">Add Item</button>
+</div>
+
+<div id="form" style="display:flex;max-height:80vh; height:100%; gap:1rem" >
+    <div role="group" style="flex-direction: column; justify-self: flex-end">
+        <label for="artist-statement">Personal Statement</label>
+        <textarea required data-model="statement"
+            placeholder="" name="artist-statement"></textarea>
+    </div>
+    <div role="region" id="submissions" style="display:flex;flex-direction:column; overflow-y:scroll; scrollbar-width:thin;gap:1rem">
+        <slot name="myPlace"></slot>
+    </div>
+</div>
+
+<script type="module">
+    import template from './AppTemplate.html';
+
+    export class MyComponent extends Component {
+        constructor(state) {
+            super();
+            this.message = new Observable("message");
+            this.myPlace = new MyOtherComponent();
+            template.attach(this);
+        }
+        get buttonClass() { return this.state.buttonClass; }
+    }
+</script>

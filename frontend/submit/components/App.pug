@@ -1,0 +1,13 @@
+
+div#toolbar(style="display: flex; justify-content: space-between")
+    button#submit(  @click="this.handleSubmit"
+                    style="width: 20ch"
+                    @sink:class="state.buttonClass"
+                    @sink:disabled="!this.valid")
+        span(@sink:textContent="message" style="text-align: center")
+    button(style="margin-left: auto;" @click="this.addItem")
+div#form(style="display:flex;max-height:80vh;height:100%;gap:1rem;")
+    div(role="group" style="flex-direction: column; justify-self: flex-end;")
+        label(for="artists-statement") Personal Statement
+        textarea(required --model="statement" name="artist-statement")
+        slot(name="this.submissions")
