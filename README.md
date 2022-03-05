@@ -1,6 +1,11 @@
 # teaparty
 A collaboration tool for literary magazines
 
+## Notes
+Need to find a good backend framework. 
+Django, Laravel, or node
+What I really want is a this.emit(name, payload);
+
 ## Development instructions
 
 ### General tools

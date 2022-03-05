@@ -1,5 +1,5 @@
 
-import { template } from '../../shared/templateHelper.js';
+import { template, event, attachTemplate } from '../../shared/index.js';
 
 const cctemplate = template`
 <style>
@@ -24,14 +24,13 @@ const cctemplate = template`
 class ConfirmClick extends HTMLElement {
     constructor() {
         super();
-        const shadowRoot = this.attachShadow({ mode: "open" });
-        shadowRoot.appendChild(cctemplate.cloneNode(true));
-        console.log(shadowRoot)
-        let top = shadowRoot.querySelector("#confirm-panel");
+        attachTemplate(this, cctemplate);
+
+        let top = this.shadowRoot.querySelector("#confirm-panel");
         let accept = this.querySelector("button[slot=accept]")
         accept.addEventListener("click", (ev) => {
             top.className = "";
-            this.dispatchEvent(new CustomEvent("confirm"));
+            this.dispatchEvent(event("confirm"));
         });
         let reject = this.querySelector("button[slot=reject]")
         reject.addEventListener("click", (ev) => {

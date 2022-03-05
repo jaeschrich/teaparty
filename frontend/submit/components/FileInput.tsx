@@ -34,7 +34,7 @@ export const FileInput = observer(({ value } : { value: Submission }) => {
                 value: ref.current.files[0],
                 filename: ref.current.files[0].name,
             }
-            // value.category = ref.current.dataset.value!;
+            value.category = ref.current.dataset.value!;
         }
     });
 
